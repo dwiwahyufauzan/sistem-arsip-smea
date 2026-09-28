@@ -58,9 +58,10 @@ class SuratMasuk extends Model
     {
         $bytes = $this->file_size;
         if ($bytes >= 1048576) {
-            return number_format($bytes / 1048576, 2) . ' MB';
+            return number_format($bytes / 1048576, 2).' MB';
         }
-        return number_format($bytes / 1024, 2) . ' KB';
+
+        return number_format($bytes / 1024, 2).' KB';
     }
 
     public function getStatusBadgeAttribute(): string

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AuthAndRoleTest extends TestCase
@@ -86,7 +85,7 @@ class AuthAndRoleTest extends TestCase
      */
     public function test_new_pemohon_can_register(): void
     {
-        $uniqueEmail = 'alumni.' . time() . '@test.com';
+        $uniqueEmail = 'alumni.'.time().'@test.com';
         $response = $this->post('/register', [
             'name' => 'Siswa Baru',
             'email' => $uniqueEmail,

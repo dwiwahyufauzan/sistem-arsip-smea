@@ -23,6 +23,7 @@ Menyemai (*seeding*) data awal ke basis data MySQL `sistem_arsip_smea`, mencakup
 - [x] 3 Sampel Surat Masuk realistis beserta riwayat disposisi tindak lanjut.
 - [x] 2 Sampel Surat Keluar (status disetujui & menunggu persetujuan).
 - [x] 2 Sampel Pengajuan Legalisir Online (status proses & verifikasi) beserta timeline riwayat audit.
+- [x] Berkas fisik sampel PDF resmi (7 dokumen) di-generate dan tersimpan di `storage/app/public/` (`dokumen-surat-masuk/`, `dokumen-surat-keluar/`, `dokumen-legalisir/`) sehingga link pratinjau dan unduh tidak menghasilkan error 404.
 - [x] Eksekusi `php artisan db:seed` berhasil tanpa error.
 
 ---

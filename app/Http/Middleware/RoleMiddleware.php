@@ -11,19 +11,18 @@ class RoleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  string  ...$roles
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk mengakses sistem.');
         }
 
         $user = auth()->user();
 
         // Check if user has one of the allowed roles
-        if (!in_array($user->role, $roles)) {
+        if (! in_array($user->role, $roles)) {
             // Optional friendly redirect to user's home dashboard
             $targetRoute = match ($user->role) {
                 'admin' => 'admin.dashboard',

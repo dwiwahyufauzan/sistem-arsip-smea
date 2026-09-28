@@ -32,7 +32,7 @@ return new class extends Migration
                 'sedang_diproses',
                 'siap_diambil',
                 'selesai',
-                'ditolak'
+                'ditolak',
             ])->default('menunggu_verifikasi')->index();
             $table->text('catatan_petugas')->nullable();
             $table->text('catatan_kepsek')->nullable();

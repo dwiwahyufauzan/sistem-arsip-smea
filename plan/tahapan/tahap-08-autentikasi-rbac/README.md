@@ -20,8 +20,9 @@ Membangun sistem autentikasi multi-role dan kontrol akses berbasis peran (RBAC) 
 - [x] Tampilan Blade bernuansa resmi SMKN 1 Subang (Navy & Teal):
   - `resources/views/auth/login.blade.php` (dilengkapi tombol quick fill demo credentials).
   - `resources/views/auth/register.blade.php`.
-- [x] Rute terproteksi di `routes/web.php` untuk grup `/admin`, `/kepala-sekolah`, dan `/pemohon`.
-- [x] Seluruh pengujian fitur (`tests/Feature/AuthAndRoleTest.php`) lulus 100% (7 pengujian, 19 asersi).
+  - `resources/views/landing.blade.php`: Portal Publik Beranda SMKN 1 Subang dilengkapi pencarian pelacakan status legalisir (*Public Tracking Stepper*) via nomor resi/NISN dan ringkasan statistik arsip.
+- [x] Rute terproteksi di `routes/web.php` untuk grup `/admin`, `/kepala-sekolah`, dan `/pemohon`, serta rute publik `/` untuk beranda dan lacak legalisir.
+- [x] Seluruh pengujian fitur (`tests/Feature/AuthAndRoleTest.php` dan `tests/Feature/LandingAndTrackingTest.php`) lulus 100% (13 pengujian, 34 asersi).
 
 ---
 
@@ -52,8 +53,17 @@ Membangun sistem autentikasi multi-role dan kontrol akses berbasis peran (RBAC) 
 ✓ unauthenticated user redirected to login .................................... 0.04s
 ✓ new pemohon can register .................................................... 0.12s
 
-Tests:    7 passed (19 assertions)
-Duration: 0.65s
+ PASS  Tests\Feature\LandingAndTrackingTest
+✓ landing page renders successfully ........................................... 0.10s
+✓ public tracking finds valid pengajuan by nomor pengajuan .................... 0.08s
+✓ public tracking finds valid pengajuan by nisn ............................... 0.07s
+✓ public tracking shows not found message for invalid query ................... 0.06s
+
+ PASS  Tests\Feature\ExampleTest
+✓ the application returns a successful response ............................... 0.05s
+
+Tests:    13 passed (34 assertions)
+Duration: 0.69s
 ```
 
 ---

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -10,9 +11,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // 1. Halaman Publik & Autentikasi
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
