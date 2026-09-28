@@ -32,7 +32,7 @@ Seluruh dokumen landasan teoritis, analisis SRS/NFR, perancangan database, pemod
 | **04** | Konfigurasi Environment (.env) & Basis Data MySQL | [tahap-04-koneksi-database/README.md](./tahapan/tahap-04-koneksi-database/README.md) | 🟢 Selesai |
 | **05** | Perancangan & Eksekusi Migrasi Basis Data | [tahap-05-migrasi-database/README.md](./tahapan/tahap-05-migrasi-database/README.md) | 🟢 Selesai |
 | **06** | Pembuatan Model Eloquent & Relasi Data | [tahap-06-model-eloquent/README.md](./tahapan/tahap-06-model-eloquent/README.md) | 🟢 Selesai |
-| **07** | Database Seeder Data Awal & Pengguna Default | [tahap-07-database-seeder/README.md](./tahapan/tahap-07-database-seeder/README.md) | 🔴 Belum Dimulai |
+| **07** | Database Seeder Data Awal & Pengguna Default | [tahap-07-database-seeder/README.md](./tahapan/tahap-07-database-seeder/README.md) | 🟢 Selesai |
 | **08** | Autentikasi Pengguna & Role-Based Access Control (RBAC) | [tahap-08-autentikasi-rbac/README.md](./tahapan/tahap-08-autentikasi-rbac/README.md) | 🔴 Belum Dimulai |
 | **09** | Pembangunan Master Layout & UI Components (Tailwind CSS) | [tahap-09-master-layout-ui/README.md](./tahapan/tahap-09-master-layout-ui/README.md) | 🔴 Belum Dimulai |
 | **10** | Pembangunan Core Engine Algoritma Knuth-Morris-Pratt (KMP) | [tahap-10-engine-algoritma-kmp/README.md](./tahapan/tahap-10-engine-algoritma-kmp/README.md) | 🔴 Belum Dimulai |
