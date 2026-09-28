@@ -42,7 +42,7 @@ Repository ini berisi kode sumber dan dokumentasi rancang bangun **Sistem Inform
 | **06** | Pembuatan Model Eloquent & Relasi Data | [Tahap 06](./plan/tahapan/tahap-06-model-eloquent/README.md) | 🟢 Selesai |
 | **07** | Database Seeder Data Awal & Pengguna Default | [Tahap 07](./plan/tahapan/tahap-07-database-seeder/README.md) | 🟢 Selesai |
 | **08** | Autentikasi Pengguna & Role-Based Access Control (RBAC) | [Tahap 08](./plan/tahapan/tahap-08-autentikasi-rbac/README.md) | 🟢 Selesai |
-| **09** | Pembangunan Master Layout & UI Components (Tailwind CSS) | [Tahap 09](./plan/tahapan/tahap-09-master-layout-ui/README.md) | 🔴 Belum Dimulai |
+| **09** | Pembangunan Master Layout & UI Components (Tailwind CSS) | [Tahap 09](./plan/tahapan/tahap-09-master-layout-ui/README.md) | 🟢 Selesai |
 | **10** | Pembangunan Core Engine Algoritma Knuth-Morris-Pratt (KMP) | [Tahap 10](./plan/tahapan/tahap-10-engine-algoritma-kmp/README.md) | 🔴 Belum Dimulai |
 | **11** | Implementasi Modul Master Data Kategori & Pengguna | [Tahap 11](./plan/tahapan/tahap-11-master-data/README.md) | 🔴 Belum Dimulai |
 | **12** | Implementasi Modul Surat Masuk (SRS-P02, SRS-P03, SRS-KS02) | [Tahap 12](./plan/tahapan/tahap-12-modul-surat-masuk/README.md) | 🔴 Belum Dimulai |
