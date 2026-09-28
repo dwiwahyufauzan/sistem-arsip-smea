@@ -30,7 +30,7 @@ Seluruh dokumen landasan teoritis, analisis SRS/NFR, perancangan database, pemod
 | **02** | Inisialisasi Proyek Laravel & Struktur Workspace | [tahap-02-inisialisasi-laravel/README.md](./tahapan/tahap-02-inisialisasi-laravel/README.md) | 🟢 Selesai |
 | **03** | Instalasi Frontend Tech Stack (Tailwind CSS & Vite) | [tahap-03-frontend-tailwind/README.md](./tahapan/tahap-03-frontend-tailwind/README.md) | 🟢 Selesai |
 | **04** | Konfigurasi Environment (.env) & Basis Data MySQL | [tahap-04-koneksi-database/README.md](./tahapan/tahap-04-koneksi-database/README.md) | 🟢 Selesai |
-| **05** | Perancangan & Eksekusi Migrasi Basis Data | [tahap-05-migrasi-database/README.md](./tahapan/tahap-05-migrasi-database/README.md) | 🔴 Belum Dimulai |
+| **05** | Perancangan & Eksekusi Migrasi Basis Data | [tahap-05-migrasi-database/README.md](./tahapan/tahap-05-migrasi-database/README.md) | 🟢 Selesai |
 | **06** | Pembuatan Model Eloquent & Relasi Data | [tahap-06-model-eloquent/README.md](./tahapan/tahap-06-model-eloquent/README.md) | 🔴 Belum Dimulai |
 | **07** | Database Seeder Data Awal & Pengguna Default | [tahap-07-database-seeder/README.md](./tahapan/tahap-07-database-seeder/README.md) | 🔴 Belum Dimulai |
 | **08** | Autentikasi Pengguna & Role-Based Access Control (RBAC) | [tahap-08-autentikasi-rbac/README.md](./tahapan/tahap-08-autentikasi-rbac/README.md) | 🔴 Belum Dimulai |
