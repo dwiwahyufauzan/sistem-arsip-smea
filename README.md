@@ -34,7 +34,7 @@ Repository ini berisi kode sumber dan dokumentasi rancang bangun **Sistem Inform
 
 | No | Tahapan Implementasi | Dokumentasi Rinci Tahapan | Status |
 |:---:|---|---|:---:|
-| **01** | Verifikasi & Penyiapan Lingkungan Pengembangan | [Tahap 01](./plan/tahapan/tahap-01-environment-setup/README.md) | 🔴 Belum Dimulai |
+| **01** | Verifikasi & Penyiapan Lingkungan Pengembangan | [Tahap 01](./plan/tahapan/tahap-01-environment-setup/README.md) | 🟢 Selesai |
 | **02** | Inisialisasi Proyek Laravel & Struktur Workspace | [Tahap 02](./plan/tahapan/tahap-02-inisialisasi-laravel/README.md) | 🔴 Belum Dimulai |
 | **03** | Instalasi Frontend Tech Stack (Tailwind CSS & Vite) | [Tahap 03](./plan/tahapan/tahap-03-frontend-tailwind/README.md) | 🔴 Belum Dimulai |
 | **04** | Konfigurasi Environment (.env) & Basis Data MySQL | [Tahap 04](./plan/tahapan/tahap-04-koneksi-database/README.md) | 🔴 Belum Dimulai |
