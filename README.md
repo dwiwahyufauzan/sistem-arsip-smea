@@ -39,7 +39,7 @@ Repository ini berisi kode sumber dan dokumentasi rancang bangun **Sistem Inform
 | **03** | Instalasi Frontend Tech Stack (Tailwind CSS & Vite) | [Tahap 03](./plan/tahapan/tahap-03-frontend-tailwind/README.md) | 🟢 Selesai |
 | **04** | Konfigurasi Environment (.env) & Basis Data MySQL | [Tahap 04](./plan/tahapan/tahap-04-koneksi-database/README.md) | 🟢 Selesai |
 | **05** | Perancangan & Eksekusi Migrasi Basis Data | [Tahap 05](./plan/tahapan/tahap-05-migrasi-database/README.md) | 🟢 Selesai |
-| **06** | Pembuatan Model Eloquent & Relasi Data | [Tahap 06](./plan/tahapan/tahap-06-model-eloquent/README.md) | 🔴 Belum Dimulai |
+| **06** | Pembuatan Model Eloquent & Relasi Data | [Tahap 06](./plan/tahapan/tahap-06-model-eloquent/README.md) | 🟢 Selesai |
 | **07** | Database Seeder Data Awal & Pengguna Default | [Tahap 07](./plan/tahapan/tahap-07-database-seeder/README.md) | 🔴 Belum Dimulai |
 | **08** | Autentikasi Pengguna & Role-Based Access Control (RBAC) | [Tahap 08](./plan/tahapan/tahap-08-autentikasi-rbac/README.md) | 🔴 Belum Dimulai |
 | **09** | Pembangunan Master Layout & UI Components (Tailwind CSS) | [Tahap 09](./plan/tahapan/tahap-09-master-layout-ui/README.md) | 🔴 Belum Dimulai |
