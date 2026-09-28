@@ -4,9 +4,9 @@
 
 ---
 
-## 📌 Daftar Dokumen Rencana (Implementation Plans)
+## 📌 1. Dokumen Perancangan Arsitektur & Kebutuhan
 
-Dokumentasi rencana ini disusun secara mendalam dan terstruktur berdasarkan metodologi **Rational Unified Process (RUP)** untuk memandu seluruh alur pembangunan sistem dari awal hingga tahap deployment dan pengujian:
+Seluruh dokumen landasan teoritis, analisis SRS/NFR, perancangan database, pemodelan UML, dan algoritma KMP tersimpan pada folder ini:
 
 | No | Dokumen Rencana | Deskripsi Utama |
 |---|---|---|
@@ -15,36 +15,31 @@ Dokumentasi rencana ini disusun secara mendalam dan terstruktur berdasarkan meto
 | 02 | [02_PERANCANGAN_DATABASE_DAN_ERD.md](./02_PERANCANGAN_DATABASE_DAN_ERD.md) | Perancangan skema database MySQL lengkap, kamus data, relasi antar tabel (users, surat masuk, surat keluar, persetujuan, legalisir, log). |
 | 03 | [03_IMPLEMENTASI_ALGORITMA_KMP.md](./03_IMPLEMENTASI_ALGORITMA_KMP.md) | Teori dan formula Knuth-Morris-Pratt (KMP), pembentukan tabel LPS (Prefix Function), desain `KmpSearchService.php`, dan strategi pengujian performa pencarian. |
 | 04 | [04_DESAIN_WORKFLOW_DAN_UML.md](./04_DESAIN_WORKFLOW_DAN_UML.md) | Pemodelan UML: Use Case Diagram & Skenario, Activity Diagram (Surat Masuk, Surat Keluar, Legalisir, Approval), alur status & perancangan UI/UX Tailwind. |
-| 05 | [05_ROADMAP_DAN_FASE_IMPLEMENTASI_RUP.md](./05_ROADMAP_DAN_FASE_IMPLEMENTASI_RUP.md) | **URUTAN LENGKAP 17 TAHAP IMPLEMENTASI**: Mulai dari setup tech stack, autentikasi multi-role, CRUD surat masuk/keluar, approval kepsek, portal legalisir, engine KMP, hingga pengujian Black Box. |
+| 05 | [05_ROADMAP_DAN_FASE_IMPLEMENTASI_RUP.md](./05_ROADMAP_DAN_FASE_IMPLEMENTASI_RUP.md) | Panduan langkah teknis rinci 17 tahap implementasi sistem. |
+| 06 | [06_ATURAN_DAN_SOP_DOKUMENTASI_IMPLEMENTASI.md](./06_ATURAN_DAN_SOP_DOKUMENTASI_IMPLEMENTASI.md) | Aturan operasional pembaruan README utama dan README per tahap pada setiap siklus implementasi. |
 
 ---
 
-## 🚀 17 Langkah Eksekusi Berurutan
+## 📊 2. Matriks Tracking Status Implementasi Per Tahap
 
-1. **Tahap 1**: Verifikasi & Penyiapan Lingkungan Pengembangan (PHP 8.4, Composer 2.9, Node.js 24, Laragon/MySQL).
-2. **Tahap 2**: Inisialisasi Proyek Laravel & Integrasi Workspace (Preservasi berkas skripsi & setup direktori).
-3. **Tahap 3**: Instalasi & Konfigurasi Frontend Tech Stack (Tailwind CSS, PostCSS, Autoprefixer, Vite).
-4. **Tahap 4**: Konfigurasi Environment (`.env`) & Koneksi Database MySQL (`sistem_arsip_smea`).
-5. **Tahap 5**: Perancangan & Eksekusi Migrasi Basis Data (8 Tabel Utama & Foreign Keys).
-6. **Tahap 6**: Pembuatan Model Eloquent & Relasi Data (User, Surat, Legalisir, Disposisi, Riwayat, Log).
-7. **Tahap 7**: Pembuatan Database Seeder (Akun Default 3 Role, Kategori Surat Resmi SMKN 1 Subang, Sampel Data).
-8. **Tahap 8**: Implementasi Autentikasi Pengguna & Role-Based Access Control / RBAC (`admin`, `kepala_sekolah`, `pemohon`).
-9. **Tahap 9**: Pembangunan Master Layout & UI Components (Admin, Kepsek, Pemohon - Tailwind CSS).
-10. **Tahap 10**: Pembangunan Core Engine Algoritma Knuth-Morris-Pratt (KMP) Service & Unit Testing.
-11. **Tahap 11**: Implementasi Modul Master Data (Kategori Surat & Profil Pengguna).
-12. **Tahap 12**: Implementasi Modul Surat Masuk (CRUD, Upload Scan PDF, Previewer Modal, Disposisi).
-13. **Tahap 13**: Implementasi Modul Surat Keluar (CRUD, Draf, Upload Berkas, Pengajuan Persetujuan).
-14. **Tahap 14**: Implementasi Modul Persetujuan & Disposisi Kepala Sekolah (Approval Workflow).
-15. **Tahap 15**: Implementasi Modul Layanan Legalisir Online (Portal Publik, Live Tracking Resi, Verifikasi TU, Pengesahan Kepsek).
-16. **Tahap 16**: Integrasi Fitur Pencarian Cerdas Terpadu KMP (Multi-Tabel Matching, Highlighting, & Komparasi Brute Force).
-17. **Tahap 17**: Modul Rekapitulasi Cetak Agenda, Pengujian Black Box Testing, & Dokumentasi Skripsi.
+> **Aturan Dokumentasi**: Setiap kali sebuah tahapan selesai diimplementasikan, file `README.md` pada tahapan tersebut diperbarui dengan bukti pengujian dan komit Git, serta status di bawah ini diubah menjadi `🟢 Selesai`.
 
----
-
-## 👥 Pengguna Sistem (Hak Akses)
-- **Admin / Petugas Arsip TU**: Akses operasional penuh pencatatan, upload dokumen scan, verifikasi berkas legalisir, pembaruan status pengerjaan, pencarian KMP, dan cetak agenda.
-- **Kepala Sekolah**: Akses pemantauan eksekutif, tinjauan berkas surat masuk, otorisasi persetujuan/penolakan surat keluar, otorisasi pengesahan legalisir, dan lembar disposisi.
-- **Pemohon (Alumni/Siswa)**: Akses publik mandiri permohonan legalisir, upload scan berkas ijazah asli, dan pemantauan status proses (*live tracking*) dengan nomor resi tanpa kendala.
-
----
-*Dokumen ini merupakan acuan resmi pengembangan aplikasi sistem arsip SMKN 1 Subang.*
+| No | Tahapan Implementasi | Berkas Dokumentasi Tahapan | Status |
+|:---:|---|---|:---:|
+| **01** | Verifikasi & Penyiapan Lingkungan Pengembangan | [tahap-01-environment-setup/README.md](./tahapan/tahap-01-environment-setup/README.md) | 🔴 Belum Dimulai |
+| **02** | Inisialisasi Proyek Laravel & Struktur Workspace | [tahap-02-inisialisasi-laravel/README.md](./tahapan/tahap-02-inisialisasi-laravel/README.md) | 🔴 Belum Dimulai |
+| **03** | Instalasi Frontend Tech Stack (Tailwind CSS & Vite) | [tahap-03-frontend-tailwind/README.md](./tahapan/tahap-03-frontend-tailwind/README.md) | 🔴 Belum Dimulai |
+| **04** | Konfigurasi Environment (.env) & Basis Data MySQL | [tahap-04-koneksi-database/README.md](./tahapan/tahap-04-koneksi-database/README.md) | 🔴 Belum Dimulai |
+| **05** | Perancangan & Eksekusi Migrasi Basis Data | [tahap-05-migrasi-database/README.md](./tahapan/tahap-05-migrasi-database/README.md) | 🔴 Belum Dimulai |
+| **06** | Pembuatan Model Eloquent & Relasi Data | [tahap-06-model-eloquent/README.md](./tahapan/tahap-06-model-eloquent/README.md) | 🔴 Belum Dimulai |
+| **07** | Database Seeder Data Awal & Pengguna Default | [tahap-07-database-seeder/README.md](./tahapan/tahap-07-database-seeder/README.md) | 🔴 Belum Dimulai |
+| **08** | Autentikasi Pengguna & Role-Based Access Control (RBAC) | [tahap-08-autentikasi-rbac/README.md](./tahapan/tahap-08-autentikasi-rbac/README.md) | 🔴 Belum Dimulai |
+| **09** | Pembangunan Master Layout & UI Components (Tailwind CSS) | [tahap-09-master-layout-ui/README.md](./tahapan/tahap-09-master-layout-ui/README.md) | 🔴 Belum Dimulai |
+| **10** | Pembangunan Core Engine Algoritma Knuth-Morris-Pratt (KMP) | [tahap-10-engine-algoritma-kmp/README.md](./tahapan/tahap-10-engine-algoritma-kmp/README.md) | 🔴 Belum Dimulai |
+| **11** | Implementasi Modul Master Data Kategori & Pengguna | [tahap-11-master-data/README.md](./tahapan/tahap-11-master-data/README.md) | 🔴 Belum Dimulai |
+| **12** | Implementasi Modul Surat Masuk (SRS-P02, SRS-P03, SRS-KS02) | [tahap-12-modul-surat-masuk/README.md](./tahapan/tahap-12-modul-surat-masuk/README.md) | 🔴 Belum Dimulai |
+| **13** | Implementasi Modul Surat Keluar (SRS-P04, SRS-P05, SRS-KS03) | [tahap-13-modul-surat-keluar/README.md](./tahapan/tahap-13-modul-surat-keluar/README.md) | 🔴 Belum Dimulai |
+| **14** | Implementasi Modul Persetujuan & Disposisi Kepala Sekolah | [tahap-14-persetujuan-disposisi-kepsek/README.md](./tahapan/tahap-14-persetujuan-disposisi-kepsek/README.md) | 🔴 Belum Dimulai |
+| **15** | Implementasi Modul Layanan Legalisir Online (SRS-L01..05) | [tahap-15-layanan-legalisir-online/README.md](./tahapan/tahap-15-layanan-legalisir-online/README.md) | 🔴 Belum Dimulai |
+| **16** | Integrasi Fitur Pencarian Cerdas Terpadu KMP | [tahap-16-pencarian-cerdas-kmp/README.md](./tahapan/tahap-16-pencarian-cerdas-kmp/README.md) | 🔴 Belum Dimulai |
+| **17** | Modul Rekapitulasi Cetak Agenda, Pengujian Black Box, & Skripsi | [tahap-17-cetak-agenda-pengujian-skripsi/README.md](./tahapan/tahap-17-cetak-agenda-pengujian-skripsi/README.md) | 🔴 Belum Dimulai |
