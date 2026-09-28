@@ -27,7 +27,7 @@ Seluruh dokumen landasan teoritis, analisis SRS/NFR, perancangan database, pemod
 | No | Tahapan Implementasi | Berkas Dokumentasi Tahapan | Status |
 |:---:|---|---|:---:|
 | **01** | Verifikasi & Penyiapan Lingkungan Pengembangan | [tahap-01-environment-setup/README.md](./tahapan/tahap-01-environment-setup/README.md) | 🟢 Selesai |
-| **02** | Inisialisasi Proyek Laravel & Struktur Workspace | [tahap-02-inisialisasi-laravel/README.md](./tahapan/tahap-02-inisialisasi-laravel/README.md) | 🔴 Belum Dimulai |
+| **02** | Inisialisasi Proyek Laravel & Struktur Workspace | [tahap-02-inisialisasi-laravel/README.md](./tahapan/tahap-02-inisialisasi-laravel/README.md) | 🟡 Sedang Dikerjakan |
 | **03** | Instalasi Frontend Tech Stack (Tailwind CSS & Vite) | [tahap-03-frontend-tailwind/README.md](./tahapan/tahap-03-frontend-tailwind/README.md) | 🔴 Belum Dimulai |
 | **04** | Konfigurasi Environment (.env) & Basis Data MySQL | [tahap-04-koneksi-database/README.md](./tahapan/tahap-04-koneksi-database/README.md) | 🔴 Belum Dimulai |
 | **05** | Perancangan & Eksekusi Migrasi Basis Data | [tahap-05-migrasi-database/README.md](./tahapan/tahap-05-migrasi-database/README.md) | 🔴 Belum Dimulai |
