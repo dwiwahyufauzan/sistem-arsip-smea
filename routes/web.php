@@ -4,6 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DisposisiController;
 use App\Http\Controllers\KategoriSuratController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LegalisirAdminController;
+use App\Http\Controllers\LegalisirKepsekController;
+use App\Http\Controllers\PengajuanLegalisirController;
 use App\Http\Controllers\PersetujuanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuratKeluarController;
@@ -17,8 +20,16 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// 1. Halaman Publik & Autentikasi
+// 1. Halaman Publik, Legalisir Mandiri & Autentikasi
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+
+// Portal Publik Layanan Legalisir Online (SRS-L01..05)
+Route::get('/legalisir/buat', [PengajuanLegalisirController::class, 'create'])->name('legalisir.create');
+Route::post('/legalisir/kirim', [PengajuanLegalisirController::class, 'store'])->name('legalisir.store');
+Route::get('/legalisir/sukses/{nomor_pengajuan}', [PengajuanLegalisirController::class, 'sukses'])->name('legalisir.sukses');
+Route::get('/legalisir/tracking', [PengajuanLegalisirController::class, 'tracking'])->name('legalisir.tracking');
+Route::get('/legalisir/tanda-terima/{nomor_pengajuan}', [PengajuanLegalisirController::class, 'cetakTandaTerima'])->name('legalisir.tanda-terima');
+Route::get('/legalisir/{legalisir}/download', [PengajuanLegalisirController::class, 'downloadDokumen'])->name('legalisir.download');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -56,6 +67,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('disposisi/{disposisi}', [DisposisiController::class, 'showAdmin'])->name('disposisi.show');
     Route::patch('disposisi/{disposisi}/status', [DisposisiController::class, 'updateStatus'])->name('disposisi.status');
     Route::get('disposisi/{disposisi}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
+
+    // Modul Verifikasi & Pengelolaan Legalisir TU (SRS-P06, SRS-P07)
+    Route::get('legalisir', [LegalisirAdminController::class, 'index'])->name('legalisir.index');
+    Route::get('legalisir/{legalisir}', [LegalisirAdminController::class, 'show'])->name('legalisir.show');
+    Route::patch('legalisir/{legalisir}/verifikasi', [LegalisirAdminController::class, 'verifikasi'])->name('legalisir.verifikasi');
+    Route::patch('legalisir/{legalisir}/proses-cetak', [LegalisirAdminController::class, 'prosesCetak'])->name('legalisir.proses-cetak');
+    Route::patch('legalisir/{legalisir}/siap-diambil', [LegalisirAdminController::class, 'siapDiambil'])->name('legalisir.siap-diambil');
+    Route::patch('legalisir/{legalisir}/selesai', [LegalisirAdminController::class, 'selesai'])->name('legalisir.selesai');
+    Route::patch('legalisir/{legalisir}/tolak', [LegalisirAdminController::class, 'tolak'])->name('legalisir.tolak');
 
     // Master Data Kategori Surat Klasifikasi Dinas
     Route::resource('kategori', KategoriSuratController::class)->except(['show']);
@@ -96,11 +116,19 @@ Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepala-sekolah')->na
     Route::delete('/disposisi/{disposisi}', [DisposisiController::class, 'destroy'])->name('disposisi.destroy');
     Route::patch('/disposisi/{disposisi}/status', [DisposisiController::class, 'updateStatus'])->name('disposisi.status');
     Route::get('/disposisi/{disposisi}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
+
+    // Modul Pengesahan Legalisir Kepala Sekolah (SRS-KS04, SRS-KS06)
+    Route::get('/legalisir', [LegalisirKepsekController::class, 'index'])->name('legalisir.index');
+    Route::get('/legalisir/{legalisir}', [LegalisirKepsekController::class, 'show'])->name('legalisir.show');
+    Route::post('/legalisir/{legalisir}/approve', [LegalisirKepsekController::class, 'approve'])->name('legalisir.approve');
+    Route::post('/legalisir/{legalisir}/reject', [LegalisirKepsekController::class, 'reject'])->name('legalisir.reject');
 });
 
 // 4. Rute Khusus Pemohon Legalisir (Alumni / Siswa)
 Route::middleware(['auth', 'role:pemohon'])->prefix('pemohon')->name('pemohon.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pemohon.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', fn () => view('pemohon.dashboard'))->name('dashboard');
+    Route::get('/permohonan-saya', [PengajuanLegalisirController::class, 'indexPemohon'])->name('legalisir.index');
+    Route::get('/permohonan-saya/{legalisir}', [PengajuanLegalisirController::class, 'showPemohon'])->name('legalisir.show');
+    Route::get('/legalisir', [PengajuanLegalisirController::class, 'indexPemohon']);
+    Route::get('/legalisir/create', fn () => redirect()->route('legalisir.create'));
 });
