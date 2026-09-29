@@ -72,7 +72,7 @@
                     <span class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">Persetujuan & Kebijakan</span>
                     <div class="mt-2 space-y-1">
                         <!-- Surat Keluar Approval -->
-                        <a href="{{ url('/kepala-sekolah/surat-keluar') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/surat-keluar*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
+                        <a href="{{ route('kepsek.persetujuan.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/persetujuan*') || request()->is('kepala-sekolah/surat-keluar*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
                             <div class="flex items-center gap-3 truncate">
                                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                 <span class="truncate">Persetujuan Surat Keluar</span>
@@ -88,15 +88,25 @@
                         </a>
 
                         <!-- Pemantauan Surat Masuk -->
-                        <a href="{{ url('/kepala-sekolah/surat-masuk') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/surat-masuk*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
+                        <a href="{{ route('kepsek.surat-masuk.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/surat-masuk*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
                             <span>Pemantauan Surat Masuk</span>
                         </a>
 
                         <!-- Disposisi Surat Masuk -->
-                        <a href="{{ url('/kepala-sekolah/disposisi') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/disposisi*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
-                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                            <span>Disposisi Surat Masuk</span>
+                        <a href="{{ route('kepsek.disposisi.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/disposisi*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
+                            <div class="flex items-center gap-3 truncate">
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                <span class="truncate">Disposisi Surat Masuk</span>
+                            </div>
+                            @php
+                                $pendingDispCount = \App\Models\DisposisiSuratMasuk::where('status', 'menunggu')->count();
+                            @endphp
+                            @if($pendingDispCount > 0)
+                                <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 shrink-0">
+                                    {{ $pendingDispCount }}
+                                </span>
+                            @endif
                         </a>
 
                         <!-- Pengesahan Legalisir -->

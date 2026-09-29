@@ -119,11 +119,22 @@
                             </div>
                         </div>
                     @elseif($surat_keluar->status_persetujuan === 'menunggu_persetujuan')
-                        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs space-y-2">
-                            <p class="font-bold text-amber-800">Surat keluar ini sedang menunggu keputusan persetujuan dari Anda.</p>
-                            <p class="text-amber-700">
-                                Pada modul persetujuan (Tahap 14), Anda dapat memberikan status <strong>Setujui</strong> atau <strong>Tolak</strong> disertai catatan revisi.
-                            </p>
+                        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs space-y-3">
+                            <div>
+                                <p class="font-bold text-amber-900">Surat keluar ini sedang menunggu keputusan persetujuan dari Anda.</p>
+                                <p class="text-amber-800 mt-0.5">
+                                    Silakan teliti draf dokumen surat dan berikan otorisasi persetujuan atau catatan perbaikan.
+                                </p>
+                            </div>
+                            <div>
+                                <a 
+                                    href="{{ route('kepsek.persetujuan.show', $surat_keluar) }}" 
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold text-xs shadow-xs transition-colors"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <span>Buka Lembar Otorisasi & Keputusan</span>
+                                </a>
+                            </div>
                         </div>
                     @else
                         <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs">

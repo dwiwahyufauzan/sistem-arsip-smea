@@ -47,7 +47,7 @@ Repository ini berisi kode sumber dan dokumentasi rancang bangun **Sistem Inform
 | **11** | Implementasi Modul Master Data Kategori & Pengguna | [Tahap 11](./plan/tahapan/tahap-11-master-data/README.md) | 🟢 Selesai |
 | **12** | Implementasi Modul Surat Masuk (SRS-P02, SRS-P03, SRS-KS02) | [Tahap 12](./plan/tahapan/tahap-12-modul-surat-masuk/README.md) | 🟢 Selesai |
 | **13** | Implementasi Modul Surat Keluar (SRS-P04, SRS-P05, SRS-KS03) | [Tahap 13](./plan/tahapan/tahap-13-modul-surat-keluar/README.md) | 🟢 Selesai |
-| **14** | Implementasi Modul Persetujuan & Disposisi Kepala Sekolah | [Tahap 14](./plan/tahapan/tahap-14-persetujuan-disposisi-kepsek/README.md) | 🔴 Belum Dimulai |
+| **14** | Implementasi Modul Persetujuan & Disposisi Kepala Sekolah | [Tahap 14](./plan/tahapan/tahap-14-persetujuan-disposisi-kepsek/README.md) | 🟢 Selesai |
 | **15** | Implementasi Modul Layanan Legalisir Online (SRS-L01..05) | [Tahap 15](./plan/tahapan/tahap-15-layanan-legalisir-online/README.md) | 🔴 Belum Dimulai |
 | **16** | Integrasi Fitur Pencarian Cerdas Terpadu KMP | [Tahap 16](./plan/tahapan/tahap-16-pencarian-cerdas-kmp/README.md) | 🔴 Belum Dimulai |
 | **17** | Modul Rekapitulasi Cetak Agenda, Pengujian Black Box, & Skripsi | [Tahap 17](./plan/tahapan/tahap-17-cetak-agenda-pengujian-skripsi/README.md) | 🔴 Belum Dimulai |

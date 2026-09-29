@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DisposisiController;
 use App\Http\Controllers\KategoriSuratController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\PersetujuanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\SuratMasukController;
@@ -49,6 +51,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('surat-keluar/{surat_keluar}/download', [SuratKeluarController::class, 'download'])->name('surat-keluar.download');
     Route::resource('surat-keluar', SuratKeluarController::class);
 
+    // Monitoring & Tindak Lanjut Disposisi oleh Staf TU
+    Route::get('disposisi', [DisposisiController::class, 'indexAdmin'])->name('disposisi.index');
+    Route::get('disposisi/{disposisi}', [DisposisiController::class, 'showAdmin'])->name('disposisi.show');
+    Route::patch('disposisi/{disposisi}/status', [DisposisiController::class, 'updateStatus'])->name('disposisi.status');
+    Route::get('disposisi/{disposisi}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
+
     // Master Data Kategori Surat Klasifikasi Dinas
     Route::resource('kategori', KategoriSuratController::class)->except(['show']);
 
@@ -71,6 +79,23 @@ Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepala-sekolah')->na
     Route::get('/surat-keluar', [SuratKeluarController::class, 'indexKepsek'])->name('surat-keluar.index');
     Route::get('/surat-keluar/{surat_keluar}', [SuratKeluarController::class, 'showKepsek'])->name('surat-keluar.show');
     Route::get('/surat-keluar/{surat_keluar}/download', [SuratKeluarController::class, 'download'])->name('surat-keluar.download');
+
+    // Modul Otorisasi Persetujuan Surat Keluar (SRS-KS05, SRS-KS07)
+    Route::get('/persetujuan', [PersetujuanController::class, 'index'])->name('persetujuan.index');
+    Route::get('/persetujuan/{surat_keluar}', [PersetujuanController::class, 'show'])->name('persetujuan.show');
+    Route::post('/persetujuan/{surat_keluar}/approve', [PersetujuanController::class, 'approve'])->name('persetujuan.approve');
+    Route::post('/persetujuan/{surat_keluar}/reject', [PersetujuanController::class, 'reject'])->name('persetujuan.reject');
+
+    // Modul Disposisi Surat Masuk Pimpinan (SRS-KS06)
+    Route::get('/disposisi', [DisposisiController::class, 'index'])->name('disposisi.index');
+    Route::get('/disposisi/create', [DisposisiController::class, 'create'])->name('disposisi.create');
+    Route::post('/disposisi', [DisposisiController::class, 'store'])->name('disposisi.store');
+    Route::get('/disposisi/{disposisi}', [DisposisiController::class, 'show'])->name('disposisi.show');
+    Route::get('/disposisi/{disposisi}/edit', [DisposisiController::class, 'edit'])->name('disposisi.edit');
+    Route::put('/disposisi/{disposisi}', [DisposisiController::class, 'update'])->name('disposisi.update');
+    Route::delete('/disposisi/{disposisi}', [DisposisiController::class, 'destroy'])->name('disposisi.destroy');
+    Route::patch('/disposisi/{disposisi}/status', [DisposisiController::class, 'updateStatus'])->name('disposisi.status');
+    Route::get('/disposisi/{disposisi}/cetak', [DisposisiController::class, 'cetak'])->name('disposisi.cetak');
 });
 
 // 4. Rute Khusus Pemohon Legalisir (Alumni / Siswa)

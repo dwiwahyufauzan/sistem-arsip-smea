@@ -96,10 +96,19 @@
             <!-- Riwayat Disposisi -->
             <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
                 <div class="px-6 py-4 bg-slate-50/75 border-b border-slate-200/80 flex items-center justify-between">
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Instruksi Disposisi Pimpinan</h2>
-                    <span class="text-xs font-semibold px-2 py-0.5 rounded-full {{ $surat_masuk->disposisi->count() > 0 ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-700' }}">
-                        {{ $surat_masuk->disposisi->count() }} Arahan
-                    </span>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Instruksi Disposisi Pimpinan</h2>
+                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full {{ $surat_masuk->disposisi->count() > 0 ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-700' }}">
+                            {{ $surat_masuk->disposisi->count() }} Arahan
+                        </span>
+                    </div>
+                    <a 
+                        href="{{ route('kepsek.disposisi.create', ['surat_masuk_id' => $surat_masuk->id]) }}" 
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
+                    >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        <span>+ Berikan Disposisi</span>
+                    </a>
                 </div>
 
                 <div class="p-6">
@@ -107,9 +116,19 @@
                         <div class="p-4 rounded-xl bg-emerald-50/30 border border-emerald-100 space-y-2.5 mb-3 last:mb-0">
                             <div class="flex items-center justify-between">
                                 <p class="text-xs font-bold text-slate-900">Tujuan: {{ $disp->tujuan_disposisi }}</p>
-                                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full {{ $disp->status === 'selesai' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }}">
-                                    {{ ucfirst($disp->status) }}
-                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full {{ $disp->status === 'selesai' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }}">
+                                        {{ ucfirst($disp->status) }}
+                                    </span>
+                                    <a 
+                                        href="{{ route('kepsek.disposisi.cetak', $disp) }}" 
+                                        target="_blank" 
+                                        class="p-1 text-slate-400 hover:text-slate-700 transition-colors" 
+                                        title="Cetak Lembar Disposisi"
+                                    >
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                                    </a>
+                                </div>
                             </div>
                             <p class="text-xs text-slate-800 font-medium">{{ $disp->instruksi }}</p>
                             @if($disp->catatan)
@@ -119,9 +138,16 @@
                     @empty
                         <div class="text-center py-6">
                             <p class="text-xs font-semibold text-slate-700">Surat Belum Memiliki Disposisi</p>
-                            <p class="text-[11px] text-slate-400 mt-1">
-                                Anda dapat memberikan instruksi disposisi surat masuk ini melalui menu <strong>Disposisi Surat Masuk</strong>.
+                            <p class="text-[11px] text-slate-400 mt-1 mb-3">
+                                Berikan instruksi atau penugasan resmi tindak lanjut surat masuk ini kepada unit kerja terkait.
                             </p>
+                            <a 
+                                href="{{ route('kepsek.disposisi.create', ['surat_masuk_id' => $surat_masuk->id]) }}" 
+                                class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                <span>Terbitkan Lembar Disposisi</span>
+                            </a>
                         </div>
                     @endforelse
                 </div>

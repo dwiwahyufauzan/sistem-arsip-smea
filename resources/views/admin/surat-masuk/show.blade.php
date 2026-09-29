@@ -159,9 +159,19 @@
                                         <span class="text-[10px] text-slate-500">Diberikan oleh: {{ $disp->pemberi->name ?? 'Kepala Sekolah' }}</span>
                                     </div>
                                 </div>
-                                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full {{ $disp->status === 'selesai' ? 'bg-emerald-100 text-emerald-800' : ($disp->status === 'ditindaklanjuti' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800') }}">
-                                    {{ ucfirst($disp->status) }}
-                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full {{ $disp->status === 'selesai' ? 'bg-emerald-100 text-emerald-800' : ($disp->status === 'ditindaklanjuti' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800') }}">
+                                        {{ ucfirst($disp->status) }}
+                                    </span>
+                                    <a 
+                                        href="{{ route('admin.disposisi.cetak', $disp) }}" 
+                                        target="_blank" 
+                                        class="p-1 text-slate-400 hover:text-slate-700 transition-colors" 
+                                        title="Cetak Lembar Disposisi Resmi"
+                                    >
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="text-xs space-y-1.5 pt-1">
