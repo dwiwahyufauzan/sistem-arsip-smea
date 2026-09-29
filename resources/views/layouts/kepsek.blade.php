@@ -194,7 +194,7 @@
                     </a>
 
                     <!-- Profile Pill -->
-                    <div class="flex items-center gap-2.5 pl-3 border-l border-slate-200">
+                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 pl-3 border-l border-slate-200 hover:opacity-80 transition-opacity" title="Pengaturan Profil & Password">
                         <div class="w-9 h-9 rounded-xl bg-emerald-800 text-white font-bold flex items-center justify-center text-xs shadow-xs">
                             {{ substr(auth()->user()->name, 0, 1) }}
                         </div>
@@ -202,7 +202,7 @@
                             <p class="font-semibold text-slate-900 leading-tight">{{ auth()->user()->name }}</p>
                             <span class="text-[10px] font-medium text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded">Kepala Sekolah</span>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </header>
 

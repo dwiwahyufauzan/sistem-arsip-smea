@@ -44,7 +44,7 @@ Repository ini berisi kode sumber dan dokumentasi rancang bangun **Sistem Inform
 | **08** | Autentikasi Pengguna & Role-Based Access Control (RBAC) | [Tahap 08](./plan/tahapan/tahap-08-autentikasi-rbac/README.md) | 🟢 Selesai |
 | **09** | Pembangunan Master Layout & UI Components (Tailwind CSS) | [Tahap 09](./plan/tahapan/tahap-09-master-layout-ui/README.md) | 🟢 Selesai |
 | **10** | Pembangunan Core Engine Algoritma Knuth-Morris-Pratt (KMP) | [Tahap 10](./plan/tahapan/tahap-10-engine-algoritma-kmp/README.md) | 🟢 Selesai |
-| **11** | Implementasi Modul Master Data Kategori & Pengguna | [Tahap 11](./plan/tahapan/tahap-11-master-data/README.md) | 🔴 Belum Dimulai |
+| **11** | Implementasi Modul Master Data Kategori & Pengguna | [Tahap 11](./plan/tahapan/tahap-11-master-data/README.md) | 🟢 Selesai |
 | **12** | Implementasi Modul Surat Masuk (SRS-P02, SRS-P03, SRS-KS02) | [Tahap 12](./plan/tahapan/tahap-12-modul-surat-masuk/README.md) | 🔴 Belum Dimulai |
 | **13** | Implementasi Modul Surat Keluar (SRS-P04, SRS-P05, SRS-KS03) | [Tahap 13](./plan/tahapan/tahap-13-modul-surat-keluar/README.md) | 🔴 Belum Dimulai |
 | **14** | Implementasi Modul Persetujuan & Disposisi Kepala Sekolah | [Tahap 14](./plan/tahapan/tahap-14-persetujuan-disposisi-kepsek/README.md) | 🔴 Belum Dimulai |

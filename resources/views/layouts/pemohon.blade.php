@@ -68,10 +68,10 @@
 
                 <!-- Profile & Logout Action -->
                 <div class="flex items-center gap-3">
-                    <div class="hidden sm:block text-right text-xs">
+                    <a href="{{ route('profile.edit') }}" class="hidden sm:block text-right text-xs hover:opacity-80 transition-opacity" title="Pengaturan Profil & Password">
                         <p class="font-semibold text-slate-900 leading-tight">{{ auth()->user()->name }}</p>
                         <p class="text-[10px] text-teal-700 font-mono">NISN: {{ auth()->user()->nip_nisn ?? 'Alumni' }}</p>
-                    </div>
+                    </a>
 
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
