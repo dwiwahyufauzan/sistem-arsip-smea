@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DisposisiController;
 use App\Http\Controllers\KategoriSuratController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LegalisirAdminController;
 use App\Http\Controllers\LegalisirKepsekController;
 use App\Http\Controllers\PencarianKmpController;
@@ -89,6 +90,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Pencarian Cerdas Terpadu KMP (SRS-P08, SRS-P09, NFR-07)
     Route::get('/pencarian-kmp', [PencarianKmpController::class, 'indexAdmin'])->name('pencarian-kmp');
+
+    // Rekapitulasi Laporan & Agenda Kearsipan (SRS-P10, SRS-P11)
+    Route::get('/laporan', [LaporanController::class, 'indexAdmin'])->name('laporan.index');
+    Route::get('/laporan/cetak', [LaporanController::class, 'cetakAdmin'])->name('laporan.cetak');
+
+    // Jejak Audit Aktivitas Kearsipan
+    Route::get('/log-aktivitas', [LaporanController::class, 'logAktivitasAdmin'])->name('log-aktivitas.index');
 });
 
 // 3. Rute Khusus Kepala Sekolah (Pimpinan)
@@ -99,6 +107,13 @@ Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepala-sekolah')->na
 
     // Pencarian Cepat Terpadu KMP (SRS-KS08, NFR-07)
     Route::get('/pencarian-kmp', [PencarianKmpController::class, 'indexKepsek'])->name('pencarian-kmp');
+
+    // Rekapitulasi Agenda Eksekutif Kepala Sekolah (SRS-KS09)
+    Route::get('/laporan', [LaporanController::class, 'indexKepsek'])->name('laporan.index');
+    Route::get('/laporan/cetak', [LaporanController::class, 'cetakKepsek'])->name('laporan.cetak');
+
+    // Jejak Audit Aktivitas Eksekutif
+    Route::get('/log-aktivitas', [LaporanController::class, 'logAktivitasKepsek'])->name('log-aktivitas.index');
 
     // Pemantauan & Tinjauan Surat Masuk (SRS-KS02)
     Route::get('/surat-masuk', [SuratMasukController::class, 'indexKepsek'])->name('surat-masuk.index');

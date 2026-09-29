@@ -102,8 +102,13 @@
 
                 <!-- Group 4: Master Data & Audit Trail -->
                 <div>
-                    <span class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">Master & Audit Trail</span>
+                    <span class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">Master & Laporan Agenda</span>
                     <div class="mt-2 space-y-1">
+                        <a href="{{ url('/admin/laporan') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->is('admin/laporan*') ? 'bg-blue-600 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <span>Rekapitulasi Laporan & Agenda</span>
+                        </a>
+
                         <a href="{{ url('/admin/kategori') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->is('admin/kategori*') ? 'bg-blue-600 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                             <span>Kategori Klasifikasi</span>
