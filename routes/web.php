@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriSuratController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LegalisirAdminController;
 use App\Http\Controllers\LegalisirKepsekController;
+use App\Http\Controllers\PencarianKmpController;
 use App\Http\Controllers\PengajuanLegalisirController;
 use App\Http\Controllers\PersetujuanController;
 use App\Http\Controllers\ProfileController;
@@ -45,6 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profil/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Live Search API KMP
+    Route::get('/api/pencarian-kmp/live', [PencarianKmpController::class, 'liveSearch'])->name('api.pencarian-kmp.live');
 });
 
 // 2. Rute Khusus Admin / Petugas TU
@@ -82,6 +86,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Manajemen Pengguna Sistem
     Route::resource('pengguna', UserController::class)->except(['show']);
+
+    // Pencarian Cerdas Terpadu KMP (SRS-P08, SRS-P09, NFR-07)
+    Route::get('/pencarian-kmp', [PencarianKmpController::class, 'indexAdmin'])->name('pencarian-kmp');
 });
 
 // 3. Rute Khusus Kepala Sekolah (Pimpinan)
@@ -89,6 +96,9 @@ Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepala-sekolah')->na
     Route::get('/dashboard', function () {
         return view('kepsek.dashboard');
     })->name('dashboard');
+
+    // Pencarian Cepat Terpadu KMP (SRS-KS08, NFR-07)
+    Route::get('/pencarian-kmp', [PencarianKmpController::class, 'indexKepsek'])->name('pencarian-kmp');
 
     // Pemantauan & Tinjauan Surat Masuk (SRS-KS02)
     Route::get('/surat-masuk', [SuratMasukController::class, 'indexKepsek'])->name('surat-masuk.index');

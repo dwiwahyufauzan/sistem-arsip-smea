@@ -49,7 +49,7 @@ Repository ini berisi kode sumber dan dokumentasi rancang bangun **Sistem Inform
 | **13** | Implementasi Modul Surat Keluar (SRS-P04, SRS-P05, SRS-KS03) | [Tahap 13](./plan/tahapan/tahap-13-modul-surat-keluar/README.md) | 🟢 Selesai |
 | **14** | Implementasi Modul Persetujuan & Disposisi Kepala Sekolah | [Tahap 14](./plan/tahapan/tahap-14-persetujuan-disposisi-kepsek/README.md) | 🟢 Selesai |
 | **15** | Implementasi Modul Layanan Legalisir Online (SRS-L01..05) | [Tahap 15](./plan/tahapan/tahap-15-layanan-legalisir-online/README.md) | 🟢 Selesai |
-| **16** | Integrasi Fitur Pencarian Cerdas Terpadu KMP | [Tahap 16](./plan/tahapan/tahap-16-pencarian-cerdas-kmp/README.md) | 🔴 Belum Dimulai |
+| **16** | Integrasi Fitur Pencarian Cerdas Terpadu KMP | [Tahap 16](./plan/tahapan/tahap-16-pencarian-cerdas-kmp/README.md) | 🟢 Selesai |
 | **17** | Modul Rekapitulasi Cetak Agenda, Pengujian Black Box, & Skripsi | [Tahap 17](./plan/tahapan/tahap-17-cetak-agenda-pengujian-skripsi/README.md) | 🔴 Belum Dimulai |
 
 ---

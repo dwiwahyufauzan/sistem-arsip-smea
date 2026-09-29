@@ -41,5 +41,5 @@ Seluruh dokumen landasan teoritis, analisis SRS/NFR, perancangan database, pemod
 | **13** | Implementasi Modul Surat Keluar (SRS-P04, SRS-P05, SRS-KS03) | [tahap-13-modul-surat-keluar/README.md](./tahapan/tahap-13-modul-surat-keluar/README.md) | 🟢 Selesai |
 | **14** | Implementasi Modul Persetujuan & Disposisi Kepala Sekolah | [tahap-14-persetujuan-disposisi-kepsek/README.md](./tahapan/tahap-14-persetujuan-disposisi-kepsek/README.md) | 🟢 Selesai |
 | **15** | Implementasi Modul Layanan Legalisir Online (SRS-L01..05) | [tahap-15-layanan-legalisir-online/README.md](./tahapan/tahap-15-layanan-legalisir-online/README.md) | 🟢 Selesai |
-| **16** | Integrasi Fitur Pencarian Cerdas Terpadu KMP | [tahap-16-pencarian-cerdas-kmp/README.md](./tahapan/tahap-16-pencarian-cerdas-kmp/README.md) | 🔴 Belum Dimulai |
+| **16** | Integrasi Fitur Pencarian Cerdas Terpadu KMP | [tahap-16-pencarian-cerdas-kmp/README.md](./tahapan/tahap-16-pencarian-cerdas-kmp/README.md) | 🟢 Selesai |
 | **17** | Modul Rekapitulasi Cetak Agenda, Pengujian Black Box, & Skripsi | [tahap-17-cetak-agenda-pengujian-skripsi/README.md](./tahapan/tahap-17-cetak-agenda-pengujian-skripsi/README.md) | 🔴 Belum Dimulai |
