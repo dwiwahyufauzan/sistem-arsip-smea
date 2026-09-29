@@ -37,7 +37,7 @@ Seluruh dokumen landasan teoritis, analisis SRS/NFR, perancangan database, pemod
 | **09** | Pembangunan Master Layout & UI Components (Tailwind CSS) | [tahap-09-master-layout-ui/README.md](./tahapan/tahap-09-master-layout-ui/README.md) | 🟢 Selesai |
 | **10** | Pembangunan Core Engine Algoritma Knuth-Morris-Pratt (KMP) | [tahap-10-engine-algoritma-kmp/README.md](./tahapan/tahap-10-engine-algoritma-kmp/README.md) | 🟢 Selesai |
 | **11** | Implementasi Modul Master Data Kategori & Pengguna | [tahap-11-master-data/README.md](./tahapan/tahap-11-master-data/README.md) | 🟢 Selesai |
-| **12** | Implementasi Modul Surat Masuk (SRS-P02, SRS-P03, SRS-KS02) | [tahap-12-modul-surat-masuk/README.md](./tahapan/tahap-12-modul-surat-masuk/README.md) | 🔴 Belum Dimulai |
+| **12** | Implementasi Modul Surat Masuk (SRS-P02, SRS-P03, SRS-KS02) | [tahap-12-modul-surat-masuk/README.md](./tahapan/tahap-12-modul-surat-masuk/README.md) | 🟢 Selesai |
 | **13** | Implementasi Modul Surat Keluar (SRS-P04, SRS-P05, SRS-KS03) | [tahap-13-modul-surat-keluar/README.md](./tahapan/tahap-13-modul-surat-keluar/README.md) | 🔴 Belum Dimulai |
 | **14** | Implementasi Modul Persetujuan & Disposisi Kepala Sekolah | [tahap-14-persetujuan-disposisi-kepsek/README.md](./tahapan/tahap-14-persetujuan-disposisi-kepsek/README.md) | 🔴 Belum Dimulai |
 | **15** | Implementasi Modul Layanan Legalisir Online (SRS-L01..05) | [tahap-15-layanan-legalisir-online/README.md](./tahapan/tahap-15-layanan-legalisir-online/README.md) | 🔴 Belum Dimulai |

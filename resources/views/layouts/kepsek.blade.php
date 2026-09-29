@@ -87,6 +87,12 @@
                             @endif
                         </a>
 
+                        <!-- Pemantauan Surat Masuk -->
+                        <a href="{{ url('/kepala-sekolah/surat-masuk') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/surat-masuk*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                            <span>Pemantauan Surat Masuk</span>
+                        </a>
+
                         <!-- Disposisi Surat Masuk -->
                         <a href="{{ url('/kepala-sekolah/disposisi') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/disposisi*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>

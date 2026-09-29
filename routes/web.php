@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KategoriSuratController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         return view('admin.dashboard');
     })->name('dashboard');
 
+    // Modul Surat Masuk (SRS-P02, SRS-P03)
+    Route::get('surat-masuk/{surat_masuk}/download', [SuratMasukController::class, 'download'])->name('surat-masuk.download');
+    Route::resource('surat-masuk', SuratMasukController::class);
+
     // Master Data Kategori Surat Klasifikasi Dinas
     Route::resource('kategori', KategoriSuratController::class)->except(['show']);
 
@@ -50,6 +55,11 @@ Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepala-sekolah')->na
     Route::get('/dashboard', function () {
         return view('kepsek.dashboard');
     })->name('dashboard');
+
+    // Pemantauan & Tinjauan Surat Masuk (SRS-KS02)
+    Route::get('/surat-masuk', [SuratMasukController::class, 'indexKepsek'])->name('surat-masuk.index');
+    Route::get('/surat-masuk/{surat_masuk}', [SuratMasukController::class, 'showKepsek'])->name('surat-masuk.show');
+    Route::get('/surat-masuk/{surat_masuk}/download', [SuratMasukController::class, 'download'])->name('surat-masuk.download');
 });
 
 // 4. Rute Khusus Pemohon Legalisir (Alumni / Siswa)
