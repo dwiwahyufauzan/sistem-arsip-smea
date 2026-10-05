@@ -1,8 +1,6 @@
 @extends('layouts.kepsek')
 
 @section('title', 'Pencarian Cepat KMP')
-@section('page_title', 'Pencarian Cepat Terpadu KMP')
-@section('page_subtitle', 'Penelusuran instan seluruh arsip kearsipan dan legalisir pimpinan berbasis Algoritma Knuth-Morris-Pratt (SRS-KS08 / NFR-07)')
 
 @section('content')
 <div class="space-y-6">

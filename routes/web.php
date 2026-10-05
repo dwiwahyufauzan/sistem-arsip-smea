@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerifikasiDokumenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,10 @@ use Illuminate\Support\Facades\Route;
 
 // 1. Halaman Publik, Legalisir Mandiri & Autentikasi
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+
+// Verifikasi Dokumen Kedinasan & Tanda Terima Legalisir via QR Code Publik
+Route::get('/verifikasi/surat-keluar/{identifier}', [VerifikasiDokumenController::class, 'verifikasiSuratKeluar'])->name('verifikasi.surat-keluar');
+Route::get('/verifikasi/legalisir/{nomor_pengajuan}', [VerifikasiDokumenController::class, 'verifikasiLegalisir'])->name('verifikasi.legalisir');
 
 // Portal Publik Layanan Legalisir Online (SRS-L01..05)
 Route::get('/legalisir/buat', [PengajuanLegalisirController::class, 'create'])->name('legalisir.create');
@@ -60,11 +65,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Modul Surat Masuk (SRS-P02, SRS-P03)
     Route::get('surat-masuk/{surat_masuk}/download', [SuratMasukController::class, 'download'])->name('surat-masuk.download');
+    Route::get('surat-masuk/{surat_masuk}/cetak', [SuratMasukController::class, 'cetak'])->name('surat-masuk.cetak');
     Route::resource('surat-masuk', SuratMasukController::class);
 
     // Modul Surat Keluar (SRS-P04, SRS-P05)
     Route::post('surat-keluar/{surat_keluar}/ajukan', [SuratKeluarController::class, 'ajukanPersetujuan'])->name('surat-keluar.ajukan');
     Route::get('surat-keluar/{surat_keluar}/download', [SuratKeluarController::class, 'download'])->name('surat-keluar.download');
+    Route::get('surat-keluar/{surat_keluar}/cetak', [SuratKeluarController::class, 'cetak'])->name('surat-keluar.cetak');
     Route::resource('surat-keluar', SuratKeluarController::class);
 
     // Monitoring & Tindak Lanjut Disposisi oleh Staf TU
@@ -119,11 +126,13 @@ Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepala-sekolah')->na
     Route::get('/surat-masuk', [SuratMasukController::class, 'indexKepsek'])->name('surat-masuk.index');
     Route::get('/surat-masuk/{surat_masuk}', [SuratMasukController::class, 'showKepsek'])->name('surat-masuk.show');
     Route::get('/surat-masuk/{surat_masuk}/download', [SuratMasukController::class, 'download'])->name('surat-masuk.download');
+    Route::get('/surat-masuk/{surat_masuk}/cetak', [SuratMasukController::class, 'cetak'])->name('surat-masuk.cetak');
 
     // Pemantauan & Tinjauan Surat Keluar (SRS-KS03)
     Route::get('/surat-keluar', [SuratKeluarController::class, 'indexKepsek'])->name('surat-keluar.index');
     Route::get('/surat-keluar/{surat_keluar}', [SuratKeluarController::class, 'showKepsek'])->name('surat-keluar.show');
     Route::get('/surat-keluar/{surat_keluar}/download', [SuratKeluarController::class, 'download'])->name('surat-keluar.download');
+    Route::get('/surat-keluar/{surat_keluar}/cetak', [SuratKeluarController::class, 'cetak'])->name('surat-keluar.cetak');
 
     // Modul Otorisasi Persetujuan Surat Keluar (SRS-KS05, SRS-KS07)
     Route::get('/persetujuan', [PersetujuanController::class, 'index'])->name('persetujuan.index');

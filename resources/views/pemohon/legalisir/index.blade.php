@@ -1,56 +1,61 @@
 @extends('layouts.pemohon')
 
 @section('title', 'Permohonan Legalisir Saya')
-@section('page_title', 'Riwayat & Pelacakan Permohonan Legalisir')
-@section('page_subtitle', 'Pantau perkembangan verifikasi berkas alumni secara transparan dan unduh bukti tanda terima')
-
-@section('page_actions')
-    <a href="{{ route('legalisir.create') }}" class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-teal-700 hover:bg-teal-600 rounded-xl shadow-xs transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-        <span>Ajukan Legalisir Baru</span>
-    </a>
-@endsection
 
 @section('content')
 <div class="space-y-6">
 
+    <!-- Modern Page Header -->
+    <x-page-header 
+        title="Riwayat & Pelacakan Permohonan Legalisir" 
+        subtitle="Pantau perkembangan verifikasi berkas alumni secara transparan dan unduh bukti tanda terima."
+        overline="Portal Alumni • Layanan Mandiri"
+    >
+        <x-slot:actions>
+            <a href="{{ route('legalisir.create') }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-white bg-teal-700 hover:bg-teal-800 rounded-xl shadow-xs transition-all active:scale-[0.98]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>Ajukan Legalisir Baru</span>
+            </a>
+        </x-slot:actions>
+    </x-page-header>
+
     <!-- Stat Summary Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="card-modern p-4">
             <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Total Pengajuan</span>
-            <div class="text-2xl font-bold font-heading text-slate-900 mt-1">{{ $stats['total'] }}</div>
+            <div class="text-2xl font-extrabold font-heading text-slate-900 mt-1">{{ $stats['total'] }}</div>
             <span class="text-[11px] text-slate-400">Seluruh riwayat</span>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="card-modern p-4">
             <span class="text-xs font-semibold text-amber-600 uppercase tracking-wider block">Menunggu Verifikasi</span>
-            <div class="text-2xl font-bold font-heading text-amber-600 mt-1">{{ $stats['menunggu'] }}</div>
+            <div class="text-2xl font-extrabold font-heading text-amber-600 mt-1">{{ $stats['menunggu'] }}</div>
             <span class="text-[11px] text-amber-700/80">Antrean staf TU</span>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="card-modern p-4">
             <span class="text-xs font-semibold text-purple-600 uppercase tracking-wider block">Diproses & Cap</span>
-            <div class="text-2xl font-bold font-heading text-purple-600 mt-1">{{ $stats['proses'] }}</div>
+            <div class="text-2xl font-extrabold font-heading text-purple-600 mt-1">{{ $stats['proses'] }}</div>
             <span class="text-[11px] text-purple-700/80">Pencetakan & stempel</span>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-emerald-300 bg-emerald-50/50 shadow-xs">
+        <div class="card-modern p-4 border-emerald-300 bg-emerald-50/30">
             <span class="text-xs font-semibold text-emerald-800 uppercase tracking-wider block">Siap Diambil</span>
-            <div class="text-2xl font-bold font-heading text-emerald-700 mt-1">{{ $stats['siap_ambil'] }}</div>
+            <div class="text-2xl font-extrabold font-heading text-emerald-700 mt-1">{{ $stats['siap_ambil'] }}</div>
             <span class="text-[11px] text-emerald-800 font-semibold">Tersedia di TU</span>
         </div>
     </div>
 
     <!-- Table of Applications -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+    <div class="card-modern overflow-hidden">
         <div class="p-5 border-b border-slate-100 flex items-center justify-between">
             <h3 class="font-heading font-bold text-sm text-slate-900">Daftar Permohonan Legalisir Anda</h3>
             <span class="text-xs text-slate-500">{{ $pengajuans->total() }} data ditemukan</span>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-                <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+            <table class="w-full text-left text-xs border-collapse">
+                <thead class="bg-slate-50/80 text-slate-500 font-bold uppercase text-[11px] tracking-wider border-b border-slate-200">
                     <tr>
                         <th class="py-3 px-4">No. Resi & Tanggal</th>
                         <th class="py-3 px-4">Dokumen yang Dilegalisir</th>
@@ -60,7 +65,7 @@
                         <th class="py-3 px-4 text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-100 text-slate-700">
                     @forelse($pengajuans as $item)
                         <tr class="hover:bg-slate-50/80 transition-colors">
                             <td class="py-3.5 px-4">
@@ -111,18 +116,13 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-500">
-                                <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                </div>
-                                <p class="font-bold text-slate-700">Belum ada pengajuan legalisir</p>
-                                <p class="text-xs text-slate-400 mt-0.5">Anda belum mengajukan legalisir dokumen ke SMKN 1 Subang.</p>
-                                <a href="{{ route('legalisir.create') }}" class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-teal-700 text-white font-bold rounded-xl text-xs hover:bg-teal-600 transition-colors">
-                                    + Ajukan Legalisir Baru
-                                </a>
-                            </td>
-                        </tr>
+                        <x-empty-state 
+                            colspan="6" 
+                            title="Belum ada pengajuan legalisir" 
+                            description="Anda belum mengajukan legalisir dokumen ke SMKN 1 Subang." 
+                            :action-url="route('legalisir.create')"
+                            action-text="+ Ajukan Legalisir Baru"
+                        />
                     @endforelse
                 </tbody>
             </table>

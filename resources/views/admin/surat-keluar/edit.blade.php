@@ -296,7 +296,7 @@
             const sizeInMb = (file.size / (1024 * 1024)).toFixed(2);
 
             if (file.size > 5 * 1024 * 1024) {
-                alert('Peringatan: Ukuran berkas (' + sizeInMb + ' MB) melebihi batas maksimal 5 MB.');
+                showAlertModal('Peringatan Ukuran Berkas', 'Ukuran berkas (' + sizeInMb + ' MB) melebihi batas maksimal 5 MB. Harap pilih berkas pindaian yang lebih kecil atau kompres berkas.', 'warning');
                 input.value = '';
                 defaultBox.classList.remove('hidden');
                 selectedBox.classList.add('hidden');

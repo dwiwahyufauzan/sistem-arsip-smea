@@ -1,8 +1,6 @@
 @extends('layouts.kepsek')
 
 @section('title', 'Tinjauan Pengesahan Legalisir - ' . $legalisir->nomor_pengajuan)
-@section('page_title', 'Tinjauan Pengesahan Legalisir')
-@section('page_subtitle', 'Lembar Otorisasi & Validasi Dokumen Kelulusan Resmi SMKN 1 Subang')
 
 @section('content')
 <div class="space-y-6">
@@ -193,14 +191,27 @@
                         </p>
 
                         <!-- Form Persetujuan -->
-                        <form action="{{ route('kepsek.legalisir.approve', $legalisir->id) }}" method="POST" class="space-y-3">
+                        <form id="approveLegalisirForm" action="{{ route('kepsek.legalisir.approve', $legalisir->id) }}" method="POST" class="space-y-3">
                             @csrf
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-700 mb-1">Catatan Persetujuan (Opsional):</label>
                                 <textarea name="catatan_kepsek" rows="2" placeholder="Disetujui untuk pengesahan tanda tangan dan cap stempel resmi..." class="w-full text-xs bg-white border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-emerald-600"></textarea>
                             </div>
 
-                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menyetujui pengesahan legalisir dokumen ini?')" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5">
+                            <button 
+                                type="button" 
+                                onclick="confirmAction({
+                                    title: 'Konfirmasi Pengesahan Legalisir',
+                                    subtitle: 'Otorisasi resmi Kepala Sekolah SMKN 1 Subang',
+                                    message: 'Apakah Anda yakin ingin menyetujui dan mengesahkan permohonan legalisir dokumen ini?',
+                                    targetName: '{{ $legalisir->nama_pemohon }}',
+                                    targetBadge: 'Resi: {{ $legalisir->nomor_pengajuan }}',
+                                    type: 'success',
+                                    confirmText: 'Ya, Sahkan Legalisir',
+                                    onConfirm: () => document.getElementById('approveLegalisirForm').submit()
+                                })" 
+                                class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                            >
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 <span>Setujui & Sahkan Legalisir</span>
                             </button>
@@ -214,14 +225,35 @@
                                 <span>Tolak Pengesahan Legalisir</span>
                                 <span class="transition-transform group-open:rotate-180">&darr;</span>
                             </summary>
-                            <form action="{{ route('kepsek.legalisir.reject', $legalisir->id) }}" method="POST" class="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl space-y-3">
+                            <form id="rejectLegalisirForm" action="{{ route('kepsek.legalisir.reject', $legalisir->id) }}" method="POST" class="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl space-y-3">
                                 @csrf
                                 <div>
                                     <label class="block text-[11px] font-semibold text-rose-900 mb-1">Catatan Alasan Penolakan: <span class="text-rose-600">*</span></label>
-                                    <textarea name="catatan_kepsek" rows="3" required placeholder="Jelaskan alasan penolakan pengesahan..." class="w-full text-xs bg-white border border-rose-300 rounded-lg p-2 text-rose-950 focus:ring-2 focus:ring-rose-500"></textarea>
+                                    <textarea id="catatanTolakKepsek" name="catatan_kepsek" rows="3" required placeholder="Jelaskan alasan penolakan pengesahan..." class="w-full text-xs bg-white border border-rose-300 rounded-lg p-2 text-rose-950 focus:ring-2 focus:ring-rose-500"></textarea>
                                 </div>
 
-                                <button type="submit" onclick="return confirm('Tolak permohonan legalisir ini?')" class="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer">
+                                <button 
+                                    type="button" 
+                                    onclick="
+                                        const note = document.getElementById('catatanTolakKepsek').value.trim();
+                                        if (!note) {
+                                            document.getElementById('catatanTolakKepsek').focus();
+                                            return;
+                                        }
+                                        confirmAction({
+                                            title: 'Konfirmasi Penolakan Pengesahan',
+                                            subtitle: 'Penolakan permohonan legalisir dokumen',
+                                            message: 'Apakah Anda yakin ingin menolak pengesahan permohonan legalisir ini?',
+                                            targetName: '{{ $legalisir->nama_pemohon }}',
+                                            targetBadge: 'Resi: {{ $legalisir->nomor_pengajuan }}',
+                                            warning: 'Status permohonan akan diubah menjadi Ditolak dan catatan penolakan akan dicatat pada riwayat audit.',
+                                            type: 'danger',
+                                            confirmText: 'Ya, Tolak Permohonan',
+                                            onConfirm: () => document.getElementById('rejectLegalisirForm').submit()
+                                        });
+                                    " 
+                                    class="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                                >
                                     Konfirmasi Penolakan Pengesahan
                                 </button>
                             </form>

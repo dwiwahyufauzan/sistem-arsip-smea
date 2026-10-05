@@ -1,21 +1,11 @@
 @extends('layouts.pemohon')
 
 @section('title', 'Detail Permohonan - ' . $legalisir->nomor_pengajuan)
-@section('page_title', 'Status Permohonan Legalisir')
-@section('page_subtitle', 'Pantau kemajuan verifikasi dan kesiapan dokumen fisik Anda')
-
-@section('page_actions')
-    <a href="{{ route('legalisir.tanda-terima', $legalisir->nomor_pengajuan) }}" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl shadow-xs transition-colors">
-        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-        <span>Cetak Tanda Terima</span>
-    </a>
-@endsection
-
 @section('content')
 <div class="space-y-6">
 
     <!-- Header & Breadcrumb -->
-    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-1">
@@ -35,6 +25,15 @@
             </div>
 
             <div class="flex items-center gap-2">
+                <a 
+                    href="{{ route('legalisir.tanda-terima', $legalisir->nomor_pengajuan) }}" 
+                    target="_blank" 
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl shadow-xs transition-colors"
+                >
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                    <span>Cetak Tanda Terima</span>
+                </a>
+
                 <a 
                     href="{{ route('legalisir.download', $legalisir->id) }}" 
                     class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors"

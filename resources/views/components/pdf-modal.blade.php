@@ -9,13 +9,13 @@
     <!-- Backdrop Blur Overlay -->
     <div 
         id="pdfModalBackdrop" 
-        class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
+        class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-200"
         onclick="window.closePdfModal()"
     ></div>
 
     <!-- Modal Content Box -->
     <div class="fixed inset-0 z-10 flex items-center justify-center p-3 sm:p-6 md:p-8">
-        <div class="relative w-full max-w-5xl h-[90vh] bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-slate-100">
+        <div class="relative w-full max-w-5xl h-[90vh] bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-slate-100 animate-in fade-in zoom-in-95 duration-200">
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-5 py-3.5 bg-slate-800/90 border-b border-slate-700/80 shrink-0">
                 <div class="flex items-center gap-3 overflow-hidden">

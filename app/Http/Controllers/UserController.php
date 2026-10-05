@@ -22,7 +22,13 @@ class UserController extends Controller
 
         $query = User::query()->orderBy('name', 'asc');
 
-        if ($selectedRole !== '' && in_array($selectedRole, ['admin', 'kepala_sekolah', 'pemohon'])) {
+        if ($selectedRole === 'siswa_aktif') {
+            $query->where('role', 'pemohon')->where('tipe_pemohon', 'siswa_aktif');
+        } elseif ($selectedRole === 'alumni') {
+            $query->where('role', 'pemohon')->where(function ($q) {
+                $q->where('tipe_pemohon', 'alumni')->orWhereNull('tipe_pemohon');
+            });
+        } elseif (in_array($selectedRole, ['admin', 'kepala_sekolah', 'pemohon'])) {
             $query->where('role', $selectedRole);
         }
 
@@ -42,6 +48,10 @@ class UserController extends Controller
             'admin' => User::where('role', 'admin')->count(),
             'kepala_sekolah' => User::where('role', 'kepala_sekolah')->count(),
             'pemohon' => User::where('role', 'pemohon')->count(),
+            'siswa_aktif' => User::where('role', 'pemohon')->where('tipe_pemohon', 'siswa_aktif')->count(),
+            'alumni' => User::where('role', 'pemohon')->where(function ($q) {
+                $q->where('tipe_pemohon', 'alumni')->orWhereNull('tipe_pemohon');
+            })->count(),
         ];
 
         return view('admin.pengguna.index', compact('users', 'selectedRole', 'search', 'roleCounts'));
@@ -56,6 +66,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:150'],
             'email' => ['required', 'email', 'max:191', 'unique:users,email'],
             'role' => ['required', 'in:admin,kepala_sekolah,pemohon'],
+            'tipe_pemohon' => ['nullable', 'in:siswa_aktif,alumni'],
             'nip_nisn' => ['nullable', 'string', 'max:50'],
             'phone_number' => ['nullable', 'string', 'max:25'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
@@ -64,14 +75,20 @@ class UserController extends Controller
             'email.required' => 'Alamat email wajib diisi.',
             'email.unique' => 'Email ini sudah terdaftar dalam sistem.',
             'role.required' => 'Peran hak akses wajib dipilih.',
+            'tipe_pemohon.in' => 'Kategori pemohon harus Siswa Aktif atau Alumni.',
             'password.min' => 'Kata sandi minimal 6 karakter.',
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
+
+        $tipePemohon = $validated['role'] === 'pemohon'
+            ? ($validated['tipe_pemohon'] ?? 'alumni')
+            : null;
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'role' => $validated['role'],
+            'tipe_pemohon' => $tipePemohon,
             'nip_nisn' => $validated['nip_nisn'] ?? null,
             'phone_number' => $validated['phone_number'] ?? null,
             'password' => Hash::make($validated['password']),
@@ -96,6 +113,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:150'],
             'email' => ['required', 'email', 'max:191', 'unique:users,email,'.$pengguna->id],
             'role' => ['required', 'in:admin,kepala_sekolah,pemohon'],
+            'tipe_pemohon' => ['nullable', 'in:siswa_aktif,alumni'],
             'nip_nisn' => ['nullable', 'string', 'max:50'],
             'phone_number' => ['nullable', 'string', 'max:25'],
             'password' => ['nullable', 'string', 'min:6', 'confirmed'],
@@ -104,6 +122,7 @@ class UserController extends Controller
             'email.required' => 'Alamat email wajib diisi.',
             'email.unique' => 'Email ini sudah terdaftar dalam sistem.',
             'role.required' => 'Peran hak akses wajib dipilih.',
+            'tipe_pemohon.in' => 'Kategori pemohon harus Siswa Aktif atau Alumni.',
             'password.min' => 'Kata sandi minimal 6 karakter.',
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
@@ -114,10 +133,15 @@ class UserController extends Controller
                 ->with('error', 'Anda tidak dapat mengubah peran akun Anda sendiri saat sedang masuk sebagai Administrator.');
         }
 
+        $tipePemohon = $validated['role'] === 'pemohon'
+            ? ($validated['tipe_pemohon'] ?? 'alumni')
+            : null;
+
         $updateData = [
             'name' => $validated['name'],
             'email' => $validated['email'],
             'role' => $validated['role'],
+            'tipe_pemohon' => $tipePemohon,
             'nip_nisn' => $validated['nip_nisn'] ?? null,
             'phone_number' => $validated['phone_number'] ?? null,
         ];

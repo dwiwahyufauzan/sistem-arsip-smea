@@ -1,16 +1,28 @@
 @extends('layouts.kepsek')
 
 @section('title', 'Persetujuan Surat Keluar')
-@section('page_title', 'Persetujuan Surat Keluar')
-@section('page_subtitle', 'Tinjauan & Otorisasi Resmi Draf Surat Keluar Dinas SMKN 1 Subang')
 
 @section('content')
 <div class="space-y-6">
 
+    <!-- Modern Page Header -->
+    <x-page-header 
+        title="Persetujuan Surat Keluar" 
+        subtitle="Tinjauan & Otorisasi Resmi Draf Surat Keluar Dinas SMKN 1 Subang"
+        overline="Panel Kebijakan Pimpinan • SRS-KS05"
+    >
+        <x-slot:actions>
+            <span class="px-3.5 py-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200/80 rounded-xl text-xs font-semibold flex items-center gap-2 shadow-xs">
+                <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                <span>Otorisasi Kepala Sekolah</span>
+            </span>
+        </x-slot:actions>
+    </x-page-header>
+
     <!-- 1. Quick Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Menunggu Persetujuan -->
-        <a href="{{ route('kepsek.persetujuan.index', ['status' => 'menunggu_persetujuan']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'menunggu_persetujuan' ? 'border-amber-400 ring-2 ring-amber-400/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.persetujuan.index', ['status' => 'menunggu_persetujuan']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'menunggu_persetujuan' ? 'border-amber-400 ring-2 ring-amber-400/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Menunggu Otorisasi</p>
@@ -24,7 +36,7 @@
         </a>
 
         <!-- Disetujui -->
-        <a href="{{ route('kepsek.persetujuan.index', ['status' => 'disetujui']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'disetujui' ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.persetujuan.index', ['status' => 'disetujui']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'disetujui' ? 'border-emerald-500 ring-2 ring-emerald-500/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Telah Disetujui</p>
@@ -38,7 +50,7 @@
         </a>
 
         <!-- Ditolak / Revisi -->
-        <a href="{{ route('kepsek.persetujuan.index', ['status' => 'ditolak']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'ditolak' ? 'border-rose-400 ring-2 ring-rose-400/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.persetujuan.index', ['status' => 'ditolak']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'ditolak' ? 'border-rose-400 ring-2 ring-rose-400/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Perlu Revisi</p>
@@ -52,7 +64,7 @@
         </a>
 
         <!-- Total Seluruh Draf -->
-        <a href="{{ route('kepsek.persetujuan.index', ['status' => 'semua']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'semua' ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.persetujuan.index', ['status' => 'semua']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'semua' ? 'border-emerald-700 ring-2 ring-emerald-700/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Surat Keluar</p>
@@ -67,7 +79,7 @@
     </div>
 
     <!-- 2. Filter Tabs & Search Bar -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="card-modern p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <!-- Status Filter Badges -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 text-xs">
             <a href="{{ route('kepsek.persetujuan.index', ['status' => 'menunggu_persetujuan', 'q' => $search]) }}" class="px-3.5 py-2 rounded-xl font-semibold transition-all whitespace-nowrap {{ $status === 'menunggu_persetujuan' ? 'bg-amber-500 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
@@ -96,7 +108,7 @@
                     name="q" 
                     value="{{ $search }}" 
                     placeholder="Cari nomor agenda, perihal, atau tujuan..."
-                    class="w-full pl-9 pr-8 py-2 text-xs rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition-all"
+                    class="input-modern w-full pl-9 pr-8 py-2 text-xs"
                 >
                 @if($search)
                     <a href="{{ route('kepsek.persetujuan.index', ['status' => $status]) }}" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600">
@@ -104,18 +116,18 @@
                     </a>
                 @endif
             </div>
-            <button type="submit" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shrink-0 transition-colors">
+            <button type="submit" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold shrink-0 transition-all shadow-xs active:scale-[0.98]">
                 Cari
             </button>
         </form>
     </div>
 
     <!-- 3. Letters Table -->
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+    <div class="card-modern overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[11px] tracking-wider">
+                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase text-[11px] tracking-wider">
                         <th class="py-3.5 px-4 w-12 text-center">No</th>
                         <th class="py-3.5 px-4">Agenda & Klasifikasi</th>
                         <th class="py-3.5 px-4">Nomor & Tanggal Surat</th>
@@ -170,7 +182,7 @@
                             <td class="py-3.5 px-4 text-center">
                                 <a 
                                     href="{{ route('kepsek.persetujuan.show', $sk) }}" 
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 {{ $sk->status_persetujuan === 'menunggu_persetujuan' ? 'bg-emerald-700 hover:bg-emerald-800 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold' }} rounded-xl text-xs transition-colors"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 {{ $sk->status_persetujuan === 'menunggu_persetujuan' ? 'bg-emerald-700 hover:bg-emerald-800 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold' }} rounded-xl text-xs transition-all active:scale-[0.98]"
                                     title="Tinjau dan Berikan Keputusan"
                                 >
                                     <span>Tinjau</span>
@@ -179,21 +191,11 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="8" class="py-12 text-center text-slate-400">
-                                <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                </div>
-                                <p class="text-sm font-semibold text-slate-600">Tidak Ada Pengajuan Surat Keluar</p>
-                                <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
-                                    @if($search)
-                                        Tidak ditemukan surat keluar yang cocok dengan pencarian kata kunci "{{ $search }}".
-                                    @else
-                                        Saat ini tidak ada draf surat keluar pada kriteria status yang dipilih.
-                                    @endif
-                                </p>
-                            </td>
-                        </tr>
+                        <x-empty-state 
+                            colspan="8" 
+                            title="Tidak Ada Pengajuan Surat Keluar" 
+                            :description="$search ? 'Tidak ditemukan surat keluar yang cocok dengan pencarian kata kunci \'' . $search . '\'.' : 'Saat ini tidak ada draf surat keluar pada kriteria status yang dipilih.'" 
+                        />
                     @endforelse
                 </tbody>
             </table>

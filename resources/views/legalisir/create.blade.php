@@ -6,29 +6,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Formulir Permohonan Legalisir Online | SMKN 1 Subang</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('images/logo-smk.png') }}" type="image/png">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-heading { font-family: 'Outfit', sans-serif; }
-    </style>
 </head>
 <body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-blue-600 selection:text-white">
 
     <x-toast />
+    <x-confirmation-modal />
 
     <!-- Top Navigation Header -->
     <header class="bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-2xs">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <a href="{{ route('landing') }}" class="flex items-center gap-3 group">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-900 via-blue-800 to-teal-700 flex items-center justify-center text-white shadow-md shadow-blue-900/20 group-hover:scale-105 transition-transform">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                </div>
+                <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-10 h-12 object-contain shrink-0 group-hover:scale-105 transition-transform">
                 <div>
                     <span class="font-heading font-extrabold text-base sm:text-lg text-slate-900 block leading-tight">SMKN 1 SUBANG</span>
                     <span class="text-xs text-blue-700 font-semibold tracking-wide">Layanan Legalisir Dokumen Online</span>
@@ -363,7 +354,7 @@
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 if (file.size > 5242880) {
-                    alert('Ukuran berkas melebihi 5 MB. Harap kompres berkas Anda terlebih dahulu.');
+                    showAlertModal('Ukuran Berkas Melebihi Batas', 'Ukuran berkas melebihi batas maksimal 5 MB. Harap kompres berkas Anda terlebih dahulu.', 'warning');
                     input.value = '';
                     return;
                 }

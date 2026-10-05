@@ -25,7 +25,7 @@
         ],
 
         // Surat Keluar & Persetujuan
-        'draft' => [
+        'draft', 'draf' => [
             'label' => 'Draf Konsep',
             'class' => 'bg-slate-100 text-slate-700 border-slate-200 ring-1 ring-slate-500/20',
             'dot' => 'bg-slate-400'
@@ -44,6 +44,11 @@
             'label' => 'Ditolak',
             'class' => 'bg-rose-50 text-rose-800 border-rose-300 ring-1 ring-rose-500/20',
             'dot' => 'bg-rose-600'
+        ],
+        'terkirim' => [
+            'label' => 'Terkirim',
+            'class' => 'bg-blue-50 text-blue-800 border-blue-300 ring-1 ring-blue-500/20',
+            'dot' => 'bg-blue-600'
         ],
 
         // Disposisi
@@ -64,7 +69,7 @@
         ],
 
         // Pengajuan Legalisir
-        'menunggu_verifikasi' => [
+        'diajukan', 'menunggu_verifikasi' => [
             'label' => 'Menunggu Verifikasi TU',
             'class' => 'bg-amber-50 text-amber-800 border-amber-300 ring-1 ring-amber-500/30',
             'dot' => 'bg-amber-500 animate-pulse'
@@ -79,7 +84,7 @@
             'class' => 'bg-indigo-50 text-indigo-800 border-indigo-300 ring-1 ring-indigo-500/20',
             'dot' => 'bg-indigo-600 animate-pulse'
         ],
-        'disetujui_kepsek' => [
+        'disetujui_kepsek', 'disahkan' => [
             'label' => 'Disahkan Kepala Sekolah',
             'class' => 'bg-teal-50 text-teal-800 border-teal-300 ring-1 ring-teal-500/20',
             'dot' => 'bg-teal-600'
@@ -91,7 +96,7 @@
         ],
         'siap_diambil' => [
             'label' => 'Siap Diambil di TU',
-            'class' => 'bg-emerald-100 text-emerald-900 border-emerald-400 ring-2 ring-emerald-500/30 animate-pulse font-bold',
+            'class' => 'bg-emerald-100 text-emerald-900 border-emerald-400 ring-2 ring-emerald-500/30 font-bold',
             'dot' => 'bg-emerald-600'
         ],
 
@@ -103,7 +108,7 @@
     };
 @endphp
 
-<span {{ $attributes->merge(['class' => 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ' . $badgeConfig['class']]) }}>
+<span {{ $attributes->merge(['class' => 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border transition-colors ' . $badgeConfig['class']]) }}>
     <span class="w-1.5 h-1.5 rounded-full {{ $badgeConfig['dot'] }}"></span>
     <span>{{ $badgeConfig['label'] }}</span>
 </span>

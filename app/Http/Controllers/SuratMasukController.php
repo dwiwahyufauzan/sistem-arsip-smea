@@ -152,6 +152,16 @@ class SuratMasukController extends Controller
     }
 
     /**
+     * Cetak lembar kendali arsip surat masuk standar kedinasan
+     */
+    public function cetak(SuratMasuk $surat_masuk): View
+    {
+        $surat_masuk->load(['kategori', 'user', 'disposisi.pemberi']);
+
+        return view('admin.surat-masuk.cetak', compact('surat_masuk'));
+    }
+
+    /**
      * Tampilkan form edit metadata surat masuk
      */
     public function edit(SuratMasuk $surat_masuk): View
@@ -234,22 +244,17 @@ class SuratMasukController extends Controller
         $nomorSurat = $surat_masuk->nomor_surat;
         $nomorAgenda = $surat_masuk->nomor_agenda;
 
-        // Hapus berkas fisik dari storage
-        if ($surat_masuk->file_path && Storage::disk('public')->exists($surat_masuk->file_path)) {
-            Storage::disk('public')->delete($surat_masuk->file_path);
-        }
-
-        // Hapus record database (relasi disposisi akan cascade delete sesuai skema migrasi)
+        // Karena menggunakan SoftDeletes, record dipindahkan ke arsip inaktif dan file fisik dipertahankan
         $surat_masuk->delete();
 
         LogAktivitas::catat(
             'HAPUS_SURAT_MASUK',
             'SURAT_MASUK',
-            "Menghapus arsip Surat Masuk No: {$nomorSurat} (Agenda: {$nomorAgenda})"
+            "Memindahkan ke arsip inaktif (Soft Delete) Surat Masuk No: {$nomorSurat} (Agenda: {$nomorAgenda})"
         );
 
         return redirect()->route('admin.surat-masuk.index')
-            ->with('success', "Surat Masuk No: {$nomorSurat} beserta berkas fisiknya berhasil dihapus.");
+            ->with('success', "Surat Masuk No: {$nomorSurat} berhasil dipindahkan ke arsip inaktif.");
     }
 
     /**

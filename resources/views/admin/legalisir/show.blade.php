@@ -72,12 +72,18 @@
                         <span class="text-slate-400 font-medium block">Nomor WhatsApp / HP</span>
                         <div class="flex items-center gap-2 mt-0.5">
                             <span class="font-mono text-slate-800 font-semibold">{{ $legalisir->nomor_whatsapp }}</span>
+                            @php
+                                $notifService = app(\App\Services\NotificationService::class);
+                                $waUrl = $notifService->generateWhatsAppUrl($legalisir->nomor_whatsapp, $notifService->getLegalisirNotificationMessage($legalisir));
+                            @endphp
                             <a 
-                                href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $legalisir->nomor_whatsapp) }}?text=Halo%20{{ urlencode($legalisir->nama_pemohon) }},%20kami%20dari%20Tata%20Usaha%20SMKN%201%20Subang%20mengenai%20permohonan%20legalisir%20({{ $legalisir->nomor_pengajuan }})" 
+                                href="{{ $waUrl }}" 
                                 target="_blank"
-                                class="text-[10px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded font-semibold transition-colors"
+                                class="inline-flex items-center gap-1.5 text-[11px] text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded-lg font-bold transition-all shadow-2xs"
+                                title="Kirim notifikasi otomatis via WhatsApp"
                             >
-                                Chat WA &rarr;
+                                <svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                <span>Kirim WA &rarr;</span>
                             </a>
                         </div>
                     </div>
@@ -316,7 +322,7 @@
                             Klik tombol di bawah ketika pemohon telah datang mengambil dokumen fisik di loket TU dan menandatangani tanda terima.
                         </p>
 
-                        <form action="{{ route('admin.legalisir.selesai', $legalisir->id) }}" method="POST" class="space-y-3">
+                        <form id="selesaiLegalisirForm" action="{{ route('admin.legalisir.selesai', $legalisir->id) }}" method="POST" class="space-y-3">
                             @csrf
                             @method('PATCH')
 
@@ -325,7 +331,20 @@
                                 <input type="date" name="tanggal_pengambilan" value="{{ date('Y-m-d') }}" class="w-full text-xs bg-white border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-600">
                             </div>
 
-                            <button type="submit" onclick="return confirm('Konfirmasi bahwa pemohon telah menerima berkas legalisir fisik?')" class="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer">
+                            <button 
+                                type="button" 
+                                onclick="confirmAction({
+                                    title: 'Konfirmasi Penyerahan Fisik',
+                                    subtitle: 'Penyelesaian layanan legalisir kearsipan',
+                                    message: 'Apakah Anda yakin ingin menyelesaikan permohonan legalisir ini? Pastikan pemohon telah menerima berkas fisik dan menandatangani bukti pengambilan.',
+                                    targetName: '{{ $legalisir->nama_pemohon }}',
+                                    targetBadge: 'Resi: {{ $legalisir->nomor_pengajuan }}',
+                                    type: 'success',
+                                    confirmText: 'Ya, Selesaikan Layanan',
+                                    onConfirm: () => document.getElementById('selesaiLegalisirForm').submit()
+                                })" 
+                                class="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+                            >
                                 Selesaikan Layanan Legalisir &check;
                             </button>
                         </form>
@@ -340,16 +359,37 @@
                                 <span>Tolak Permohonan Legalisir</span>
                                 <span class="transition-transform group-open:rotate-180">&darr;</span>
                             </summary>
-                            <form action="{{ route('admin.legalisir.tolak', $legalisir->id) }}" method="POST" class="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl space-y-3">
+                            <form id="tolakLegalisirAdminForm" action="{{ route('admin.legalisir.tolak', $legalisir->id) }}" method="POST" class="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl space-y-3">
                                 @csrf
                                 @method('PATCH')
 
                                 <div>
                                     <label class="block text-[11px] font-semibold text-rose-900 mb-1">Alasan Penolakan Berkas: <span class="text-rose-600">*</span></label>
-                                    <textarea name="catatan_petugas" rows="3" required placeholder="Jelaskan alasan penolakan, misal: scan dokumen buram, tidak terdaftar pada buku induk..." class="w-full text-xs bg-white border border-rose-300 rounded-lg p-2 text-rose-950 focus:ring-2 focus:ring-rose-500"></textarea>
+                                    <textarea id="catatanTolakAdmin" name="catatan_petugas" rows="3" required placeholder="Jelaskan alasan penolakan, misal: scan dokumen buram, tidak terdaftar pada buku induk..." class="w-full text-xs bg-white border border-rose-300 rounded-lg p-2 text-rose-950 focus:ring-2 focus:ring-rose-500"></textarea>
                                 </div>
 
-                                <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menolak permohonan legalisir ini?')" class="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer">
+                                <button 
+                                    type="button" 
+                                    onclick="
+                                        const note = document.getElementById('catatanTolakAdmin').value.trim();
+                                        if (!note) {
+                                            document.getElementById('catatanTolakAdmin').focus();
+                                            return;
+                                        }
+                                        confirmAction({
+                                            title: 'Konfirmasi Penolakan Berkas',
+                                            subtitle: 'Penolakan permohonan verifikasi legalisir',
+                                            message: 'Apakah Anda yakin ingin menolak permohonan legalisir ini?',
+                                            targetName: '{{ $legalisir->nama_pemohon }}',
+                                            targetBadge: 'Resi: {{ $legalisir->nomor_pengajuan }}',
+                                            warning: 'Status permohonan akan diubah menjadi Ditolak dan catatan penolakan akan dicatat pada riwayat audit.',
+                                            type: 'danger',
+                                            confirmText: 'Ya, Tolak Permohonan',
+                                            onConfirm: () => document.getElementById('tolakLegalisirAdminForm').submit()
+                                        });
+                                    " 
+                                    class="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                                >
                                     Konfirmasi Penolakan Berkas
                                 </button>
                             </form>
@@ -371,6 +411,25 @@
                         <p class="text-[11px] text-slate-500 font-mono">{{ $legalisir->petugas->nip_nisn ?? 'Staf Tata Usaha SMKN 1 Subang' }}</p>
                     </div>
                 </div>
+            </div>
+
+            <!-- Panel 3: Layanan Notifikasi WhatsApp Pemohon -->
+            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-200/90 shadow-2xs p-5 space-y-3 text-xs">
+                <div class="flex items-center gap-2 text-emerald-950 font-bold text-xs">
+                    <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>Notifikasi WhatsApp Otomatis</span>
+                </div>
+                <p class="text-[11px] text-emerald-800 leading-relaxed">
+                    Kirim template pesan resmi pembaruan status terkini ke nomor kontak <strong>{{ $legalisir->nama_pemohon }}</strong>.
+                </p>
+                <a 
+                    href="{{ $waUrl }}" 
+                    target="_blank"
+                    class="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>Kirim Pesan WhatsApp Pemohon</span>
+                </a>
             </div>
 
         </div>

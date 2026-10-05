@@ -137,8 +137,78 @@ class MasterDataTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin/pengguna');
 
         $response->assertStatus(200);
-        $response->assertSee('Manajemen Pengguna Sistem');
+        $response->assertSee('Kelola User & Role Sistem');
         $response->assertSee('Tambah Pengguna');
+        $response->assertSee('Siswa Aktif');
+        $response->assertSee('Alumni');
+    }
+
+    /**
+     * Uji Admin dapat memfilter pengguna berdasarkan Siswa Aktif dan Alumni
+     */
+    public function test_admin_can_filter_users_by_siswa_aktif_and_alumni(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+
+        // 1. Filter Siswa Aktif
+        $responseSiswa = $this->actingAs($admin)->get('/admin/pengguna?role=siswa_aktif');
+        $responseSiswa->assertStatus(200);
+        $responseSiswa->assertViewHas('selectedRole', 'siswa_aktif');
+
+        // 2. Filter Alumni
+        $responseAlumni = $this->actingAs($admin)->get('/admin/pengguna?role=alumni');
+        $responseAlumni->assertStatus(200);
+        $responseAlumni->assertViewHas('selectedRole', 'alumni');
+    }
+
+    /**
+     * Uji Admin dapat mendaftarkan akun siswa aktif dan alumni
+     */
+    public function test_admin_can_create_siswa_aktif_and_alumni_users(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $unique = time().rand(100, 999);
+        $emailSiswa = "siswa.baru.{$unique}@siswa.smkn1subang.sch.id";
+        $emailAlumni = "alumni.sukses.{$unique}@alumni.smkn1subang.sch.id";
+
+        // Daftarkan Siswa Aktif
+        $resSiswa = $this->actingAs($admin)->post('/admin/pengguna', [
+            'name' => 'Siswa Baru RPL',
+            'email' => $emailSiswa,
+            'role' => 'pemohon',
+            'tipe_pemohon' => 'siswa_aktif',
+            'nip_nisn' => '0089912345',
+            'phone_number' => '08219998881',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+        $resSiswa->assertRedirect('/admin/pengguna');
+        $this->assertDatabaseHas('users', [
+            'email' => $emailSiswa,
+            'role' => 'pemohon',
+            'tipe_pemohon' => 'siswa_aktif',
+        ]);
+
+        // Daftarkan Alumni
+        $resAlumni = $this->actingAs($admin)->post('/admin/pengguna', [
+            'name' => 'Alumni Sukses TKJ',
+            'email' => $emailAlumni,
+            'role' => 'pemohon',
+            'tipe_pemohon' => 'alumni',
+            'nip_nisn' => '0059912345',
+            'phone_number' => '08219998882',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+        $resAlumni->assertRedirect('/admin/pengguna');
+        $this->assertDatabaseHas('users', [
+            'email' => $emailAlumni,
+            'role' => 'pemohon',
+            'tipe_pemohon' => 'alumni',
+        ]);
+
+        // Bersihkan data uji
+        User::whereIn('email', [$emailSiswa, $emailAlumni])->delete();
     }
 
     /**

@@ -6,83 +6,50 @@
 <div class="space-y-6">
 
     <!-- Header & Action -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
-        <div>
-            <div class="flex items-center gap-2 text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">
-                <span>Modul Kearsipan</span>
-                <span>•</span>
-                <span>SRS-P04 / SRS-P05</span>
-            </div>
-            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Pengelolaan Arsip Surat Keluar</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">
-                Pembuatan draf surat dinas resmi, pengunggahan berkas, dan pengajuan persetujuan ke Kepala Sekolah.
-            </p>
-        </div>
-
-        <div class="flex items-center gap-2 shrink-0">
+    <x-page-header 
+        badge="Modul Kearsipan • SRS-P04 / SRS-P05"
+        title="Pengelolaan Arsip Surat Keluar"
+        description="Pembuatan draf surat dinas resmi, pengunggahan berkas, dan pengajuan persetujuan ke Kepala Sekolah."
+    >
+        <x-slot:actions>
             <a href="{{ route('admin.surat-keluar.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-sm shadow-blue-500/20 active:scale-[0.98]">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 <span>Buat Surat Keluar</span>
             </a>
-        </div>
-    </div>
+        </x-slot:actions>
+    </x-page-header>
 
     <!-- Statistik Ringkas -->
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <!-- Card 1: Total -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-            <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+        <x-stat-card label="Total Surat" :value="number_format($statistik['total'])" color="blue">
+            <x-slot:icon>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-            </div>
-            <div>
-                <p class="text-xs text-slate-500 font-medium">Total Surat</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">{{ number_format($statistik['total']) }}</h3>
-            </div>
-        </div>
+            </x-slot:icon>
+        </x-stat-card>
 
-        <!-- Card 2: Draft -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-            <div class="w-11 h-11 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
+        <x-stat-card label="Draf Konsep" :value="number_format($statistik['draft'])" color="slate">
+            <x-slot:icon>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-            </div>
-            <div>
-                <p class="text-xs text-slate-500 font-medium">Draf Konsep</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-slate-700 mt-0.5">{{ number_format($statistik['draft']) }}</h3>
-            </div>
-        </div>
+            </x-slot:icon>
+        </x-stat-card>
 
-        <!-- Card 3: Menunggu Persetujuan -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-            <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+        <x-stat-card label="Menunggu Kepsek" :value="number_format($statistik['menunggu'])" color="amber">
+            <x-slot:icon>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div>
-                <p class="text-xs text-slate-500 font-medium">Menunggu Kepsek</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-amber-600 mt-0.5">{{ number_format($statistik['menunggu']) }}</h3>
-            </div>
-        </div>
+            </x-slot:icon>
+        </x-stat-card>
 
-        <!-- Card 4: Disetujui -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+        <x-stat-card label="Disetujui" :value="number_format($statistik['disetujui'])" color="emerald">
+            <x-slot:icon>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div>
-                <p class="text-xs text-slate-500 font-medium">Disetujui</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-emerald-600 mt-0.5">{{ number_format($statistik['disetujui']) }}</h3>
-            </div>
-        </div>
+            </x-slot:icon>
+        </x-stat-card>
 
-        <!-- Card 5: Ditolak / Revisi -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3.5">
-            <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+        <x-stat-card label="Perlu Revisi" :value="number_format($statistik['ditolak'])" color="rose">
+            <x-slot:icon>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div>
-                <p class="text-xs text-slate-500 font-medium">Perlu Revisi</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-rose-600 mt-0.5">{{ number_format($statistik['ditolak']) }}</h3>
-            </div>
-        </div>
+            </x-slot:icon>
+        </x-stat-card>
     </div>
 
     <!-- Filter & Pencarian Bar -->
@@ -268,11 +235,13 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-500 text-xs">
-                                Belum ada berkas surat keluar yang tercatat ke dalam sistem.
-                            </td>
-                        </tr>
+                        <x-empty-state 
+                            colspan="6"
+                            title="Tidak Ada Arsip Surat Keluar"
+                            description="Belum ada berkas surat keluar yang tercatat ke dalam sistem."
+                            actionText="Buat Draf Surat Baru"
+                            :actionUrl="route('admin.surat-keluar.create')"
+                        />
                     @endforelse
                 </tbody>
             </table>
@@ -288,30 +257,49 @@
 </div>
 
 <!-- Modal Konfirmasi Hapus -->
-<div id="deleteModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity" onclick="closeDeleteModal()"></div>
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="relative bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-100">
-            <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            </div>
-            <h3 class="text-base font-bold text-slate-900">Hapus Surat Keluar</h3>
-            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
-                Yakin ingin menghapus arsip surat keluar <strong id="deleteNomorSurat" class="text-slate-800"></strong> (Agenda: <span id="deleteNomorAgenda" class="font-mono text-blue-900 font-bold"></span>)?
-            </p>
-            <p class="text-[11px] text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-100 mt-3 font-medium">
-                Peringatan: Berkas fisik di penyimpanan server juga akan dihapus permanen.
-            </p>
-
-            <form id="deleteForm" method="POST" action="" class="mt-6 flex items-center justify-end gap-2.5">
+<div id="deleteModal" class="fixed inset-0 z-50 hidden transition-opacity duration-200" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity" onclick="closeDeleteModal()"></div>
+    <div class="fixed inset-0 z-10 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-200 text-slate-800 animate-in fade-in zoom-in-95">
+            <form id="deleteForm" method="POST" action="">
                 @csrf
                 @method('DELETE')
-                <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
-                    Batal
-                </button>
-                <button type="submit" class="px-4 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition-colors shadow-xs">
-                    Ya, Hapus Permanen
-                </button>
+                <div class="p-6 pb-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border bg-rose-50 text-rose-600 border-rose-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </div>
+                        <div class="flex-grow pt-0.5">
+                            <h3 class="font-heading font-bold text-base text-slate-900 leading-snug">Konfirmasi Hapus Surat Keluar</h3>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pastikan data surat keluar sebelum memproses tindakan ini.</p>
+                        </div>
+                        <button type="button" onclick="closeDeleteModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer shrink-0" title="Tutup (Esc)">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="px-6 pb-5 space-y-3 text-xs">
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
+                        <p class="text-slate-500 text-[11px]">Nomor Surat:</p>
+                        <p id="deleteNomorSurat" class="font-bold text-slate-900 font-mono text-xs"></p>
+                        <p class="text-slate-500 text-[11px] pt-1">Nomor Agenda: <span id="deleteNomorAgenda" class="font-mono text-blue-900 font-bold"></span></p>
+                    </div>
+
+                    <div class="p-3 rounded-xl border text-[11px] leading-relaxed font-medium bg-rose-50/80 text-rose-700 border-rose-100">
+                        Data arsip akan dipindahkan ke arsip inaktif (Soft Delete). Dokumen pindaian fisik tetap aman di server.
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                    <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors cursor-pointer shadow-2xs">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-4.5 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <span>Ya, Hapus Arsip</span>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -337,5 +325,11 @@
         modal.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
     }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeDeleteModal();
+        }
+    });
 </script>
 @endsection

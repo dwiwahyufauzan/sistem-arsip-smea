@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\LogAktivitas;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -60,7 +58,8 @@ class AuthController extends Controller
     }
 
     /**
-     * Menampilkan formulir registrasi khusus pemohon / alumni
+     * Menampilkan informasi kebijakan pendaftaran akun pemohon
+     * (Pendaftaran mandiri dinonaktifkan: akun siswa dan alumni dikelola terpusat oleh Admin TU)
      */
     public function showRegisterForm(): View|RedirectResponse
     {
@@ -73,44 +72,11 @@ class AuthController extends Controller
 
     /**
      * Memproses pendaftaran pemohon baru
+     * (Registrasi mandiri dinonaktifkan: diarahkan kembali dengan notifikasi resmi)
      */
     public function register(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:150'],
-            'email' => ['required', 'email', 'max:191', 'unique:users,email'],
-            'nisn' => ['required', 'string', 'max:30'],
-            'phone_number' => ['required', 'string', 'max:25'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-        ], [
-            'name.required' => 'Nama lengkap wajib diisi.',
-            'email.unique' => 'Email ini sudah terdaftar dalam sistem.',
-            'nisn.required' => 'NISN wajib diisi untuk verifikasi kelulusan.',
-            'phone_number.required' => 'Nomor WhatsApp aktif wajib diisi.',
-            'password.min' => 'Kata sandi minimal 6 karakter.',
-            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
-        ]);
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => 'pemohon',
-            'nip_nisn' => $validated['nisn'],
-            'phone_number' => $validated['phone_number'],
-        ]);
-
-        Auth::login($user);
-        $request->session()->regenerate();
-
-        LogAktivitas::catat(
-            'REGISTER',
-            'AUTH',
-            "Pemohon baru {$user->name} berhasil mendaftar akun layanan legalisir."
-        );
-
-        return redirect()->route('pemohon.dashboard')
-            ->with('success', 'Akun permohonan berhasil didaftarkan. Selamat datang di Portal Layanan SMKN 1 Subang!');
+        return redirect()->route('login')->with('warning', 'Pendaftaran akun mandiri dinonaktifkan. Akun siswa dan alumni didaftarkan secara resmi oleh Admin Tata Usaha SMKN 1 Subang. Untuk mengajukan legalisir tanpa akun, silakan gunakan formulir Pengajuan Legalisir Mandiri.');
     }
 
     /**

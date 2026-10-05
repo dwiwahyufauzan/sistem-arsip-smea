@@ -1,8 +1,6 @@
 @extends('layouts.kepsek')
 
 @section('title', 'Buat Lembar Disposisi Baru')
-@section('page_title', 'Buat Lembar Disposisi Baru')
-@section('page_subtitle', 'Terbitkan Instruksi & Penugasan Resmi Tindak Lanjut Surat Masuk')
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">

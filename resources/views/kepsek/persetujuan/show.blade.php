@@ -32,10 +32,10 @@
                 </a>
             @endif
 
-            <button type="button" onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors">
+            <a href="{{ route('kepsek.surat-keluar.cetak', $suratKeluar) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-colors cursor-pointer" title="Cetak Lembar Kendali Arsip Surat Keluar">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                 <span>Cetak Lembar</span>
-            </button>
+            </a>
         </div>
     </div>
 
@@ -261,30 +261,35 @@
 </div>
 
 <!-- Modal 1: Konfirmasi Setujui Surat Keluar -->
-<div id="modalApprove" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
+<div id="modalApprove" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-200 hidden" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-200 text-slate-800 animate-in fade-in zoom-in-95">
         <form action="{{ route('kepsek.persetujuan.approve', $suratKeluar) }}" method="POST">
             @csrf
-            <div class="p-6 space-y-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="p-6 pb-4">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border bg-emerald-50 text-emerald-600 border-emerald-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
-                    <div>
-                        <h3 class="font-heading font-bold text-base text-slate-900">Konfirmasi Persetujuan Surat</h3>
-                        <p class="text-xs text-slate-500">Otorisasi resmi draf surat keluar dinas</p>
+                    <div class="flex-grow pt-0.5">
+                        <h3 class="font-heading font-bold text-base text-slate-900 leading-snug">Konfirmasi Persetujuan Surat</h3>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">Otorisasi resmi draf surat keluar dinas SMKN 1 Subang.</p>
                     </div>
+                    <button type="button" onclick="closeApproveModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer shrink-0" title="Tutup (Esc)">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
                 </div>
+            </div>
 
-                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-700 space-y-1">
-                    <p><span class="text-slate-400">Nomor:</span> <strong>{{ $suratKeluar->nomor_surat }}</strong></p>
-                    <p><span class="text-slate-400">Tujuan:</span> {{ $suratKeluar->tujuan }}</p>
-                    <p><span class="text-slate-400">Perihal:</span> {{ $suratKeluar->perihal }}</p>
+            <div class="px-6 pb-5 space-y-3.5 text-xs">
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5">
+                    <p><span class="text-slate-400">Nomor Surat:</span> <strong class="text-slate-900 font-mono">{{ $suratKeluar->nomor_surat }}</strong></p>
+                    <p><span class="text-slate-400">Tujuan:</span> <span class="text-slate-800 font-medium">{{ $suratKeluar->tujuan }}</span></p>
+                    <p><span class="text-slate-400">Perihal:</span> <span class="text-slate-800 font-medium">{{ $suratKeluar->perihal }}</span></p>
                 </div>
 
                 <div>
                     <label for="catatan_approve" class="block text-xs font-semibold text-slate-700 mb-1">
-                        Catatan Persetujuan Pimpinan (Opsional)
+                        Catatan Persetujuan Pimpinan (Opsional):
                     </label>
                     <textarea 
                         name="catatan_kepsek" 
@@ -296,19 +301,20 @@
                 </div>
             </div>
 
-            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2.5">
+            <div class="px-6 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-end gap-2.5">
                 <button 
                     type="button" 
-                    onclick="document.getElementById('modalApprove').classList.add('hidden')"
-                    class="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-xl border border-slate-200 transition-colors"
+                    onclick="closeApproveModal()"
+                    class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors cursor-pointer shadow-2xs"
                 >
                     Batal
                 </button>
                 <button 
                     type="submit" 
-                    class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow-xs transition-colors"
+                    class="px-4.5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
                 >
-                    Ya, Setujui Sekarang
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <span>Ya, Setujui Sekarang</span>
                 </button>
             </div>
         </form>
@@ -316,23 +322,28 @@
 </div>
 
 <!-- Modal 2: Formulir Penolakan / Permintaan Revisi -->
-<div id="modalReject" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
+<div id="modalReject" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-200 hidden" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-200 text-slate-800 animate-in fade-in zoom-in-95">
         <form action="{{ route('kepsek.persetujuan.reject', $suratKeluar) }}" method="POST">
             @csrf
-            <div class="p-6 space-y-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <div class="p-6 pb-4">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border bg-rose-50 text-rose-600 border-rose-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                     </div>
-                    <div>
-                        <h3 class="font-heading font-bold text-base text-slate-900">Tolak / Minta Revisi Draf</h3>
-                        <p class="text-xs text-slate-500">Berikan catatan perbaikan kepada staf TU</p>
+                    <div class="flex-grow pt-0.5">
+                        <h3 class="font-heading font-bold text-base text-slate-900 leading-snug">Tolak / Minta Revisi Draf</h3>
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">Berikan catatan koreksi perbaikan kepada staf Tata Usaha.</p>
                     </div>
+                    <button type="button" onclick="closeRejectModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer shrink-0" title="Tutup (Esc)">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
                 </div>
+            </div>
 
-                <div class="p-3 bg-rose-50 rounded-xl border border-rose-100 text-xs text-rose-900 space-y-1">
-                    <p>Status surat akan berubah menjadi <strong class="text-rose-700">Ditolak / Revisi</strong> dan staf TU dapat memperbaiki draf serta mengunggah berkas yang telah diperbaiki.</p>
+            <div class="px-6 pb-5 space-y-3.5 text-xs">
+                <div class="p-3 rounded-xl border text-[11px] leading-relaxed font-medium bg-rose-50/80 text-rose-700 border-rose-100">
+                    Status surat akan berubah menjadi <strong class="text-rose-800">Ditolak / Revisi</strong> dan staf TU dapat mengunggah berkas yang telah diperbaiki.
                 </div>
 
                 <div>
@@ -352,22 +363,49 @@
                 </div>
             </div>
 
-            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2.5">
+            <div class="px-6 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-end gap-2.5">
                 <button 
                     type="button" 
-                    onclick="document.getElementById('modalReject').classList.add('hidden')"
-                    class="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-xl border border-slate-200 transition-colors"
+                    onclick="closeRejectModal()"
+                    class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors cursor-pointer shadow-2xs"
                 >
                     Batal
                 </button>
                 <button 
                     type="submit" 
-                    class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors"
+                    class="px-4.5 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
                 >
-                    Kirim Catatan Revisi
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <span>Kirim Catatan Revisi</span>
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+    function openApproveModal() {
+        document.getElementById('modalApprove').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+    function closeApproveModal() {
+        document.getElementById('modalApprove').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+    function openRejectModal() {
+        document.getElementById('modalReject').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+    function closeRejectModal() {
+        document.getElementById('modalReject').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeApproveModal();
+            closeRejectModal();
+        }
+    });
+</script>
 @endsection

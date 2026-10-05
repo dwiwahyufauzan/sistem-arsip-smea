@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'tipe_pemohon',
         'nip_nisn',
         'phone_number',
         'avatar',
@@ -69,12 +70,25 @@ class User extends Authenticatable
         return $this->role === 'pemohon';
     }
 
+    public function isSiswaAktif(): bool
+    {
+        return $this->role === 'pemohon' && $this->tipe_pemohon === 'siswa_aktif';
+    }
+
+    public function isAlumni(): bool
+    {
+        return $this->role === 'pemohon' && ($this->tipe_pemohon === 'alumni' || empty($this->tipe_pemohon));
+    }
+
     public function getRoleBadgeAttribute(): string
     {
+        if ($this->role === 'pemohon') {
+            return $this->tipe_pemohon === 'siswa_aktif' ? 'Siswa Aktif' : 'Alumni';
+        }
+
         return match ($this->role) {
             'admin' => 'Petugas TU',
             'kepala_sekolah' => 'Kepala Sekolah',
-            'pemohon' => 'Pemohon / Alumni',
             default => 'Pengguna',
         };
     }

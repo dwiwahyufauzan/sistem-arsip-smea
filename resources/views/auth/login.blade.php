@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sistem Informasi Pengelolaan Arsip SMKN 1 Subang</title>
+    <link rel="shortcut icon" href="{{ asset('images/logo-smk.png') }}" type="image/png">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-between selection:bg-teal-500 selection:text-white">
@@ -11,9 +12,7 @@
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-teal-500 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
-                    SA
-                </div>
+                <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-9 h-11 object-contain shrink-0 group-hover:scale-105 transition-transform">
                 <div>
                     <h1 class="text-base font-bold text-white tracking-tight">SISTEM ARSIP SMEA</h1>
                     <p class="text-xs text-slate-400">SMK Negeri 1 Subang</p>
@@ -24,8 +23,8 @@
                     Beranda
                 </a>
                 <span class="text-slate-700">•</span>
-                <a href="{{ route('register') }}" class="text-xs sm:text-sm text-teal-400 hover:text-teal-300 font-medium transition-colors">
-                    Daftar Akun Pemohon
+                <a href="{{ route('legalisir.create') }}" class="text-xs sm:text-sm text-teal-400 hover:text-teal-300 font-medium transition-colors">
+                    Pengajuan Legalisir Mandiri
                 </a>
             </div>
         </div>
@@ -38,11 +37,7 @@
             <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-black/40 backdrop-blur-xl">
                 <!-- Icon & Title -->
                 <div class="text-center mb-8">
-                    <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-600/30 to-teal-500/20 border border-teal-500/30 flex items-center justify-center text-teal-400">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                    </div>
+                    <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-16 h-20 mx-auto mb-3 object-contain drop-shadow-md">
                     <h2 class="text-2xl font-bold text-white tracking-tight">Masuk ke Sistem</h2>
                     <p class="text-xs text-slate-400 mt-1">Silakan masukkan akun Petugas, Kepala Sekolah, atau Pemohon</p>
                 </div>
@@ -130,8 +125,12 @@
                             class="p-2 rounded-lg bg-slate-900/60 hover:bg-slate-700/50 border border-slate-700 text-center transition-colors">
                             <div class="font-bold text-teal-400">Pemohon</div>
                             <div class="text-[10px] text-slate-400">Alumni</div>
-                        </button>
                     </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-700/80 text-center text-xs text-slate-400">
+                    Akun Siswa & Alumni didaftarkan oleh Admin Tata Usaha. Ingin mengajukan berkas?
+                    <a href="{{ route('legalisir.create') }}" class="text-teal-400 hover:underline font-semibold block sm:inline mt-1 sm:mt-0">Ajukan Legalisir Mandiri (Tanpa Akun) &rarr;</a>
                 </div>
             </div>
 

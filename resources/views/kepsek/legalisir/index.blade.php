@@ -1,16 +1,28 @@
 @extends('layouts.kepsek')
 
 @section('title', 'Pengesahan Legalisir Dokumen')
-@section('page_title', 'Pengesahan Legalisir Dokumen')
-@section('page_subtitle', 'Tinjauan & Otorisasi Pengesahan Dokumen Kelulusan Alumni SMKN 1 Subang (SRS-KS04 / SRS-KS06)')
 
 @section('content')
 <div class="space-y-6">
 
+    <!-- Modern Page Header -->
+    <x-page-header 
+        title="Pengesahan Legalisir Dokumen" 
+        subtitle="Tinjauan & Otorisasi Pengesahan Dokumen Kelulusan Alumni SMKN 1 Subang (SRS-KS04 / SRS-KS06)"
+        overline="Panel Kebijakan Pimpinan • Pengesahan"
+    >
+        <x-slot:actions>
+            <span class="px-3.5 py-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200/80 rounded-xl text-xs font-semibold flex items-center gap-2 shadow-xs">
+                <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                <span>Otorisasi Kepala Sekolah</span>
+            </span>
+        </x-slot:actions>
+    </x-page-header>
+
     <!-- Quick Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Menunggu Otorisasi Kepsek -->
-        <a href="{{ route('kepsek.legalisir.index', ['status' => 'menunggu_approval_kepsek']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'menunggu_approval_kepsek' ? 'border-amber-400 ring-2 ring-amber-400/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.legalisir.index', ['status' => 'menunggu_approval_kepsek']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'menunggu_approval_kepsek' ? 'border-amber-400 ring-2 ring-amber-400/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Menunggu Pengesahan</p>
@@ -24,7 +36,7 @@
         </a>
 
         <!-- Disetujui Kepsek -->
-        <a href="{{ route('kepsek.legalisir.index', ['status' => 'disetujui_kepsek']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'disetujui_kepsek' ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.legalisir.index', ['status' => 'disetujui_kepsek']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'disetujui_kepsek' ? 'border-emerald-500 ring-2 ring-emerald-500/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Telah Disahkan</p>
@@ -38,7 +50,7 @@
         </a>
 
         <!-- Selesai Diserahkan -->
-        <a href="{{ route('kepsek.legalisir.index', ['status' => 'selesai']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'selesai' ? 'border-teal-500 ring-2 ring-teal-500/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.legalisir.index', ['status' => 'selesai']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'selesai' ? 'border-teal-500 ring-2 ring-teal-500/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Selesai Diambil</p>
@@ -52,13 +64,13 @@
         </a>
 
         <!-- Total Seluruh Permohonan -->
-        <a href="{{ route('kepsek.legalisir.index', ['status' => 'semua']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'semua' ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.legalisir.index', ['status' => 'semua']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'semua' ? 'border-emerald-700 ring-2 ring-emerald-700/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Permohonan</p>
                     <p class="text-2xl font-extrabold text-slate-900 mt-1 font-heading">{{ $stats['total'] }}</p>
                 </div>
-                <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <div class="w-11 h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 </div>
             </div>
@@ -67,7 +79,7 @@
     </div>
 
     <!-- Filter & Pencarian -->
-    <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
+    <div class="card-modern p-4 space-y-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             
             <!-- Tabs Filter Status -->
@@ -81,7 +93,7 @@
                 <a href="{{ route('kepsek.legalisir.index', ['status' => 'selesai', 'q' => $search]) }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-colors {{ $status === 'selesai' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100' }}">
                     Selesai ({{ $stats['selesai'] }})
                 </a>
-                <a href="{{ route('kepsek.legalisir.index', ['status' => 'semua', 'q' => $search]) }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-colors {{ $status === 'semua' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100' }}">
+                <a href="{{ route('kepsek.legalisir.index', ['status' => 'semua', 'q' => $search]) }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap transition-colors {{ $status === 'semua' ? 'bg-slate-800 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100' }}">
                     Semua Berkas ({{ $stats['total'] }})
                 </a>
             </div>
@@ -95,11 +107,11 @@
                         name="q" 
                         value="{{ $search }}" 
                         placeholder="Cari resi, nama, NISN..."
-                        class="w-56 sm:w-64 pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white"
+                        class="input-modern w-56 sm:w-64 pl-8 pr-3 py-1.5 text-xs"
                     >
                     <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
-                <button type="submit" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer">
+                <button type="submit" class="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold transition-all shadow-xs active:scale-[0.98]">
                     Cari
                 </button>
             </form>
@@ -107,10 +119,10 @@
     </div>
 
     <!-- Data Table -->
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+    <div class="card-modern overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-                <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+            <table class="w-full text-left text-xs border-collapse">
+                <thead class="bg-slate-50/80 text-slate-500 font-bold uppercase text-[11px] tracking-wider border-b border-slate-200">
                     <tr>
                         <th class="py-3.5 px-4">No. Resi & Tanggal</th>
                         <th class="py-3.5 px-4">Nama Pemohon & NISN</th>
@@ -120,7 +132,7 @@
                         <th class="py-3.5 px-4 text-center">Aksi Pimpinan</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-100 text-slate-700">
                     @forelse($legalisirList as $item)
                         <tr class="hover:bg-slate-50/70 transition-colors">
                             <td class="py-3.5 px-4 align-top">
@@ -141,7 +153,7 @@
                                     <span class="text-[11px] font-semibold text-slate-700 block">
                                         Petugas: {{ $item->petugas->name ?? 'Staf Tata Usaha' }}
                                     </span>
-                                    <p class="text-[10px] text-slate-500 bg-slate-50 p-2 rounded border border-slate-200/60 max-w-xs line-clamp-2">
+                                    <p class="text-[10px] text-slate-500 bg-slate-50 p-2 rounded-lg border border-slate-200/60 max-w-xs line-clamp-2">
                                         {{ $item->catatan_petugas ?? 'Telah diverifikasi sesuai Buku Induk kelulusan.' }}
                                     </p>
                                 </div>
@@ -157,7 +169,7 @@
                             <td class="py-3.5 px-4 align-top text-center">
                                 <a 
                                     href="{{ route('kepsek.legalisir.show', $item->id) }}" 
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 {{ $item->status === 'menunggu_approval_kepsek' ? 'bg-emerald-600 hover:bg-emerald-700 text-white font-bold' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold' }} rounded-xl text-xs transition-colors shadow-xs"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 {{ $item->status === 'menunggu_approval_kepsek' ? 'bg-emerald-700 hover:bg-emerald-800 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold' }} rounded-xl text-xs transition-all active:scale-[0.98]"
                                 >
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                     <span>{{ $item->status === 'menunggu_approval_kepsek' ? 'Tinjau & Otorisasi' : 'Detail Tinjauan' }}</span>
@@ -165,15 +177,11 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-500">
-                                <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                </div>
-                                <p class="font-semibold text-slate-700">Tidak ada permohonan legalisir pada antrean ini</p>
-                                <p class="text-xs text-slate-400 mt-0.5">Semua berkas yang memerlukan peninjauan pimpinan telah selesai ditindaklanjuti.</p>
-                            </td>
-                        </tr>
+                        <x-empty-state 
+                            colspan="6" 
+                            title="Tidak ada permohonan legalisir pada antrean ini" 
+                            description="Semua berkas yang memerlukan peninjauan pimpinan telah selesai ditindaklanjuti." 
+                        />
                     @endforelse
                 </tbody>
             </table>

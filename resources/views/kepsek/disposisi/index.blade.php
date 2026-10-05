@@ -1,26 +1,31 @@
 @extends('layouts.kepsek')
 
 @section('title', 'Disposisi Surat Masuk')
-@section('page_title', 'Disposisi Surat Masuk')
-@section('page_subtitle', 'Pemberian Arahan & Instruksi Tindak Lanjut Surat Masuk ke Unit Kerja')
-
-@section('page_actions')
-    <a 
-        href="{{ route('kepsek.disposisi.create') }}" 
-        class="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-700/20 transition-all"
-    >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-        <span>+ Buat Disposisi Baru</span>
-    </a>
-@endsection
 
 @section('content')
 <div class="space-y-6">
 
+    <!-- Modern Page Header -->
+    <x-page-header 
+        title="Disposisi Surat Masuk" 
+        subtitle="Pemberian Arahan & Instruksi Tindak Lanjut Surat Masuk ke Unit Kerja"
+        overline="Panel Kebijakan Pimpinan • SRS-KS06"
+    >
+        <x-slot:actions>
+            <a 
+                href="{{ route('kepsek.disposisi.create') }}" 
+                class="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-700/20 transition-all active:scale-[0.98]"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>+ Buat Disposisi Baru</span>
+            </a>
+        </x-slot:actions>
+    </x-page-header>
+
     <!-- 1. Quick Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Menunggu -->
-        <a href="{{ route('kepsek.disposisi.index', ['status' => 'menunggu']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'menunggu' ? 'border-amber-400 ring-2 ring-amber-400/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.disposisi.index', ['status' => 'menunggu']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'menunggu' ? 'border-amber-400 ring-2 ring-amber-400/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Menunggu Tindak Lanjut</p>
@@ -34,7 +39,7 @@
         </a>
 
         <!-- Ditindaklanjuti -->
-        <a href="{{ route('kepsek.disposisi.index', ['status' => 'ditindaklanjuti']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'ditindaklanjuti' ? 'border-blue-400 ring-2 ring-blue-400/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.disposisi.index', ['status' => 'ditindaklanjuti']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'ditindaklanjuti' ? 'border-blue-400 ring-2 ring-blue-400/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sedang Diproses</p>
@@ -48,7 +53,7 @@
         </a>
 
         <!-- Selesai -->
-        <a href="{{ route('kepsek.disposisi.index', ['status' => 'selesai']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'selesai' ? 'border-emerald-400 ring-2 ring-emerald-400/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.disposisi.index', ['status' => 'selesai']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'selesai' ? 'border-emerald-400 ring-2 ring-emerald-400/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Selesai Dilaksanakan</p>
@@ -62,7 +67,7 @@
         </a>
 
         <!-- Total Disposisi -->
-        <a href="{{ route('kepsek.disposisi.index', ['status' => 'semua']) }}" class="block p-5 bg-white rounded-2xl border transition-all hover:shadow-md {{ $status === 'semua' ? 'border-slate-800 ring-2 ring-slate-800/20' : 'border-slate-200/80' }}">
+        <a href="{{ route('kepsek.disposisi.index', ['status' => 'semua']) }}" class="card-modern p-5 transition-all hover:shadow-md {{ $status === 'semua' ? 'border-emerald-700 ring-2 ring-emerald-700/20' : '' }}">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Lembar Disposisi</p>
@@ -77,7 +82,7 @@
     </div>
 
     <!-- 2. Filter & Search Controls -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="card-modern p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <!-- Status Tabs -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 text-xs">
             <a href="{{ route('kepsek.disposisi.index', ['status' => 'semua', 'q' => $search]) }}" class="px-3.5 py-2 rounded-xl font-semibold transition-all whitespace-nowrap {{ $status === 'semua' ? 'bg-slate-900 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
@@ -106,7 +111,7 @@
                     name="q" 
                     value="{{ $search }}" 
                     placeholder="Cari instruksi, pejabat tujuan, nomor surat..."
-                    class="w-full pl-9 pr-8 py-2 text-xs rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition-all"
+                    class="input-modern w-full pl-9 pr-8 py-2 text-xs"
                 >
                 @if($search)
                     <a href="{{ route('kepsek.disposisi.index', ['status' => $status]) }}" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600">
@@ -114,18 +119,18 @@
                     </a>
                 @endif
             </div>
-            <button type="submit" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shrink-0 transition-colors">
+            <button type="submit" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold shrink-0 transition-all shadow-xs active:scale-[0.98]">
                 Cari
             </button>
         </form>
     </div>
 
     <!-- 3. Disposisi Table -->
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+    <div class="card-modern overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[11px] tracking-wider">
+                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase text-[11px] tracking-wider">
                         <th class="py-3.5 px-4 w-12 text-center">No</th>
                         <th class="py-3.5 px-4">Surat Masuk Terkait</th>
                         <th class="py-3.5 px-4">Diteruskan Kepada</th>
@@ -202,7 +207,7 @@
                                     <!-- Cetak Lembar Resmi -->
                                     <a 
                                         href="{{ route('kepsek.disposisi.cetak', $disp) }}" 
-                                        target="_blank"
+                                        target="_blank" 
                                         class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition-colors"
                                         title="Cetak Lembar Disposisi Standar Sekolah"
                                     >
@@ -231,17 +236,11 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="7" class="py-12 text-center text-slate-400">
-                                <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                                </div>
-                                <p class="text-sm font-semibold text-slate-600">Belum Ada Lembar Disposisi</p>
-                                <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
-                                    Klik tombol "+ Buat Disposisi Baru" untuk memberikan arahan tindak lanjut pada surat masuk.
-                                </p>
-                            </td>
-                        </tr>
+                        <x-empty-state 
+                            colspan="7" 
+                            title="Belum Ada Lembar Disposisi" 
+                            description="Klik tombol '+ Buat Disposisi Baru' untuk memberikan arahan tindak lanjut pada surat masuk." 
+                        />
                     @endforelse
                 </tbody>
             </table>
@@ -257,32 +256,50 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
-        <div class="flex items-center gap-3 text-rose-600 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            </div>
-            <div>
-                <h3 class="font-heading font-bold text-base text-slate-900">Konfirmasi Hapus Disposisi</h3>
-                <p class="text-xs text-slate-500">Tindakan ini tidak dapat dibatalkan</p>
-            </div>
+<div id="deleteModal" class="fixed inset-0 z-50 hidden transition-opacity duration-200" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity" onclick="closeDeleteModal()"></div>
+    <div class="fixed inset-0 z-10 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-200 text-slate-800 animate-in fade-in zoom-in-95">
+            <form id="deleteForm" method="POST" action="">
+                @csrf
+                @method('DELETE')
+                <div class="p-6 pb-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border bg-rose-50 text-rose-600 border-rose-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </div>
+                        <div class="flex-grow pt-0.5">
+                            <h3 class="font-heading font-bold text-base text-slate-900 leading-snug">Konfirmasi Hapus Disposisi</h3>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">Tindakan ini akan membatalkan instruksi tindak lanjut pimpinan.</p>
+                        </div>
+                        <button type="button" onclick="closeDeleteModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer shrink-0" title="Tutup (Esc)">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="px-6 pb-5 space-y-3 text-xs">
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
+                        <p class="text-slate-500 text-[11px]">Sasaran Disposisi:</p>
+                        <p id="deleteTargetName" class="font-bold text-slate-900"></p>
+                    </div>
+
+                    <div class="p-3 rounded-xl border text-[11px] leading-relaxed font-medium bg-amber-50/80 text-amber-800 border-amber-200">
+                        Catatan: Surat masuk terkait akan dikembalikan ke status 'Diterima' jika tidak memiliki lembar disposisi aktif lainnya.
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                    <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors cursor-pointer shadow-2xs">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-4.5 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <span>Ya, Hapus Disposisi</span>
+                    </button>
+                </div>
+            </form>
         </div>
-        <p class="text-xs text-slate-600 mb-6 leading-relaxed">
-            Apakah Anda yakin ingin menghapus <strong id="deleteTargetName" class="text-slate-900"></strong>? Surat masuk akan kembali ke status 'Diterima' jika tidak ada disposisi lain.
-        </p>
-        <form id="deleteForm" method="POST" action="">
-            @csrf
-            @method('DELETE')
-            <div class="flex items-center justify-end gap-2.5">
-                <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors">
-                    Batal
-                </button>
-                <button type="submit" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors shadow-xs">
-                    Ya, Hapus Disposisi
-                </button>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -292,10 +309,18 @@
         document.getElementById('deleteForm').action = actionUrl;
         document.getElementById('deleteTargetName').textContent = name;
         document.getElementById('deleteModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
     }
     function closeDeleteModal() {
         document.getElementById('deleteModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
     }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeDeleteModal();
+        }
+    });
 </script>
 @endpush
 @endsection

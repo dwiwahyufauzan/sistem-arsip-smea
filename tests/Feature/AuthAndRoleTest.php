@@ -81,25 +81,48 @@ class AuthAndRoleTest extends TestCase
     }
 
     /**
-     * Test pemohon baru dapat mendaftar akun
+     * Test pendaftaran akun mandiri dinonaktifkan dan diarahkan ke login dengan notifikasi
      */
-    public function test_new_pemohon_can_register(): void
+    public function test_public_registration_is_disabled_and_redirects_with_notice(): void
     {
-        $uniqueEmail = 'alumni.'.time().'@test.com';
         $response = $this->post('/register', [
             'name' => 'Siswa Baru',
-            'email' => $uniqueEmail,
+            'email' => 'siswa.baru@test.com',
             'nisn' => '0098765432',
             'phone_number' => '081234567800',
             'password' => 'secret123',
             'password_confirmation' => 'secret123',
         ]);
 
-        $response->assertRedirect('/pemohon/dashboard');
-        $this->assertAuthenticated();
-        $this->assertDatabaseHas('users', [
-            'email' => $uniqueEmail,
+        $response->assertRedirect('/login');
+        $response->assertSessionHas('warning');
+        $this->assertGuest();
+    }
+
+    /**
+     * Test Admin Tata Usaha dapat mendaftarkan akun pemohon (siswa/alumni)
+     */
+    public function test_admin_can_register_pemohon_account(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $email = 'alumni.terdaftar.'.time().'@smkn1subang.sch.id';
+
+        $response = $this->actingAs($admin)->post('/admin/pengguna', [
+            'name' => 'Alumni Baru Terdaftar',
+            'email' => $email,
             'role' => 'pemohon',
+            'nip_nisn' => '0054321678',
+            'phone_number' => '085711223344',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect('/admin/pengguna');
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('users', [
+            'email' => $email,
+            'role' => 'pemohon',
+            'nip_nisn' => '0054321678',
         ]);
     }
 }

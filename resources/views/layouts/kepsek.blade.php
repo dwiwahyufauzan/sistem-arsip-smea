@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Pimpinan') | Portal Kepala Sekolah SMKN 1 Subang</title>
+    <link rel="shortcut icon" href="{{ asset('images/logo-smk.png') }}" type="image/png">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,11 +19,16 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-heading { font-family: 'Outfit', sans-serif; }
+        @media print {
+            body { background: #ffffff !important; color: #000000 !important; }
+            header, aside, .no-print, nav, #pdfViewerModal { display: none !important; }
+            main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+        }
     </style>
 
     @stack('styles')
 </head>
-<body class="h-full flex flex-col antialiased text-slate-800">
+<body class="h-full flex flex-col antialiased text-slate-800 bg-slate-100">
 
     <!-- Global Toast Alert -->
     <x-toast />
@@ -30,31 +36,31 @@
     <!-- Global PDF Viewer Modal -->
     <x-pdf-modal />
 
-    <div class="min-h-full flex">
-        <!-- Sidebar Navigation (Desktop) - Executive Green Accent -->
-        <aside id="sidebarMenuKepsek" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 text-slate-300 flex flex-col border-r border-slate-800 transition-transform duration-300 -translate-x-full md:translate-x-0">
-            <!-- School Brand Header -->
-            <div class="h-20 flex items-center px-6 gap-3.5 bg-slate-950/80 border-b border-emerald-950 shrink-0">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-700 via-teal-800 to-blue-900 flex items-center justify-center text-white shadow-md shadow-emerald-950/40">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                    </svg>
-                </div>
-                <div class="overflow-hidden">
-                    <div class="flex items-center gap-1.5">
-                        <span class="font-heading font-extrabold text-white text-base tracking-tight truncate">EKSEKUTIF</span>
-                        <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">KEPSEK</span>
-                    </div>
-                    <p class="text-xs text-slate-400 truncate">SMK Negeri 1 Subang</p>
-                </div>
+    <!-- Global Confirmation Action Modal -->
+    <x-confirmation-modal />
+
+    <!-- Top Navigation Bar Component (Full Width di Paling Atas) -->
+    <x-navbar-kepsek />
+
+    <!-- Body Layout Container (Di Bawah Full Navbar: pt-20) -->
+    <div class="min-h-full flex-grow flex pt-20">
+        <!-- Sidebar Navigation (Desktop & Mobile Drawer) - Executive Green Accent -->
+        <aside id="sidebarMenuKepsek" class="fixed top-20 bottom-0 left-0 z-30 w-64 bg-slate-900 text-slate-300 flex flex-col border-r border-slate-800 transition-transform duration-300 -translate-x-full md:translate-x-0">
+            <!-- Sidebar Panel Title / Header -->
+            <div class="px-5 py-3.5 bg-slate-950/40 border-b border-emerald-950/60 flex items-center justify-between shrink-0">
+                <span class="text-[11px] font-bold tracking-wider uppercase text-emerald-400">Panel Eksekutif Pimpinan</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Kepsek
+                </span>
             </div>
 
             <!-- Navigation Links Scrollable -->
-            <nav class="flex-grow px-4 py-5 space-y-6 overflow-y-auto text-xs font-medium">
+            <nav class="flex-grow px-3 py-4 space-y-5 overflow-y-auto text-xs font-medium scrollbar-thin scrollbar-thumb-slate-700">
                 <!-- Group 1: Pengawasan Eksekutif -->
                 <div>
                     <span class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">Panel Pimpinan</span>
-                    <div class="mt-2 space-y-1">
+                    <div class="mt-1.5 space-y-1">
                         <a href="{{ route('kepsek.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->routeIs('kepsek.dashboard') ? 'bg-emerald-700 text-white font-semibold shadow-sm' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                             <span>Dashboard Pimpinan</span>
@@ -70,7 +76,7 @@
                 <!-- Group 2: Persetujuan & Disposisi -->
                 <div>
                     <span class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">Persetujuan & Kebijakan</span>
-                    <div class="mt-2 space-y-1">
+                    <div class="mt-1.5 space-y-1">
                         <!-- Surat Keluar Approval -->
                         <a href="{{ route('kepsek.persetujuan.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/persetujuan*') || request()->is('kepala-sekolah/surat-keluar*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
                             <div class="flex items-center gap-3 truncate">
@@ -100,27 +106,27 @@
                                 <span class="truncate">Disposisi Surat Masuk</span>
                             </div>
                             @php
-                                $pendingDispCount = \App\Models\DisposisiSuratMasuk::where('status', 'menunggu')->count();
+                                $totalSmUnread = \App\Models\SuratMasuk::whereDoesntHave('disposisi')->count();
                             @endphp
-                            @if($pendingDispCount > 0)
-                                <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 shrink-0">
-                                    {{ $pendingDispCount }}
+                            @if($totalSmUnread > 0)
+                                <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500 text-white shrink-0">
+                                    {{ $totalSmUnread }}
                                 </span>
                             @endif
                         </a>
 
                         <!-- Pengesahan Legalisir -->
-                        <a href="{{ url('/kepala-sekolah/legalisir') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/legalisir*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
+                        <a href="{{ route('kepsek.legalisir.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/legalisir*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
                             <div class="flex items-center gap-3 truncate">
-                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span class="truncate">Pengesahan Legalisir</span>
                             </div>
                             @php
-                                $pendingLegalisirCount = \App\Models\PengajuanLegalisir::where('status', 'diverifikasi')->count();
+                                $pendingLegalisir = \App\Models\PengajuanLegalisir::where('status', 'diajukan')->count();
                             @endphp
-                            @if($pendingLegalisirCount > 0)
-                                <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 animate-pulse shrink-0">
-                                    {{ $pendingLegalisirCount }}
+                            @if($pendingLegalisir > 0)
+                                <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500 text-white shrink-0">
+                                    {{ $pendingLegalisir }}
                                 </span>
                             @endif
                         </a>
@@ -130,7 +136,7 @@
                 <!-- Group 3: Rekapitulasi & Log Audit -->
                 <div>
                     <span class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">Laporan & Audit</span>
-                    <div class="mt-2 space-y-1">
+                    <div class="mt-1.5 space-y-1">
                         <a href="{{ url('/kepala-sekolah/laporan') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->is('kepala-sekolah/laporan*') ? 'bg-emerald-700 text-white font-semibold' : 'hover:bg-slate-800/80 hover:text-white text-slate-400' }}">
                             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                             <span>Rekapitulasi Agenda Arsip</span>
@@ -143,102 +149,13 @@
                     </div>
                 </div>
             </nav>
-
-            <!-- Bottom User Profile Card -->
-            <div class="p-4 bg-slate-950/90 border-t border-slate-800 shrink-0">
-                <div class="flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-2.5 truncate">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-900 text-emerald-300 font-bold flex items-center justify-center shrink-0 border border-emerald-700/50">
-                            {{ substr(auth()->user()->name, 0, 2) }}
-                        </div>
-                        <div class="truncate text-xs">
-                            <p class="font-semibold text-white truncate">{{ auth()->user()->name }}</p>
-                            <p class="text-slate-400 text-[10px] truncate">Kepala SMKN 1 Subang</p>
-                        </div>
-                    </div>
-                    <form action="{{ route('logout') }}" method="POST" class="shrink-0">
-                        @csrf
-                        <button 
-                            type="submit" 
-                            title="Keluar dari Akun"
-                            class="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors"
-                        >
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                        </button>
-                    </form>
-                </div>
-            </div>
         </aside>
 
-        <!-- Main Wrapper -->
+        <!-- Mobile Backdrop Overlay -->
+        <div id="sidebarBackdropKepsek" onclick="toggleKepsekSidebar()" class="fixed inset-0 top-20 bg-slate-950/60 z-20 backdrop-blur-xs hidden md:hidden"></div>
+
+        <!-- Main Content Wrapper (Content + Footer) -->
         <div class="flex-grow flex flex-col md:pl-64 min-w-0">
-            <!-- Top Navigation Bar -->
-            <header class="h-20 bg-white border-b border-slate-200/80 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-xs">
-                <!-- Left: Mobile Burger & Quick Search -->
-                <div class="flex items-center gap-3 sm:gap-4 flex-grow max-w-xl">
-                    <button 
-                        type="button" 
-                        onclick="document.getElementById('sidebarMenuKepsek').classList.toggle('-translate-x-full')"
-                        class="md:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-                    >
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    </button>
-
-                    <!-- Search Input Bar -->
-                    <form action="{{ url('/kepala-sekolah/pencarian-kmp') }}" method="GET" class="relative w-full">
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                            </span>
-                            <input 
-                                type="text" 
-                                name="q" 
-                                placeholder="Cari arsip & pengesahan pimpinan (KMP Search)..." 
-                                class="w-full pl-9 pr-14 py-2 text-xs rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all placeholder:text-slate-400"
-                            >
-                            <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
-                                <kbd class="px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-200 rounded">KMP</kbd>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Right Action Menus -->
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('landing') }}" target="_blank" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors" title="Buka Portal Beranda Publik">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
-
-                    <!-- Profile Pill -->
-                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 pl-3 border-l border-slate-200 hover:opacity-80 transition-opacity" title="Pengaturan Profil & Password">
-                        <div class="w-9 h-9 rounded-xl bg-emerald-800 text-white font-bold flex items-center justify-center text-xs shadow-xs">
-                            {{ substr(auth()->user()->name, 0, 1) }}
-                        </div>
-                        <div class="hidden sm:block text-left text-xs">
-                            <p class="font-semibold text-slate-900 leading-tight">{{ auth()->user()->name }}</p>
-                            <span class="text-[10px] font-medium text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded">Kepala Sekolah</span>
-                        </div>
-                    </a>
-                </div>
-            </header>
-
-            <!-- Page Title Bar -->
-            <div class="bg-white border-b border-slate-200/60 py-5 px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                        <h1 class="font-heading font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">
-                            @yield('page_title', 'Portal Eksekutif Kepala Sekolah')
-                        </h1>
-                        <p class="text-xs text-slate-500 mt-0.5">
-                            @yield('page_subtitle', 'Pengesahan Surat Keluar, Disposisi Surat Masuk & Pengesahan Legalisir')
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2.5 shrink-0">
-                        @yield('page_actions')
-                    </div>
-                </div>
-            </div>
-
             <!-- Content Area -->
             <main class="flex-grow p-4 sm:p-6 lg:p-8">
                 @yield('content')
@@ -251,6 +168,36 @@
             </footer>
         </div>
     </div>
+
+    <!-- Script Drawer & Profile Dropdown -->
+    <script>
+        function toggleKepsekSidebar() {
+            const sidebar = document.getElementById('sidebarMenuKepsek');
+            const backdrop = document.getElementById('sidebarBackdropKepsek');
+            if (sidebar) {
+                sidebar.classList.toggle('-translate-x-full');
+            }
+            if (backdrop) {
+                backdrop.classList.toggle('hidden');
+            }
+        }
+
+        function toggleKepsekProfileDropdown(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('kepsekProfileDropdownMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        window.addEventListener('click', function(e) {
+            const container = document.getElementById('kepsekProfileDropdownContainer');
+            const menu = document.getElementById('kepsekProfileDropdownMenu');
+            if (container && menu && !container.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
 
     @stack('scripts')
 </body>

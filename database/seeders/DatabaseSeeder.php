@@ -49,10 +49,12 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Ridwan Kurniawan',
                 'password' => Hash::make('password'),
                 'role' => 'pemohon',
+                'tipe_pemohon' => 'alumni',
                 'nip_nisn' => '0045892134',
                 'phone_number' => '085712345678',
             ]
         );
+        $pemohon->update(['tipe_pemohon' => 'alumni']);
 
         // 2. Kategori Surat Klasifikasi Dinas SMKN 1 Subang
         $kategoriList = [
@@ -291,5 +293,8 @@ class DatabaseSeeder extends Seeder
             'user_agent' => 'Console Seeder',
             'created_at' => now(),
         ]);
+
+        // 9. Data Dummy Kearsipan Tambahan (~100+ Surat Masuk & Keluar, Siswa & Alumni)
+        $this->call(DummyArsipSeeder::class);
     }
 }

@@ -84,4 +84,53 @@ class MasterLayoutAndDashboardTest extends TestCase
         $this->assertStringContainsString('<mark', $rendered);
         $this->assertStringContainsString('Koordinasi</mark>', $rendered);
     }
+
+    /**
+     * Uji Blade Components Navbar untuk Admin, Kepsek, dan Pemohon
+     */
+    public function test_navbar_components_render_properly(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $this->actingAs($admin);
+
+        $navbarAdmin = Blade::render('<x-navbar-admin />');
+        $this->assertStringContainsString('Petugas TU', $navbarAdmin);
+        $this->assertStringContainsString('TA 2026/2027', $navbarAdmin);
+        $this->assertStringContainsString('Cari arsip cepat (KMP Search', $navbarAdmin);
+
+        $kepsek = User::where('role', 'kepala_sekolah')->first();
+        $this->actingAs($kepsek);
+
+        $navbarKepsek = Blade::render('<x-navbar-kepsek />');
+        $this->assertStringContainsString('Kepala Sekolah', $navbarKepsek);
+        $this->assertStringContainsString('Cari arsip & pengesahan pimpinan', $navbarKepsek);
+
+        $pemohon = User::where('role', 'pemohon')->first();
+        $this->actingAs($pemohon);
+
+        $navbarPemohon = Blade::render('<x-navbar-pemohon />');
+        $this->assertStringContainsString('LEGALISIR SMEA', $navbarPemohon);
+        $this->assertStringContainsString('Beranda Pemohon', $navbarPemohon);
+
+        // Uji Wrapper Component
+        $wrappedAdmin = Blade::render('<x-navbar portal="admin" />');
+        $this->assertStringContainsString('Petugas TU', $wrappedAdmin);
+    }
+
+    /**
+     * Uji Blade Component Confirmation Modal untuk standardisasi pop-up aksi
+     */
+    public function test_confirmation_modal_component_renders_properly(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $response = $this->actingAs($admin)->get('/admin/dashboard');
+        $response->assertSee('globalConfirmModal');
+        $response->assertSee('confirmModalTitle');
+        $response->assertSee('confirmAction');
+
+        $rendered = Blade::render('<x-confirmation-modal />');
+        $this->assertStringContainsString('globalConfirmModal', $rendered);
+        $this->assertStringContainsString('confirmModalTitle', $rendered);
+        $this->assertStringContainsString('confirmModalSubmitBtn', $rendered);
+    }
 }

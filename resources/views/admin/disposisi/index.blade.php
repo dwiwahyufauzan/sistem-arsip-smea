@@ -1,11 +1,17 @@
 @extends('layouts.admin')
 
 @section('title', 'Disposisi Pimpinan')
-@section('page_title', 'Disposisi Pimpinan')
-@section('page_subtitle', 'Monitoring Instruksi & Tindak Lanjut Surat Masuk dari Kepala Sekolah')
 
 @section('content')
 <div class="space-y-6">
+
+    <!-- Modern Page Header -->
+    <x-page-header 
+        title="Disposisi Pimpinan" 
+        description="Monitoring instruksi dan tindak lanjut penugasan surat masuk dari Kepala Sekolah kepada unit kerja."
+        badge="Modul Disposisi"
+        theme="blue"
+    />
 
     <!-- 1. Stat Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

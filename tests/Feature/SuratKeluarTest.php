@@ -413,8 +413,8 @@ class SuratKeluarTest extends TestCase
         $response->assertRedirect('/admin/surat-keluar');
         $response->assertSessionHas('success');
 
-        $this->assertDatabaseMissing('surat_keluar', ['id' => $surat->id]);
-        Storage::disk('public')->assertMissing($path);
+        $this->assertSoftDeleted('surat_keluar', ['id' => $surat->id]);
+        Storage::disk('public')->assertExists($path);
     }
 
     /**
@@ -458,5 +458,29 @@ class SuratKeluarTest extends TestCase
         $responseShow->assertStatus(200);
         $responseShow->assertSee($suratKeluar->nomor_surat);
         $responseShow->assertSee('Lembar Informasi Draf Surat Keluar');
+    }
+
+    /**
+     * Uji Admin dan Kepala Sekolah dapat mencetak lembar kendali arsip surat keluar
+     */
+    public function test_admin_and_kepsek_can_access_cetak_lembar_surat_keluar(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $kepsek = User::where('role', 'kepala_sekolah')->first();
+        $suratKeluar = SuratKeluar::first();
+
+        // Admin Cetak
+        $responseAdmin = $this->actingAs($admin)->get("/admin/surat-keluar/{$suratKeluar->id}/cetak");
+        $responseAdmin->assertStatus(200);
+        $responseAdmin->assertSee('LEMBAR KENDALI DAN REGISTRASI SURAT KELUAR');
+        $responseAdmin->assertSee($suratKeluar->nomor_agenda);
+        $responseAdmin->assertSee($suratKeluar->nomor_surat);
+        $responseAdmin->assertSee('logo-jabar.png');
+        $responseAdmin->assertSee('logo-smk.png');
+
+        // Kepsek Cetak
+        $responseKepsek = $this->actingAs($kepsek)->get("/kepala-sekolah/surat-keluar/{$suratKeluar->id}/cetak");
+        $responseKepsek->assertStatus(200);
+        $responseKepsek->assertSee('LEMBAR KENDALI DAN REGISTRASI SURAT KELUAR');
     }
 }

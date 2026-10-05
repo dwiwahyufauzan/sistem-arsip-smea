@@ -5,15 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sistem Informasi Arsip & Layanan Legalisir Dokumen | SMKN 1 Subang</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('images/logo-smk.png') }}" type="image/png">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-heading { font-family: 'Outfit', sans-serif; }
-    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen selection:bg-teal-600 selection:text-white">
 
@@ -40,11 +34,7 @@
             <div class="flex items-center justify-between h-20">
                 <!-- Brand Logo & School Identity -->
                 <a href="{{ route('landing') }}" class="flex items-center gap-3.5 group">
-                    <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-900 via-blue-800 to-teal-600 flex items-center justify-center text-white shadow-md shadow-blue-900/20 group-hover:scale-105 transition-transform duration-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                    </div>
+                    <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-11 h-13 object-contain shrink-0 group-hover:scale-105 transition-transform duration-200">
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="font-heading font-extrabold text-xl text-blue-950 tracking-tight">SMEA ARCHIVE</span>
@@ -89,7 +79,7 @@
                         <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-blue-950 transition-colors">
                             Masuk Portal
                         </a>
-                        <a href="{{ route('register') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-900 rounded-lg hover:bg-blue-800 shadow-sm shadow-blue-900/10 transition-all hover:shadow-md">
+                        <a href="{{ route('legalisir.create') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-900 rounded-lg hover:bg-blue-800 shadow-sm shadow-blue-900/10 transition-all hover:shadow-md">
                             <span>Ajukan Legalisir</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
@@ -128,8 +118,8 @@
                             </svg>
                             <span>Lacak Permohonan Legalisir</span>
                         </a>
-                        <a href="{{ route('register') }}" class="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl backdrop-blur-md transition-all">
-                            <span>Buat Akun Pemohon / Alumni</span>
+                        <a href="{{ route('legalisir.create') }}" class="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl backdrop-blur-md transition-all">
+                            <span>Ajukan Legalisir Mandiri</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </a>
                     </div>
@@ -475,12 +465,12 @@
                                 <svg class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                             </a>
 
-                            <a href="{{ route('register') }}" class="flex items-center justify-between p-4 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-700 hover:border-purple-500/50 transition-all text-sm group">
+                            <a href="{{ route('legalisir.create') }}" class="flex items-center justify-between p-4 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-700 hover:border-purple-500/50 transition-all text-sm group">
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-lg bg-purple-900/50 text-purple-400 flex items-center justify-center font-bold text-xs">AL</div>
                                     <div>
-                                        <div class="font-semibold text-white group-hover:text-purple-300 transition-colors">Pendaftaran Akun Alumni / Siswa</div>
-                                        <div class="text-xs text-slate-400">Pengajuan legalisir mandiri via daring</div>
+                                        <div class="font-semibold text-white group-hover:text-purple-300 transition-colors">Pengajuan Legalisir Mandiri Online</div>
+                                        <div class="text-xs text-slate-400">Layanan pengajuan dokumen langsung tanpa perlu login</div>
                                     </div>
                                 </div>
                                 <svg class="w-4 h-4 text-slate-500 group-hover:text-purple-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -495,9 +485,12 @@
     <!-- Footer -->
     <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div>
-                <p class="text-slate-300 font-semibold">SMK Negeri 1 Subang — SMEA</p>
-                <p class="text-slate-500 mt-0.5">Sistem Informasi Pengelolaan Arsip & Layanan Legalisir Dokumen Digital</p>
+            <div class="flex items-center gap-3">
+                <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-8 h-10 object-contain shrink-0 opacity-85">
+                <div>
+                    <p class="text-slate-300 font-semibold">SMK Negeri 1 Subang — SMEA</p>
+                    <p class="text-slate-500 mt-0.5">Sistem Informasi Pengelolaan Arsip & Layanan Legalisir Dokumen Digital</p>
+                </div>
             </div>
             <div class="text-slate-500">
                 &copy; {{ date('Y') }} SMKN 1 Subang. Dikembangkan berdasarkan Proposal Penelitian Skripsi.

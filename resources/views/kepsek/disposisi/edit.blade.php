@@ -1,8 +1,6 @@
 @extends('layouts.kepsek')
 
 @section('title', 'Ubah Lembar Disposisi - #' . $disposisi->id)
-@section('page_title', 'Ubah Lembar Disposisi')
-@section('page_subtitle', 'Pembaruan Instruksi & Pejabat Tujuan Disposisi')
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">

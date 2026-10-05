@@ -4,21 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Permohonan Terkirim - {{ $pengajuan->nomor_pengajuan }} | SMKN 1 Subang</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('images/logo-smk.png') }}" type="image/png">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-heading { font-family: 'Outfit', sans-serif; }
-    </style>
 </head>
 <body class="min-h-full flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 text-slate-800 antialiased bg-slate-100/70">
 
     <div class="max-w-xl w-full bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden p-6 sm:p-10 text-center space-y-6 animate-in fade-in zoom-in-95 duration-200">
+
+        <!-- Logo SMKN 1 Subang -->
+        <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-14 h-16 mx-auto object-contain drop-shadow-xs">
 
         <!-- Success Animated Icon -->
         <div class="w-16 h-16 rounded-3xl bg-emerald-50 text-emerald-600 border border-emerald-200/60 flex items-center justify-center mx-auto shadow-md shadow-emerald-500/10">
