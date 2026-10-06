@@ -9,14 +9,50 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 10mm 15mm;
+        }
+
+        @media print {
+            html, body {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 10pt !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print,
+            .btn-action-container {
+                display: none !important;
+            }
+            .print-card {
+                box-shadow: none !important;
+                border: 1.5px solid #000000 !important;
+                border-radius: 12px !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            .print-card-header {
+                background-color: #0f172a !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 antialiased py-8 px-4 sm:px-6 lg:px-8 font-sans">
 
     <div class="max-w-2xl mx-auto">
         <!-- Brand Header Resmi SMKN 1 Subang -->
-        <div class="bg-white rounded-3xl shadow-xl border border-slate-200/90 overflow-hidden">
+        <div class="print-card bg-white rounded-3xl shadow-xl border border-slate-200/90 overflow-hidden">
             <!-- Kop Instansi Kedinasan -->
-            <div class="bg-slate-900 text-white p-6 sm:p-8 text-center relative overflow-hidden">
+            <div class="print-card-header bg-slate-900 text-white p-6 sm:p-8 text-center relative overflow-hidden">
                 <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-blue-600/20 rounded-full blur-2xl pointer-events-none"></div>
                 <div class="flex items-center justify-center gap-3 sm:gap-4 mb-3">
                     <img src="{{ asset('images/logo-jabar.png') }}" alt="Logo Pemda Jawa Barat" class="w-12 h-14 object-contain drop-shadow-sm">
@@ -116,10 +152,10 @@
                 </div>
 
                 <!-- Tombol Aksi -->
-                <div class="mt-8 flex flex-col sm:flex-row gap-3">
-                    <a href="{{ route('landing') }}" class="flex-1 py-3 px-4 rounded-xl text-center text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
-                        Kembali ke Portal Beranda
-                    </a>
+                <div class="mt-8 flex flex-col sm:flex-row gap-3 btn-action-container no-print">
+                    <button type="button" onclick="window.history.length > 1 ? window.history.back() : window.location.href='{{ route('landing') }}'" class="flex-1 py-3 px-4 rounded-xl text-center text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer">
+                        Kembali ke Halaman Sebelumnya
+                    </button>
                     <button onclick="window.print()" class="py-3 px-6 rounded-xl text-center text-xs font-bold bg-blue-900 hover:bg-blue-800 text-white shadow-xs transition-colors flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                         <span>Cetak Bukti Verifikasi</span>

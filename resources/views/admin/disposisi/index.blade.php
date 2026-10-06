@@ -180,7 +180,6 @@
                                     <!-- Cetak Lembar Disposisi -->
                                     <a 
                                         href="{{ route('admin.disposisi.cetak', $disp) }}" 
-                                        target="_blank"
                                         class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition-colors"
                                         title="Cetak Lembar Disposisi Resmi"
                                     >

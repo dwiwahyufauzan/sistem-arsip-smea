@@ -149,7 +149,6 @@ body {
         color: #000000 !important;
         padding: 0 !important;
         margin: 0 !important;
-        font-size: 11pt;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
@@ -165,30 +164,51 @@ body {
         padding-top: 0 !important;
     }
 
+    /* Normalisasi Sheet Cetak */
+    .print-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
     /* Normalisasi Card & Container */
     .card-modern,
     .card-elevated,
     .card-glass {
         box-shadow: none !important;
-        border: 1px solid #cbd5e1 !important;
+        border: 1px solid #000000 !important;
         background: #ffffff !important;
     }
 
     /* Page-break handling */
     .page-break {
-        page-break-after: always;
-        break-after: page;
+        page-break-after: always !important;
+        break-after: page !important;
     }
 
     .break-inside-avoid,
     tr,
     .print-avoid-break {
-        page-break-inside: avoid;
-        break-inside: avoid;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    thead {
+        display: table-header-group;
     }
 
     /* Sembunyikan link URL otomatis bawaan browser */
     a[href]:after {
         content: none !important;
     }
+
+    /* Hindari orphan headings */
+    h1, h2, h3, h4, h5, h6 {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
 }
+

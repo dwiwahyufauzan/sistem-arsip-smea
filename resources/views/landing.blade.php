@@ -14,6 +14,14 @@
             * { animation: none !important; transition: none !important; }
         }
         section[id] { scroll-margin-top: 5.5rem; }
+        #lacak {
+            scroll-margin-top: 6.5rem;
+        }
+        @media (min-width: 1024px) {
+            #lacak {
+                scroll-margin-top: 18rem;
+            }
+        }
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
         details[open] .faq-icon { transform: rotate(180deg); }
@@ -255,7 +263,7 @@
                     </div>
 
                     <!-- Kolom Widget Lacak Status (Kanan) -->
-                    <div id="lacak" class="lg:col-span-6 w-full max-w-xl mx-auto lg:max-w-none">
+                    <div id="lacak" class="lg:col-span-6 w-full max-w-xl mx-auto lg:max-w-none scroll-mt-24 sm:scroll-mt-28 lg:scroll-mt-72">
                         <div class="relative bg-white/95 backdrop-blur-xl p-5 sm:p-7 rounded-3xl shadow-2xl shadow-slate-950/50 ring-1 ring-white/30 text-slate-800 transition-all duration-300">
                             
                             <!-- Header Form Lacak -->
@@ -498,11 +506,11 @@
 
                                             <!-- Quick Action Links -->
                                             <div class="pt-2 flex flex-wrap items-center gap-2">
-                                                <a href="{{ route('legalisir.tanda-terima', $pengajuan->nomor_pengajuan) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white bg-blue-900 hover:bg-blue-800 shadow-sm transition-all">
+                                                <a href="{{ route('legalisir.tanda-terima', $pengajuan->nomor_pengajuan) }}" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white bg-blue-900 hover:bg-blue-800 shadow-sm transition-all">
                                                     <svg class="w-4 h-4 text-teal-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                                                     <span>Cetak Bukti Resi</span>
                                                 </a>
-                                                <a href="{{ route('verifikasi.legalisir', $pengajuan->nomor_pengajuan) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-all">
+                                                <a href="{{ route('verifikasi.legalisir', $pengajuan->nomor_pengajuan) }}" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-all">
                                                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
                                                     <span>Cek QR Publik</span>
                                                 </a>
@@ -1184,8 +1192,40 @@
                     if (!val) {
                         e.preventDefault();
                         showEmptyModal();
+                        return;
+                    }
+                    // Jika di layar desktop (>= 1024px), kirim form tanpa anchor #lacak agar hero tidak bergeser naik dan dempet ke navbar
+                    if (window.innerWidth >= 1024) {
+                        trackingForm.action = "{{ route('landing') }}";
+                    } else {
+                        trackingForm.action = "{{ route('landing') }}#lacak";
                     }
                 });
+            }
+
+            // Cegah hero dempet ke navbar saat klik tautan internal yang mengarah ke #lacak pada layar desktop
+            document.querySelectorAll('a[href="#lacak"]').forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    if (window.innerWidth >= 1024) {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        if (resiInput) {
+                            setTimeout(function () { resiInput.focus(); }, 350);
+                        }
+                    }
+                });
+            });
+
+            // Tangani posisi scroll saat halaman dimuat dengan hash #lacak atau query nomor_pengajuan
+            if (window.location.hash === '#lacak' || window.location.search.indexOf('nomor_pengajuan') !== -1) {
+                if (window.innerWidth >= 1024) {
+                    // Di desktop, pertahankan tampilan hero di puncak viewport dengan padding yang proporsional
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    // Hilangkan hash #lacak dari URL bar tanpa reload untuk mencegah browser melompat
+                    if (window.history && window.history.replaceState && window.location.hash === '#lacak') {
+                        window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                    }
+                }
             }
 
             // Modal Controls
@@ -1250,6 +1290,9 @@
                     emptyModal.classList.add('opacity-0', 'pointer-events-none');
                 }
                 if (trackingForm) {
+                    if (window.innerWidth >= 1024) {
+                        trackingForm.action = "{{ route('landing') }}";
+                    }
                     trackingForm.submit();
                 }
             };
@@ -1260,7 +1303,11 @@
                     resiInput.focus();
                 }
                 // Jika ingin mereset halaman tanpa query, pindah ke route landing
-                window.location.href = "{{ route('landing') }}#lacak";
+                if (window.innerWidth >= 1024) {
+                    window.location.href = "{{ route('landing') }}";
+                } else {
+                    window.location.href = "{{ route('landing') }}#lacak";
+                }
             };
 
             // 5. Salin Resi (Copy to Clipboard)
