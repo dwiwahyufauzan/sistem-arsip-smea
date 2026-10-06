@@ -1,32 +1,35 @@
-<!-- Top Navigation Bar - Portal Pemohon / Alumni -->
-<header {{ $attributes->merge(['class' => 'sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs']) }}>
+<!-- Top Navigation Bar - Portal Pemohon / Alumni (Konsisten dengan Landing Page) -->
+<header {{ $attributes->merge(['class' => 'sticky top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-slate-200/80 transition-all duration-300 shadow-xs']) }}>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
+        <div class="flex items-center justify-between h-16 sm:h-20">
             <!-- Brand Logo & School Identity -->
-            <a href="{{ route('pemohon.dashboard') }}" class="flex items-center gap-3.5 group">
-                <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-10 h-12 object-contain shrink-0 group-hover:scale-105 transition-transform duration-200 drop-shadow-xs">
-                <div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="font-heading font-extrabold text-lg text-slate-900 tracking-tight">LEGALISIR SMEA</span>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800 border border-teal-200">ALUMNI</span>
+            <a href="{{ route('pemohon.dashboard') }}" class="flex items-center gap-3.5 group focus-visible:outline-2 focus-visible:outline-teal-600 rounded-xl">
+                <div class="relative">
+                    <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-9 h-11 sm:w-11 sm:h-13 object-contain shrink-0 group-hover:scale-105 transition-transform duration-300 filter drop-shadow-sm">
+                </div>
+                <div class="leading-tight">
+                    <div class="flex items-center gap-2">
+                        <span class="font-heading font-extrabold text-lg sm:text-xl text-blue-950 tracking-tight">SMEA ARCHIVE</span>
+                        <span class="px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-teal-100 text-teal-800 border border-teal-200">LEGALISIR SMEA</span>
                     </div>
-                    <p class="text-xs text-slate-500 font-medium">SMK Negeri 1 Subang</p>
+                    <p class="text-[11px] sm:text-xs font-semibold text-slate-600">SMK Negeri 1 Subang · Portal Alumni</p>
                 </div>
             </a>
 
             <!-- Navigation Links -->
-            <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
-                <a href="{{ route('pemohon.dashboard') }}" class="hover:text-teal-700 transition-colors {{ request()->routeIs('pemohon.dashboard') ? 'text-teal-700 font-bold' : '' }}">
+            <nav class="hidden md:flex items-center gap-1 text-xs font-semibold text-slate-600" aria-label="Navigasi portal pemohon">
+                <a href="{{ route('pemohon.dashboard') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->routeIs('pemohon.dashboard') ? 'bg-teal-50 text-teal-900 font-bold border border-teal-200/70' : 'hover:bg-slate-100/90 hover:text-blue-950' }}">
                     Beranda Pemohon
                 </a>
-                <a href="{{ url('/pemohon/legalisir/create') }}" class="hover:text-teal-700 transition-colors {{ request()->is('pemohon/legalisir/create*') ? 'text-teal-700 font-bold' : '' }}">
+                <a href="{{ url('/pemohon/legalisir/create') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->is('pemohon/legalisir/create*') ? 'bg-teal-50 text-teal-900 font-bold border border-teal-200/70' : 'hover:bg-slate-100/90 hover:text-blue-950' }}">
                     Ajukan Legalisir Baru
                 </a>
-                <a href="{{ url('/pemohon/legalisir') }}" class="hover:text-teal-700 transition-colors {{ request()->is('pemohon/legalisir') ? 'text-teal-700 font-bold' : '' }}">
+                <a href="{{ url('/pemohon/legalisir') }}" class="px-3 py-1.5 rounded-lg transition-colors {{ request()->is('pemohon/legalisir') ? 'bg-teal-50 text-teal-900 font-bold border border-teal-200/70' : 'hover:bg-slate-100/90 hover:text-blue-950' }}">
                     Riwayat & Tracking Berkas
                 </a>
-                <a href="{{ route('landing') }}#alur" target="_blank" class="hover:text-teal-700 transition-colors">
-                    Panduan Berkas
+                <a href="{{ route('landing') }}#alur" target="_blank" class="px-3 py-1.5 rounded-lg hover:bg-slate-100/90 hover:text-blue-950 transition-colors flex items-center gap-1">
+                    <span>Panduan Alur</span>
+                    <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 </a>
             </nav>
 
@@ -35,34 +38,34 @@
                 <button 
                     type="button" 
                     onclick="togglePemohonProfileDropdown(event)" 
-                    class="flex items-center gap-2.5 sm:gap-3 py-1.5 px-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer group focus:outline-none"
+                    class="flex items-center gap-2.5 py-1.5 px-2.5 rounded-xl hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-colors cursor-pointer group focus:outline-none"
                     aria-expanded="false"
                     id="pemohonProfileDropdownBtn"
                     title="Menu Akun & Logout"
                 >
-                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-teal-800 text-white font-bold flex items-center justify-center text-xs sm:text-sm shadow-xs shrink-0 group-hover:scale-105 transition-transform ring-2 ring-transparent group-hover:ring-teal-200">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-900 to-indigo-900 text-white font-bold flex items-center justify-center text-xs sm:text-sm shadow-xs shrink-0 group-hover:scale-105 transition-transform ring-2 ring-transparent group-hover:ring-blue-200">
                         {{ substr(auth()->user()->name, 0, 1) }}
                     </div>
                     <div class="hidden sm:block text-left text-xs">
-                        <p class="font-semibold text-slate-900 leading-tight truncate max-w-[130px]">{{ auth()->user()->name }}</p>
-                        <span class="text-[10px] font-semibold text-teal-700 bg-teal-50 border border-teal-100 px-1.5 py-0.5 rounded-md mt-0.5 inline-block">{{ auth()->user()->role_badge }}</span>
+                        <p class="font-bold text-slate-900 leading-tight truncate max-w-[140px]">{{ auth()->user()->name }}</p>
+                        <span class="text-[10px] font-semibold text-teal-800 bg-teal-50 border border-teal-200/80 px-1.5 py-0.5 rounded-md mt-0.5 inline-block">{{ auth()->user()->role_badge }}</span>
                     </div>
                 </button>
 
-                <!-- Dropdown Menu Box (Lebar, Elegan, dan Nyaman) -->
+                <!-- Dropdown Menu Box -->
                 <div 
                     id="pemohonProfileDropdownMenu" 
-                    class="hidden absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl shadow-slate-900/15 border border-slate-200/90 py-1 z-50 animate-in fade-in zoom-in-95 duration-150"
+                    class="hidden absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl shadow-slate-900/15 border border-slate-200/90 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150"
                 >
                     <!-- User Identity Card -->
                     <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/70 rounded-t-2xl">
                         <div class="flex items-center gap-3">
-                            <div class="w-11 h-11 rounded-xl bg-teal-800 text-white font-bold flex items-center justify-center text-sm shadow-xs shrink-0 ring-2 ring-teal-100">
+                            <div class="w-11 h-11 rounded-xl bg-blue-900 text-white font-bold flex items-center justify-center text-sm shadow-xs shrink-0 ring-2 ring-blue-100">
                                 {{ substr(auth()->user()->name, 0, 1) }}
                             </div>
                             <div class="min-w-0 flex-1">
                                 <p class="text-sm font-bold text-slate-900 truncate leading-snug">{{ auth()->user()->name }}</p>
-                                <p class="text-xs text-slate-500 truncate mt-0.5">{{ auth()->user()->email }}</p>
+                                <p class="text-xs text-slate-500 truncate mt-0.5 font-mono">{{ auth()->user()->email }}</p>
                             </div>
                         </div>
 
@@ -71,12 +74,12 @@
                             @if(auth()->user()->isSiswaAktif())
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-50 text-cyan-800 border border-cyan-200/80">
                                     <span class="w-1.5 h-1.5 rounded-full bg-cyan-600"></span>
-                                    <span>Siswa Aktif</span>
+                                    <span>Siswa Aktif SMKN 1</span>
                                 </span>
                             @else
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-teal-50 text-teal-800 border border-teal-200/80">
                                     <span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
-                                    <span>Pemohon / Alumni</span>
+                                    <span>Alumni SMKN 1 Subang</span>
                                 </span>
                             @endif
 
@@ -120,8 +123,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <span class="block text-xs font-semibold text-slate-800 group-hover:text-slate-900">Buka Halaman Utama</span>
-                                <span class="block text-[10px] text-slate-400 font-normal">Portal publik SMKN 1 Subang</span>
+                                <span class="block text-xs font-semibold text-slate-800 group-hover:text-slate-900">Buka Beranda Publik</span>
+                                <span class="block text-[10px] text-slate-400 font-normal">Portal kearsipan SMKN 1 Subang</span>
                             </div>
                         </a>
                     </div>

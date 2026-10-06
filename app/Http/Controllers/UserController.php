@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LogAktivitas;
+use App\Models\PengajuanLegalisir;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -150,6 +151,15 @@ class UserController extends Controller
             $updateData['password'] = Hash::make($validated['password']);
         }
 
+        if ($request->has('is_active')) {
+            $isActive = $request->boolean('is_active');
+            if ($pengguna->id === Auth::id() && ! $isActive) {
+                return redirect()->route('admin.pengguna.index')
+                    ->with('error', 'Anda tidak dapat menonaktifkan akun Anda sendiri yang sedang aktif.');
+            }
+            $updateData['is_active'] = $isActive;
+        }
+
         $pengguna->update($updateData);
 
         LogAktivitas::catat(
@@ -173,11 +183,13 @@ class UserController extends Controller
                 ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri yang sedang aktif digunakan.');
         }
 
-        // Proteksi 2: Integritas kearsipan
-        $suratCount = $pengguna->suratMasuk()->count() + $pengguna->suratKeluar()->count();
-        if ($suratCount > 0) {
+        // Proteksi 2: Integritas kearsipan & legalisir
+        $suratCount = $pengguna->suratMasuk()->withTrashed()->count() + $pengguna->suratKeluar()->withTrashed()->count();
+        $legalisirCount = PengajuanLegalisir::where('user_id', $pengguna->id)->orWhere('petugas_id', $pengguna->id)->count();
+
+        if ($suratCount > 0 || $legalisirCount > 0) {
             return redirect()->route('admin.pengguna.index')
-                ->with('error', "Pengguna {$pengguna->name} tidak dapat dihapus karena tercatat sebagai pembuat/pencatat pada {$suratCount} dokumen arsip.");
+                ->with('error', "Pengguna {$pengguna->name} tidak dapat dihapus karena tercatat dalam riwayat kearsipan ({$suratCount} surat, {$legalisirCount} legalisir). Silakan nonaktifkan akun sebagai alternatif.");
         }
 
         $nama = $pengguna->name;

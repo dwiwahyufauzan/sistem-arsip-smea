@@ -94,8 +94,6 @@
                         >
                             <option value="draft" {{ old('status_persetujuan', $surat_keluar->status_persetujuan) === 'draft' ? 'selected' : '' }}>Draf Konsep</option>
                             <option value="menunggu_persetujuan" {{ old('status_persetujuan', $surat_keluar->status_persetujuan) === 'menunggu_persetujuan' ? 'selected' : '' }}>Menunggu Persetujuan Kepsek</option>
-                            <option value="disetujui" {{ old('status_persetujuan', $surat_keluar->status_persetujuan) === 'disetujui' ? 'selected' : '' }}>Disetujui Kepsek</option>
-                            <option value="ditolak" {{ old('status_persetujuan', $surat_keluar->status_persetujuan) === 'ditolak' ? 'selected' : '' }}>Ditolak / Perlu Revisi</option>
                         </select>
                         @error('status_persetujuan')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>

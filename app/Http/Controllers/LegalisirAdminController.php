@@ -66,6 +66,10 @@ class LegalisirAdminController extends Controller
      */
     public function verifikasi(Request $request, PengajuanLegalisir $legalisir): RedirectResponse
     {
+        if (! in_array($legalisir->status, ['menunggu_verifikasi', 'diverifikasi'])) {
+            return back()->with('error', 'Permohonan tidak dalam antrean verifikasi berkas.');
+        }
+
         $validated = $request->validate([
             'status' => ['required', 'in:diverifikasi,menunggu_approval_kepsek'],
             'catatan_petugas' => ['nullable', 'string', 'max:500'],
@@ -107,6 +111,10 @@ class LegalisirAdminController extends Controller
      */
     public function prosesCetak(Request $request, PengajuanLegalisir $legalisir): RedirectResponse
     {
+        if (! in_array($legalisir->status, ['diverifikasi', 'disetujui_kepsek'])) {
+            return back()->with('error', 'Dokumen hanya dapat diproses cetak jika telah diverifikasi atau disetujui Kepala Sekolah.');
+        }
+
         $statusSebelumnya = $legalisir->status;
         $statusBaru = 'sedang_diproses';
         $catatan = 'Dokumen salinan fisik sedang dicetak dan dalam proses pembubuhan stempel legalisir resmi.';
@@ -140,6 +148,10 @@ class LegalisirAdminController extends Controller
      */
     public function siapDiambil(Request $request, PengajuanLegalisir $legalisir): RedirectResponse
     {
+        if (! in_array($legalisir->status, ['sedang_diproses', 'diverifikasi', 'disetujui_kepsek'])) {
+            return back()->with('error', 'Dokumen hanya dapat ditandai siap diambil setelah melalui tahapan pemrosesan.');
+        }
+
         $validated = $request->validate([
             'tanggal_siap_ambil' => ['required', 'date'],
             'catatan_petugas' => ['nullable', 'string', 'max:500'],
@@ -182,6 +194,10 @@ class LegalisirAdminController extends Controller
      */
     public function selesai(Request $request, PengajuanLegalisir $legalisir): RedirectResponse
     {
+        if ($legalisir->status !== 'siap_diambil') {
+            return back()->with('error', 'Permohonan hanya dapat diselesaikan jika status fisik berkas sudah siap diambil.');
+        }
+
         $validated = $request->validate([
             'tanggal_pengambilan' => ['nullable', 'date'],
         ]);
@@ -220,6 +236,10 @@ class LegalisirAdminController extends Controller
      */
     public function tolak(Request $request, PengajuanLegalisir $legalisir): RedirectResponse
     {
+        if ($legalisir->status === 'selesai') {
+            return back()->with('error', 'Permohonan yang telah selesai diambil tidak dapat ditolak.');
+        }
+
         $validated = $request->validate([
             'catatan_petugas' => ['required', 'string', 'min:5', 'max:1000'],
         ], [

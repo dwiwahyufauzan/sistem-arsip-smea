@@ -10,6 +10,7 @@
         title="Riwayat & Pelacakan Permohonan Legalisir" 
         subtitle="Pantau perkembangan verifikasi berkas alumni secara transparan dan unduh bukti tanda terima."
         overline="Portal Alumni • Layanan Mandiri"
+        theme="teal"
     >
         <x-slot:actions>
             <a href="{{ route('legalisir.create') }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-white bg-teal-700 hover:bg-teal-800 rounded-xl shadow-xs transition-all active:scale-[0.98]">
@@ -21,65 +22,68 @@
 
     <!-- Stat Summary Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="card-modern p-4">
+        <div class="bg-white/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 shadow-xs p-4.5 hover:shadow-md transition-shadow">
             <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Total Pengajuan</span>
             <div class="text-2xl font-extrabold font-heading text-slate-900 mt-1">{{ $stats['total'] }}</div>
-            <span class="text-[11px] text-slate-400">Seluruh riwayat</span>
+            <span class="text-[11px] text-slate-400">Seluruh riwayat berkas</span>
         </div>
 
-        <div class="card-modern p-4">
-            <span class="text-xs font-semibold text-amber-600 uppercase tracking-wider block">Menunggu Verifikasi</span>
+        <div class="bg-white/95 backdrop-blur-xl rounded-2xl border border-amber-200/90 shadow-xs p-4.5 bg-amber-50/20 hover:shadow-md transition-shadow">
+            <span class="text-xs font-semibold text-amber-700 uppercase tracking-wider block">Menunggu Verifikasi</span>
             <div class="text-2xl font-extrabold font-heading text-amber-600 mt-1">{{ $stats['menunggu'] }}</div>
-            <span class="text-[11px] text-amber-700/80">Antrean staf TU</span>
+            <span class="text-[11px] text-amber-700/80">Antrean staf Tata Usaha</span>
         </div>
 
-        <div class="card-modern p-4">
-            <span class="text-xs font-semibold text-purple-600 uppercase tracking-wider block">Diproses & Cap</span>
+        <div class="bg-white/95 backdrop-blur-xl rounded-2xl border border-purple-200/90 shadow-xs p-4.5 bg-purple-50/20 hover:shadow-md transition-shadow">
+            <span class="text-xs font-semibold text-purple-700 uppercase tracking-wider block">Diproses & Cap</span>
             <div class="text-2xl font-extrabold font-heading text-purple-600 mt-1">{{ $stats['proses'] }}</div>
             <span class="text-[11px] text-purple-700/80">Pencetakan & stempel</span>
         </div>
 
-        <div class="card-modern p-4 border-emerald-300 bg-emerald-50/30">
+        <div class="bg-white/95 backdrop-blur-xl rounded-2xl border border-emerald-300 shadow-xs p-4.5 bg-emerald-50/40 hover:shadow-md transition-shadow">
             <span class="text-xs font-semibold text-emerald-800 uppercase tracking-wider block">Siap Diambil</span>
             <div class="text-2xl font-extrabold font-heading text-emerald-700 mt-1">{{ $stats['siap_ambil'] }}</div>
-            <span class="text-[11px] text-emerald-800 font-semibold">Tersedia di TU</span>
+            <span class="text-[11px] text-emerald-800 font-semibold">Tersedia di Loket TU</span>
         </div>
     </div>
 
     <!-- Table of Applications -->
-    <div class="card-modern overflow-hidden">
-        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-            <h3 class="font-heading font-bold text-sm text-slate-900">Daftar Permohonan Legalisir Anda</h3>
-            <span class="text-xs text-slate-500">{{ $pengajuans->total() }} data ditemukan</span>
+    <div class="bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden">
+        <div class="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-slate-100/60">
+            <div>
+                <h3 class="font-heading font-bold text-base text-slate-900">Daftar Permohonan Legalisir Anda</h3>
+                <p class="text-xs text-slate-500">Kelola dan pantau seluruh status permohonan legalisir resmi Anda</p>
+            </div>
+            <span class="text-xs font-bold text-slate-600 bg-white px-3 py-1 rounded-full border border-slate-200">{{ $pengajuans->total() }} data ditemukan</span>
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs border-collapse">
                 <thead class="bg-slate-50/80 text-slate-500 font-bold uppercase text-[11px] tracking-wider border-b border-slate-200">
                     <tr>
-                        <th class="py-3 px-4">No. Resi & Tanggal</th>
-                        <th class="py-3 px-4">Dokumen yang Dilegalisir</th>
-                        <th class="py-3 px-4">Jumlah Lembar</th>
-                        <th class="py-3 px-4">Status Pengajuan</th>
-                        <th class="py-3 px-4">Kesiapan Ambil</th>
-                        <th class="py-3 px-4 text-center">Aksi</th>
+                        <th class="py-3.5 px-5">No. Resi & Tanggal</th>
+                        <th class="py-3.5 px-5">Dokumen yang Dilegalisir</th>
+                        <th class="py-3.5 px-5">Jumlah Lembar</th>
+                        <th class="py-3.5 px-5">Status Pengajuan</th>
+                        <th class="py-3.5 px-5">Kesiapan Ambil</th>
+                        <th class="py-3.5 px-5 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-slate-700">
                     @forelse($pengajuans as $item)
                         <tr class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4">
+                            <td class="py-4 px-5">
                                 <span class="font-mono font-bold text-teal-800 block text-xs">{{ $item->nomor_pengajuan }}</span>
                                 <span class="text-[11px] text-slate-400 block mt-0.5">{{ $item->created_at->translatedFormat('d M Y, H:i') }}</span>
                             </td>
-                            <td class="py-3.5 px-4">
+                            <td class="py-4 px-5">
                                 <span class="font-bold text-slate-900 block">{{ $item->jenis_dokumen_label }}</span>
                                 <span class="text-[11px] text-slate-500 block truncate max-w-xs">{{ $item->keperluan }}</span>
                             </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-700">
+                            <td class="py-4 px-5 font-semibold text-slate-700">
                                 {{ $item->jumlah_lembar }} Lembar
                             </td>
-                            <td class="py-3.5 px-4">
+                            <td class="py-4 px-5">
                                 <x-status-badge :status="$item->status" type="legalisir" />
                                 @if($item->status === 'ditolak')
                                     <p class="text-[10px] text-rose-600 mt-1 max-w-xs truncate" title="{{ $item->catatan_petugas ?? $item->catatan_kepsek }}">
@@ -87,20 +91,20 @@
                                     </p>
                                 @endif
                             </td>
-                            <td class="py-3.5 px-4">
+                            <td class="py-4 px-5">
                                 @if($item->tanggal_siap_ambil)
-                                    <span class="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
+                                    <span class="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">
                                         {{ $item->tanggal_siap_ambil->translatedFormat('d M Y') }}
                                     </span>
                                 @else
                                     <span class="text-slate-400 italic text-[11px]">Dalam proses verifikasi</span>
                                 @endif
                             </td>
-                            <td class="py-3.5 px-4 text-center">
-                                <div class="inline-flex items-center gap-1">
+                            <td class="py-4 px-5 text-center">
+                                <div class="inline-flex items-center gap-1.5">
                                     <a 
                                         href="{{ route('pemohon.legalisir.show', $item->id) }}" 
-                                        class="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 rounded-xl font-bold text-xs transition-colors"
+                                        class="px-3.5 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200/70 rounded-xl font-bold text-xs transition-colors"
                                     >
                                         Lacak Status
                                     </a>

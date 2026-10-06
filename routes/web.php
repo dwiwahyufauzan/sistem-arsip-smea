@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisposisiController;
 use App\Http\Controllers\KategoriSuratController;
 use App\Http\Controllers\LandingController;
@@ -59,9 +60,7 @@ Route::middleware('auth')->group(function () {
 
 // 2. Rute Khusus Admin / Petugas TU
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
 
     // Modul Surat Masuk (SRS-P02, SRS-P03)
     Route::get('surat-masuk/{surat_masuk}/download', [SuratMasukController::class, 'download'])->name('surat-masuk.download');
@@ -108,9 +107,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 // 3. Rute Khusus Kepala Sekolah (Pimpinan)
 Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepala-sekolah')->name('kepsek.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('kepsek.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'kepsek'])->name('dashboard');
 
     // Pencarian Cepat Terpadu KMP (SRS-KS08, NFR-07)
     Route::get('/pencarian-kmp', [PencarianKmpController::class, 'indexKepsek'])->name('pencarian-kmp');
@@ -160,9 +157,9 @@ Route::middleware(['auth', 'role:kepala_sekolah'])->prefix('kepala-sekolah')->na
 
 // 4. Rute Khusus Pemohon Legalisir (Alumni / Siswa)
 Route::middleware(['auth', 'role:pemohon'])->prefix('pemohon')->name('pemohon.')->group(function () {
-    Route::get('/dashboard', fn () => view('pemohon.dashboard'))->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'pemohon'])->name('dashboard');
     Route::get('/permohonan-saya', [PengajuanLegalisirController::class, 'indexPemohon'])->name('legalisir.index');
     Route::get('/permohonan-saya/{legalisir}', [PengajuanLegalisirController::class, 'showPemohon'])->name('legalisir.show');
     Route::get('/legalisir', [PengajuanLegalisirController::class, 'indexPemohon']);
-    Route::get('/legalisir/create', fn () => redirect()->route('legalisir.create'));
+    Route::get('/legalisir/create', [DashboardController::class, 'redirectCreate']);
 });

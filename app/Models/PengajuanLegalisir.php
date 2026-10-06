@@ -16,6 +16,7 @@ class PengajuanLegalisir extends Model
 
     protected $fillable = [
         'nomor_pengajuan',
+        'kode_akses',
         'user_id',
         'nama_pemohon',
         'nisn',
@@ -82,5 +83,37 @@ class PengajuanLegalisir extends Model
             'ditolak' => 'Permohonan Ditolak',
             default => ucfirst(str_replace('_', ' ', $this->status)),
         };
+    }
+
+    /**
+     * Samarkan nama pemohon untuk proteksi privasi PDP pada halaman publik
+     */
+    public function getNamaPemohonMaskedAttribute(): string
+    {
+        $words = explode(' ', trim($this->nama_pemohon));
+        $masked = array_map(function ($word) {
+            $len = mb_strlen($word);
+            if ($len <= 2) {
+                return $word;
+            }
+
+            return mb_substr($word, 0, 1).str_repeat('*', max(1, $len - 1));
+        }, $words);
+
+        return implode(' ', $masked);
+    }
+
+    /**
+     * Samarkan NISN untuk proteksi privasi PDP pada halaman publik
+     */
+    public function getNisnMaskedAttribute(): string
+    {
+        $nisn = trim($this->nisn);
+        $len = strlen($nisn);
+        if ($len <= 4) {
+            return $nisn;
+        }
+
+        return substr($nisn, 0, 2).str_repeat('*', max(2, $len - 4)).substr($nisn, -2);
     }
 }

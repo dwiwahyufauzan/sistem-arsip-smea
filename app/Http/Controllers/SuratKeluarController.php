@@ -165,8 +165,13 @@ class SuratKeluarController extends Controller
     /**
      * Tampilkan formulir edit metadata surat keluar
      */
-    public function edit(SuratKeluar $surat_keluar): View
+    public function edit(SuratKeluar $surat_keluar): View|RedirectResponse
     {
+        if ($surat_keluar->status_persetujuan === 'disetujui') {
+            return redirect()->route('admin.surat-keluar.show', $surat_keluar)
+                ->with('error', 'Surat keluar yang telah disetujui Kepala Sekolah telah berstatus arsip resmi dan dikunci dari penyuntingan.');
+        }
+
         $kategoriList = KategoriSurat::orderBy('kode_kategori')->get();
 
         return view('admin.surat-keluar.edit', compact('surat_keluar', 'kategoriList'));
@@ -177,6 +182,11 @@ class SuratKeluarController extends Controller
      */
     public function update(Request $request, SuratKeluar $surat_keluar): RedirectResponse
     {
+        if ($surat_keluar->status_persetujuan === 'disetujui') {
+            return redirect()->route('admin.surat-keluar.show', $surat_keluar)
+                ->with('error', 'Surat keluar yang telah disetujui Kepala Sekolah telah berstatus arsip resmi dan dikunci dari penyuntingan.');
+        }
+
         $validated = $request->validate([
             'nomor_agenda' => ['required', 'string', 'max:50', 'unique:surat_keluar,nomor_agenda,'.$surat_keluar->id],
             'nomor_surat' => ['required', 'string', 'max:100'],
@@ -185,12 +195,13 @@ class SuratKeluarController extends Controller
             'perihal' => ['required', 'string', 'max:255'],
             'isi_ringkas' => ['nullable', 'string', 'max:1000'],
             'kategori_id' => ['required', 'exists:kategori_surat,id'],
-            'status_persetujuan' => ['required', 'in:draft,menunggu_persetujuan,disetujui,ditolak'],
+            'status_persetujuan' => ['required', 'in:draft,menunggu_persetujuan'],
             'berkas' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
         ], [
             'nomor_agenda.required' => 'Nomor agenda wajib diisi.',
             'nomor_agenda.unique' => 'Nomor agenda ini sudah terdaftar pada surat lain.',
             'nomor_surat.required' => 'Nomor surat wajib diisi.',
+            'status_persetujuan.in' => 'Status surat yang dapat dipilih adalah Draf atau Menunggu Persetujuan.',
             'berkas.mimes' => 'Berkas pengganti harus berupa dokumen PDF atau gambar (JPG/PNG).',
             'berkas.max' => 'Ukuran berkas pengganti tidak boleh melebihi 5 MB.',
         ]);
@@ -342,7 +353,8 @@ class SuratKeluarController extends Controller
         $tahun = date('Y');
         $prefix = "SK/{$tahun}/";
 
-        $lastSurat = SuratKeluar::where('nomor_agenda', 'like', "{$prefix}%")
+        $lastSurat = SuratKeluar::withTrashed()
+            ->where('nomor_agenda', 'like', "{$prefix}%")
             ->orderBy('id', 'desc')
             ->first();
 

@@ -16,7 +16,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
-#[Signature('arsip:backup {--clean : Hapus berkas pencadangan yang berusia lebih dari 30 hari}')]
+#[Signature('arsip:backup {--clean : Hapus berkas pencadangan yang berusia lebih dari 30 hari} {--with-files : Sertakan pencadangan berkas fisik dokumen kearsipan dalam arsip ZIP}')]
 #[Description('Lakukan pencadangan database kearsipan SMKN 1 Subang untuk disaster recovery')]
 class BackupArsipCommand extends Command
 {
@@ -109,7 +109,35 @@ class BackupArsipCommand extends Command
         $this->info("✓ Berkas SQL  : {$sqlPath} (".round(filesize($sqlPath) / 1024, 2).' KB)');
         $this->info("✓ Berkas JSON : {$jsonPath} (".round(filesize($jsonPath) / 1024, 2).' KB)');
 
-        // 3. Rotasi Berkas (Hapus backup > 30 hari jika diminta atau otomatis)
+        // 3. Cadangkan berkas fisik dokumen jika opsi --with-files diaktifkan
+        if ($this->option('with-files') && class_exists(\ZipArchive::class)) {
+            $this->line('3. Mengompresi berkas fisik dokumen kearsipan (storage/app/public)...');
+            $filenameZip = "backup_arsip_smea_{$timestamp}_files.zip";
+            $zipPath = $backupDir.DIRECTORY_SEPARATOR.$filenameZip;
+            $publicStorage = storage_path('app/public');
+
+            if (File::exists($publicStorage)) {
+                $files = File::allFiles($publicStorage);
+                if (count($files) > 0) {
+                    $zip = new \ZipArchive;
+                    if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
+                        foreach ($files as $file) {
+                            $relativePath = substr($file->getPathname(), strlen($publicStorage) + 1);
+                            $zip->addFile($file->getPathname(), $relativePath);
+                        }
+                        $zip->close();
+                        clearstatcache(true, $zipPath);
+                        if (File::exists($zipPath)) {
+                            $this->info("✓ Berkas Dokumen Fisik (ZIP) : {$zipPath} (".round(filesize($zipPath) / 1024, 2).' KB)');
+                        }
+                    }
+                } else {
+                    $this->comment('ℹ Direktori dokumen fisik kosong, tidak ada berkas scan yang perlu dikompresi.');
+                }
+            }
+        }
+
+        // 4. Rotasi Berkas (Hapus backup > 30 hari jika diminta atau otomatis)
         if ($this->option('clean')) {
             $this->cleanOldBackups($backupDir);
         }

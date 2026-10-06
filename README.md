@@ -33,7 +33,7 @@ Repository ini berisi kode sumber dan dokumentasi rancang bangun **Sistem Inform
 - **Frontend:** Tailwind CSS, Blade Templates, JavaScript / Alpine.js, Vite
 - **Algoritma:** Knuth-Morris-Pratt (KMP) String Matching
 - **Metodologi:** Rational Unified Process (RUP)
-- **Testing Suite:** PHPUnit (129 Feature & Unit Tests, 583 Assertions)
+- **Testing Suite:** PHPUnit (138 Feature & Unit Tests, 628 Assertions - 100% Green)
 - **Code Style:** Laravel Pint (PSR-12 Compliant)
 
 ---
@@ -43,16 +43,19 @@ Repository ini berisi kode sumber dan dokumentasi rancang bangun **Sistem Inform
 Untuk menjamin sistem dapat digunakan secara berkelanjutan, aman, dan siap pakai dalam operasional institusi pendidikan jangka panjang, telah diimplementasikan 5 pilar arsitektur kearsipan:
 
 ### 1. Pilar Integritas Data & Retensi Kearsipan (Soft Deletes Architecture)
-- **Implementasi:** Penerapan trait `Illuminate\Database\Eloquent\SoftDeletes` pada model inti:
-  - `SuratMasuk` (`surat_masuks`)
-  - `SuratKeluar` (`surat_keluars`)
-  - `PengajuanLegalisir` (`pengajuan_legalisirs`)
+- **Implementasi:** Penerapan trait `Illuminate\Database\Eloquent\SoftDeletes` pada model inti kearsipan:
+  - `SuratMasuk` (`surat_masuk`)
+  - `SuratKeluar` (`surat_keluar`)
+  - `PengajuanLegalisir` (`pengajuan_legalisir`)
+  - `DisposisiSuratMasuk` (`disposisi_surat_masuk`)
 - **Kebijakan Retensi File Fisik:** Saat petugas menghapus rekaman arsip, sistem menandai kolom `deleted_at` tanpa menghapus berkas fisik pindaian (PDF/JPG) dari `Storage`. Hal ini mencegah *human error* (penghapusan tidak sengaja) dan mematuhi kaidah retensi kearsipan dinas sehingga data dapat dipulihkan (*restore*) kapan saja jika diperlukan investigasi audit.
+- **Proteksi Integritas Relasional:** Penghapusan Kategori Surat dan Pengguna memeriksa seluruh rekaman aktif maupun inaktif (`withTrashed()`) untuk mencegah terjadinya *orphan record*.
 
 ### 2. Pilar Keabsahan Dokumen & Digital Seal (QR Code Verification Engine)
 - **Mesin Verifikasi Publik:** Tersedia rute verifikasi terbuka tanpa memerlukan autentikasi login guna memvalidasi keaslian dokumen di hadapan pihak ketiga (Dinas, Perguruan Tinggi, Instansi Kerja):
   - **Surat Keluar:** `/verifikasi/surat-keluar/{identifier}` (menampilkan keabsahan nomor surat, perihal, penandatangan, tanggal terbit, dan status pengesahan Kepala Sekolah).
   - **Legalisir Dokumen:** `/verifikasi/legalisir/{nomor_pengajuan}` (menampilkan keaslian legalisir ijazah/transkrip, nama pemohon, NISN, dan tanggal pengesahan).
+- **Proteksi Privasi Pemohon (Data Masking):** Pada tampilan verifikasi publik, data sensitif pemohon (nama dan NISN) disamarkan secara otomatis (contoh: `R*** K*******`, `00****2134`) guna mematuhi prinsip pelindungan data pribadi (UU PDP).
 - **Integrasi Cetak Fisik:**
   - Lembar cetak Surat Keluar resmi sekolah dilengkapi blok tanda tangan 3 kolom dengan **QR Code Digital Seal** resmi di bagian tengah.
   - Kartu Tanda Terima Registrasi Legalisir memuat QR Code yang dapat langsung dipindai oleh kamera ponsel alumni/siswa untuk memantau status pengerjaan secara *live*.
@@ -61,33 +64,40 @@ Untuk menjamin sistem dapat digunakan secara berkelanjutan, aman, dan siap pakai
 - **Arsitektur Service Layer:** Disediakan class layanan [`app/Services/NotificationService.php`](file:///c:/Users/Dwi%20Wahyu%20Fauzan/sistem-arsip-smea/app/Services/NotificationService.php) untuk:
   - Normalisasi nomor telepon lokal Indonesia ke format standar internasional (`08xx` $\rightarrow$ `628xx`).
   - Penyusunan otomatis draf pesan WhatsApp resmi yang ramah dan informatif berdasarkan status permohonan (`menunggu_verifikasi`, `diverifikasi`, `disetujui`, `siap_diambil`, `selesai`, atau `ditolak`).
-  - Penyertaan tautan langsung ke halaman *Live Tracking* resi pengajuan.
+  - Penyertaan tautan langsung ke halaman *Live Tracking* resi pengajuan (`nomor_pengajuan`).
 - **Aksi Cepat Admin:** Pada halaman rincian legalisir admin (`/admin/legalisir/{id}`), tersedia panel **"Kirim Pembaruan WhatsApp"** yang memungkinkan petugas mengirim pesan konfirmasi ke alumni hanya dengan 1 kali klik via WhatsApp Web / WhatsApp Desktop.
 
 ### 4. Pilar Disaster Recovery & Otomasi Pencadangan Data (`arsip:backup`)
 - **Perintah Artisan Kustom:** Sistem dilengkapi command khusus:
   ```bash
-  # Melakukan backup database dan metadata arsip:
+  # Melakukan backup database SQL + metadata JSON:
   php artisan arsip:backup
 
+  # Melakukan backup database dan kompresi seluruh dokumen fisik scan (ZIP):
+  php artisan arsip:backup --with-files
+
   # Melakukan backup sekaligus merotasi/membersihkan backup yang berusia > 30 hari:
-  php artisan arsip:backup --clean
+  php artisan arsip:backup --clean --with-files
   ```
 - **Karakteristik Backup Mandiri:**
   - Menghasilkan dump SQL murni (*DDL + INSERT statements*) yang dapat direstore langsung di DBMS MySQL mana saja tanpa ketergantungan pada binary eksternal `mysqldump`.
   - Menghasilkan ekspor data JSON terstruktur untuk kemudahan interoperabilitas antar-sistem.
+  - Opsi kompresi dokumen fisik (`--with-files`) membungkus berkas scan surat dan ijazah ke dalam file ZIP terkompresi.
   - Berkas cadangan disimpan aman di direktori `storage/app/backups/`.
 - **Penjadwalan Otomatis (Cron Job):**
-  - Terdaftar pada [`routes/console.php`](file:///c:/Users/Dwi%20Wahyu%20Fauzan/sistem-arsip-smea/routes/console.php) untuk dieksekusi setiap hari pada pukul **01:00 dini hari WIB** secara otomatis (`Schedule::command('arsip:backup --clean')->dailyAt('01:00')`).
+  - Terdaftar pada [`routes/console.php`](file:///c:/Users/Dwi%20Wahyu%20Fauzan/sistem-arsip-smea/routes/console.php) untuk dieksekusi setiap hari pada pukul **01:00 dini hari WIB** secara otomatis (`Schedule::command('arsip:backup --clean --with-files')->dailyAt('01:00')`).
 
 ### 5. Pilar Jaminan Kualitas & Pengujian Otomatis (Automated Testing Suite)
-- **Cakupan Pengujian:** Sistem diverifikasi dengan **129 Feature & Unit Tests** dengan **583 Assertions** yang mencakup:
-  - Otentikasi dan Role-Based Access Control (Admin TU, Kepala Sekolah, Pemohon).
+- **Cakupan Pengujian:** Sistem diverifikasi dengan **138 Feature & Unit Tests** dengan **628 Assertions** yang mencakup:
+  - Otentikasi, Rate Limiter Anti-Brute Force, dan Penolakan Akun Nonaktif (`is_active`).
+  - Role-Based Access Control (Admin TU, Kepala Sekolah, Pemohon) & Otorisasi Policy (`PengajuanLegalisirPolicy`).
+  - Proteksi IDOR pemohon dan pembatasan download berkas publik via *Signed URL*.
+  - Penguncian draf surat keluar yang telah disetujui pimpinan dan pencegahan bypass status.
+  - Validasi State Transition Matrix pada alur legalisir dan persetujuan pimpinan.
   - Validasi CRUD Surat Masuk & Surat Keluar berserta alur disposisi.
-  - Alur verifikasi, validasi berkas, dan penolakan/persetujuan pengajuan legalisir.
   - Kecepatan dan akurasi logika Algoritma KMP (Pencarian Eksak, LPS Array, Substring Matching).
-  - Keamanan rute verifikasi publik dan integritas file backup.
-- **Hasil Uji:** 100% Lolos (*All Tests Passed Green*).
+  - Keamanan rute verifikasi publik dan integritas file backup (SQL, JSON, ZIP).
+- **Hasil Uji:** 100% Lolos (*138 of 138 Tests Passed Green*).
 
 ---
 
@@ -130,6 +140,7 @@ Untuk menjamin sistem dapat digunakan secara berkelanjutan, aman, dan siap pakai
 | **16** | Integrasi Fitur Pencarian Cerdas Terpadu KMP | [Tahap 16](./plan/tahapan/tahap-16-pencarian-cerdas-kmp/README.md) | 🟢 Selesai |
 | **17** | Modul Rekapitulasi Cetak Agenda, Pengujian Black Box, & Skripsi | [Tahap 17](./plan/tahapan/tahap-17-cetak-agenda-pengujian-skripsi/README.md) | 🟢 Selesai |
 | **18** | Penguatan Arsitektur Jangka Panjang (Soft Deletes, QR Code, Backup) | Dokumentasi [README.md](./README.md) | 🟢 Selesai |
+| **19** | Penguatan Keamanan, Tata Kelola & Integritas Kearsipan | Dokumentasi [README.md](./README.md) & [penilaian_proyek.md](./penilaian_proyek.md) | 🟢 Selesai |
 
 ---
 

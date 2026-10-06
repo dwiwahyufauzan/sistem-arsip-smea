@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\LogAktivitas;
 use App\Models\PengajuanLegalisir;
 use App\Models\RiwayatLegalisir;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -57,63 +59,70 @@ class PengajuanLegalisirController extends Controller
         $yearMonth = date('Ym');
         $prefix = "LEG-{$yearMonth}-";
 
-        $lastRecord = PengajuanLegalisir::where('nomor_pengajuan', 'like', "{$prefix}%")
-            ->orderBy('id', 'desc')
-            ->first();
+        // Simpan dalam transaksi dan aman dari konkurensi / race condition
+        $pengajuan = DB::transaction(function () use ($request, $validated, $prefix) {
+            $lastRecord = PengajuanLegalisir::withTrashed()
+                ->where('nomor_pengajuan', 'like', "{$prefix}%")
+                ->orderBy('id', 'desc')
+                ->lockForUpdate()
+                ->first();
 
-        $nextNumber = 1;
-        if ($lastRecord && preg_match('/-(\d+)$/', $lastRecord->nomor_pengajuan, $matches)) {
-            $nextNumber = (int) $matches[1] + 1;
-        }
+            $nextNumber = 1;
+            if ($lastRecord && preg_match('/-(\d+)$/', $lastRecord->nomor_pengajuan, $matches)) {
+                $nextNumber = (int) $matches[1] + 1;
+            }
 
-        $nomorPengajuan = $prefix.str_pad((string) $nextNumber, 4, '0', STR_PAD_LEFT);
+            $nomorPengajuan = $prefix.str_pad((string) $nextNumber, 4, '0', STR_PAD_LEFT);
+            $kodeAkses = Str::upper(Str::random(6));
 
-        // Upload berkas fisik dokumen asli ke storage
-        $file = $request->file('berkas');
-        $extension = $file->getClientOriginalExtension();
-        $safeFileName = 'legalisir_'.str_replace('-', '_', $nomorPengajuan).'_'.time().'.'.$extension;
-        $filePath = $file->storeAs('dokumen-legalisir', $safeFileName, 'public');
+            // Upload berkas fisik dokumen asli ke storage dengan nama teracak aman
+            $file = $request->file('berkas');
+            $extension = $file->getClientOriginalExtension();
+            $safeFileName = 'legalisir_'.Str::slug($nomorPengajuan).'_'.Str::random(16).'.'.$extension;
+            $filePath = $file->storeAs('dokumen-legalisir', $safeFileName, 'public');
 
-        // Simpan ke basis data
-        $userId = auth()->id();
-        $pengajuan = PengajuanLegalisir::create([
-            'nomor_pengajuan' => $nomorPengajuan,
-            'user_id' => $userId,
-            'nama_pemohon' => $validated['nama_pemohon'],
-            'nisn' => $validated['nisn'],
-            'tahun_lulus' => $validated['tahun_lulus'],
-            'nomor_whatsapp' => $validated['nomor_whatsapp'],
-            'email' => $validated['email'],
-            'jenis_dokumen' => $validated['jenis_dokumen'],
-            'jumlah_lembar' => $validated['jumlah_lembar'],
-            'keperluan' => $validated['keperluan'],
-            'file_dokumen_path' => $filePath,
-            'status' => 'menunggu_verifikasi',
-        ]);
+            $userId = auth()->id();
+            $record = PengajuanLegalisir::create([
+                'nomor_pengajuan' => $nomorPengajuan,
+                'kode_akses' => $kodeAkses,
+                'user_id' => $userId,
+                'nama_pemohon' => $validated['nama_pemohon'],
+                'nisn' => $validated['nisn'],
+                'tahun_lulus' => $validated['tahun_lulus'],
+                'nomor_whatsapp' => $validated['nomor_whatsapp'],
+                'email' => $validated['email'],
+                'jenis_dokumen' => $validated['jenis_dokumen'],
+                'jumlah_lembar' => $validated['jumlah_lembar'],
+                'keperluan' => $validated['keperluan'],
+                'file_dokumen_path' => $filePath,
+                'status' => 'menunggu_verifikasi',
+            ]);
 
-        // Simpan jejak awal ke riwayat_legalisir
-        $defaultAdminId = $userId ?? User::where('role', 'admin')->value('id') ?? 1;
-        RiwayatLegalisir::create([
-            'pengajuan_legalisir_id' => $pengajuan->id,
-            'status_sebelumnya' => null,
-            'status_baru' => 'menunggu_verifikasi',
-            'diubah_oleh' => $defaultAdminId,
-            'catatan' => 'Permohonan legalisir berhasil diajukan secara online.',
-            'created_at' => now(),
-        ]);
+            // Simpan jejak awal ke riwayat_legalisir secara transparan (diubah_oleh = null jika tanpa login)
+            RiwayatLegalisir::create([
+                'pengajuan_legalisir_id' => $record->id,
+                'status_sebelumnya' => null,
+                'status_baru' => 'menunggu_verifikasi',
+                'diubah_oleh' => $userId,
+                'catatan' => 'Permohonan legalisir berhasil diajukan secara online.',
+                'created_at' => now(),
+            ]);
 
-        if ($userId) {
-            LogAktivitas::catat(
-                'PENGAJUAN_LEGALISIR',
-                'LEGALISIR',
-                "Pemohon {$validated['nama_pemohon']} mengajukan permohonan legalisir dokumen {$pengajuan->jenis_dokumen_label} (Resi: {$nomorPengajuan}).",
-                $userId
-            );
-        }
+            if ($userId) {
+                LogAktivitas::catat(
+                    'PENGAJUAN_LEGALISIR',
+                    'LEGALISIR',
+                    "Pemohon {$validated['nama_pemohon']} mengajukan permohonan legalisir dokumen {$record->jenis_dokumen_label} (Resi: {$nomorPengajuan}).",
+                    $userId
+                );
+            }
+
+            return $record;
+        });
 
         return redirect()
             ->route('legalisir.sukses', $pengajuan->nomor_pengajuan)
-            ->with('success', "Permohonan legalisir berhasil dikirim! Nomor resi pelacakan Anda: {$nomorPengajuan}");
+            ->with('success', "Permohonan legalisir berhasil dikirim! Nomor resi pelacakan Anda: {$pengajuan->nomor_pengajuan}");
     }
 
     /**
@@ -133,8 +142,9 @@ class PengajuanLegalisirController extends Controller
      */
     public function tracking(Request $request): View
     {
-        $query = trim((string) $request->input('nomor_pengajuan', ''));
+        $query = trim((string) ($request->input('nomor_pengajuan') ?? $request->input('nomor') ?? ''));
         $pengajuan = null;
+        $signedDownloadUrl = null;
         $searchPerformed = false;
 
         if ($query !== '') {
@@ -143,9 +153,17 @@ class PengajuanLegalisirController extends Controller
                 ->where('nomor_pengajuan', $query)
                 ->orWhere('nisn', $query)
                 ->first();
+
+            if ($pengajuan) {
+                $signedDownloadUrl = URL::temporarySignedRoute(
+                    'legalisir.download',
+                    now()->addMinutes(60),
+                    ['legalisir' => $pengajuan->id]
+                );
+            }
         }
 
-        return view('legalisir.tracking', compact('pengajuan', 'query', 'searchPerformed'));
+        return view('legalisir.tracking', compact('pengajuan', 'query', 'searchPerformed', 'signedDownloadUrl'));
     }
 
     /**
@@ -161,10 +179,29 @@ class PengajuanLegalisirController extends Controller
     }
 
     /**
-     * Unduh berkas pindaian dokumen asli pemohon secara aman.
+     * Unduh berkas pindaian dokumen asli pemohon secara aman dengan otorisasi.
      */
-    public function downloadDokumen(PengajuanLegalisir $legalisir): BinaryFileResponse|RedirectResponse
+    public function downloadDokumen(Request $request, PengajuanLegalisir $legalisir): BinaryFileResponse|RedirectResponse
     {
+        $user = auth()->user();
+        $isAuthorized = false;
+
+        if ($user) {
+            if ($user->isAdmin() || $user->isKepalaSekolah()) {
+                $isAuthorized = true;
+            } elseif ($user->id === $legalisir->user_id || $user->email === $legalisir->email || (! empty($user->nip_nisn) && $user->nip_nisn === $legalisir->nisn)) {
+                $isAuthorized = true;
+            }
+        }
+
+        if (! $isAuthorized && $request->hasValidSignature()) {
+            $isAuthorized = true;
+        }
+
+        if (! $isAuthorized) {
+            abort(403, 'Akses ditolak. Anda tidak memiliki otorisasi untuk mengunduh berkas dokumen legalisir ini.');
+        }
+
         if (! $legalisir->file_dokumen_path || ! Storage::disk('public')->exists($legalisir->file_dokumen_path)) {
             return back()->with('error', 'Berkas dokumen fisik tidak ditemukan pada server penyimpanan.');
         }
@@ -206,10 +243,12 @@ class PengajuanLegalisirController extends Controller
     }
 
     /**
-     * Detail permohonan legalisir untuk akun Pemohon.
+     * Detail permohonan legalisir untuk akun Pemohon (Dilindungi Policy IDOR).
      */
     public function showPemohon(PengajuanLegalisir $legalisir): View
     {
+        $this->authorize('view', $legalisir);
+
         $legalisir->load(['riwayat.user', 'petugas']);
 
         return view('pemohon.legalisir.show', compact('legalisir'));

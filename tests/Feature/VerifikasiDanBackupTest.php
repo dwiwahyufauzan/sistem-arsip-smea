@@ -74,8 +74,8 @@ class VerifikasiDanBackupTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('LEGALISIR RESMI SMKN 1 SUBANG');
         $response->assertSee($pengajuan->nomor_pengajuan);
-        $response->assertSee($pengajuan->nama_pemohon);
-        $response->assertSee($pengajuan->nisn);
+        $response->assertSee($pengajuan->nama_pemohon_masked);
+        $response->assertSee($pengajuan->nisn_masked);
 
         $pengajuan->forceDelete();
     }

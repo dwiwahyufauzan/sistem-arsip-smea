@@ -465,7 +465,7 @@ class PersetujuanDisposisiTest extends TestCase
         $response->assertRedirect(route('kepsek.disposisi.index'));
         $response->assertSessionHas('success');
 
-        $this->assertDatabaseMissing('disposisi_surat_masuk', [
+        $this->assertSoftDeleted('disposisi_surat_masuk', [
             'id' => $disposisi->id,
         ]);
 

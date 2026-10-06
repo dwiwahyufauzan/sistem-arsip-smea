@@ -6,6 +6,8 @@ use App\Models\LogAktivitas;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -23,7 +25,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Memproses autentikasi pengguna
+     * Memproses autentikasi pengguna dengan perlindungan Rate Limiting dan verifikasi status akun
      */
     public function login(Request $request): RedirectResponse
     {
@@ -36,11 +38,33 @@ class AuthController extends Controller
             'password.required' => 'Kata sandi wajib diisi.',
         ]);
 
+        $throttleKey = Str::transliterate(Str::lower($request->input('email')).'|'.$request->ip());
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+
+            return back()->withErrors([
+                'email' => "Terlalu banyak percobaan masuk yang gagal. Silakan coba kembali dalam {$seconds} detik.",
+            ])->onlyInput('email');
+        }
+
         $remember = $request->boolean('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
             $user = Auth::user();
+
+            if (! $user->is_active) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'Akun Anda dinonaktifkan oleh Administrator. Silakan hubungi bagian Tata Usaha sekolah.',
+                ])->onlyInput('email');
+            }
+
+            RateLimiter::clear($throttleKey);
+            $request->session()->regenerate();
 
             LogAktivitas::catat(
                 'LOGIN',
@@ -51,6 +75,8 @@ class AuthController extends Controller
             return $this->redirectBasedOnRole($user->role)
                 ->with('success', "Selamat datang kembali, {$user->name}!");
         }
+
+        RateLimiter::hit($throttleKey, 60);
 
         return back()->withErrors([
             'email' => 'Kombinasi email dan kata sandi yang Anda masukkan tidak sesuai.',

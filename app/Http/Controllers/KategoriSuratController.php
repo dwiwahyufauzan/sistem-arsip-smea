@@ -92,12 +92,12 @@ class KategoriSuratController extends Controller
      */
     public function destroy(KategoriSurat $kategori): RedirectResponse
     {
-        $smCount = $kategori->suratMasuk()->count();
-        $skCount = $kategori->suratKeluar()->count();
+        $smCount = $kategori->suratMasuk()->withTrashed()->count();
+        $skCount = $kategori->suratKeluar()->withTrashed()->count();
 
         if ($smCount > 0 || $skCount > 0) {
             return redirect()->route('admin.kategori.index')
-                ->with('error', "Kategori {$kategori->kode_kategori} tidak dapat dihapus karena masih digunakan oleh {$smCount} arsip surat masuk dan {$skCount} surat keluar.");
+                ->with('error', "Kategori {$kategori->kode_kategori} tidak dapat dihapus karena masih digunakan oleh {$smCount} arsip surat masuk dan {$skCount} surat keluar (termasuk arsip inaktif).");
         }
 
         $kode = $kategori->kode_kategori;

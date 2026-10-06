@@ -37,11 +37,18 @@
                 </form>
             @endif
 
-            <!-- Edit -->
-            <a href="{{ route('admin.surat-keluar.edit', $surat_keluar) }}" class="inline-flex items-center gap-1.5 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl text-xs font-semibold border border-amber-200 transition-colors">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                <span>Edit</span>
-            </a>
+            <!-- Edit / Status Kunci -->
+            @if($surat_keluar->status_persetujuan !== 'disetujui')
+                <a href="{{ route('admin.surat-keluar.edit', $surat_keluar) }}" class="inline-flex items-center gap-1.5 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl text-xs font-semibold border border-amber-200 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                    <span>Edit</span>
+                </a>
+            @else
+                <span class="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 text-slate-400 rounded-xl text-xs font-semibold border border-slate-200 cursor-not-allowed" title="Surat keluar telah disetujui Kepala Sekolah dan dikunci dari penyuntingan.">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    <span>Dikunci</span>
+                </span>
+            @endif
 
             <!-- Unduh File -->
             @if($surat_keluar->file_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($surat_keluar->file_path))

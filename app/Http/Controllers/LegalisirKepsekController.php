@@ -62,6 +62,10 @@ class LegalisirKepsekController extends Controller
      */
     public function approve(Request $request, PengajuanLegalisir $legalisir): RedirectResponse
     {
+        if ($legalisir->status !== 'menunggu_approval_kepsek') {
+            return back()->with('error', 'Hanya permohonan legalisir dengan status "Menunggu Approval Kepsek" yang dapat disetujui.');
+        }
+
         $catatan = trim((string) $request->input('catatan_kepsek', ''));
         if ($catatan === '') {
             $catatan = 'Disetujui untuk pengesahan tanda tangan dan cap stempel resmi SMKN 1 Subang.';
@@ -99,6 +103,10 @@ class LegalisirKepsekController extends Controller
      */
     public function reject(Request $request, PengajuanLegalisir $legalisir): RedirectResponse
     {
+        if ($legalisir->status !== 'menunggu_approval_kepsek') {
+            return back()->with('error', 'Hanya permohonan legalisir dengan status "Menunggu Approval Kepsek" yang dapat ditolak oleh Kepala Sekolah.');
+        }
+
         $validated = $request->validate([
             'catatan_kepsek' => ['required', 'string', 'min:5', 'max:1000'],
         ], [

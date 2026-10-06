@@ -62,6 +62,12 @@ class PersetujuanController extends Controller
      */
     public function approve(Request $request, SuratKeluar $suratKeluar): RedirectResponse
     {
+        if ($suratKeluar->status_persetujuan !== 'menunggu_persetujuan') {
+            return redirect()
+                ->route('kepsek.persetujuan.show', $suratKeluar)
+                ->with('error', 'Hanya surat keluar dengan status "Menunggu Persetujuan" yang dapat disetujui.');
+        }
+
         $catatan = trim((string) $request->input('catatan_kepsek', ''));
         if ($catatan === '') {
             $catatan = 'Disetujui untuk diterbitkan secara resmi.';
@@ -91,6 +97,12 @@ class PersetujuanController extends Controller
      */
     public function reject(Request $request, SuratKeluar $suratKeluar): RedirectResponse
     {
+        if ($suratKeluar->status_persetujuan !== 'menunggu_persetujuan') {
+            return redirect()
+                ->route('kepsek.persetujuan.show', $suratKeluar)
+                ->with('error', 'Hanya surat keluar dengan status "Menunggu Persetujuan" yang dapat ditolak/direvisi.');
+        }
+
         $validated = $request->validate([
             'catatan_kepsek' => ['required', 'string', 'min:5', 'max:1000'],
         ], [

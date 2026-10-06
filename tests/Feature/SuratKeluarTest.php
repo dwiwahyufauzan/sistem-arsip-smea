@@ -245,7 +245,7 @@ class SuratKeluarTest extends TestCase
     public function test_admin_can_update_surat_keluar_metadata(): void
     {
         $admin = User::where('role', 'admin')->first();
-        $suratKeluar = SuratKeluar::first();
+        $suratKeluar = SuratKeluar::where('status_persetujuan', 'draft')->first();
 
         $response = $this->actingAs($admin)->put('/admin/surat-keluar/'.$suratKeluar->id, [
             'nomor_agenda' => $suratKeluar->nomor_agenda,

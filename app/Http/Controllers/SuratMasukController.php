@@ -325,7 +325,8 @@ class SuratMasukController extends Controller
         $tahun = date('Y');
         $prefix = "SM/{$tahun}/";
 
-        $lastSurat = SuratMasuk::where('nomor_agenda', 'like', "{$prefix}%")
+        $lastSurat = SuratMasuk::withTrashed()
+            ->where('nomor_agenda', 'like', "{$prefix}%")
             ->orderBy('id', 'desc')
             ->first();
 

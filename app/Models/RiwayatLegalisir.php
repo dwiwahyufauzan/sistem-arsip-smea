@@ -37,6 +37,8 @@ class RiwayatLegalisir extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'diubah_oleh');
+        return $this->belongsTo(User::class, 'diubah_oleh')->withDefault([
+            'name' => 'Sistem / Pemohon Mandiri',
+        ]);
     }
 }

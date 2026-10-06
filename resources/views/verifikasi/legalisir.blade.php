@@ -19,7 +19,7 @@
             <div class="bg-slate-900 text-white p-6 sm:p-8 text-center relative overflow-hidden">
                 <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-teal-600/20 rounded-full blur-2xl pointer-events-none"></div>
                 <div class="flex items-center justify-center gap-3 sm:gap-4 mb-3">
-                    <img src="{{ asset('images/logo-pemda-jabar.png') }}" alt="Logo Pemda Jabar" class="w-12 h-14 object-contain drop-shadow-sm">
+                    <img src="{{ asset('images/logo-jabar.png') }}" alt="Logo Pemda Jawa Barat" class="w-12 h-14 object-contain drop-shadow-sm">
                     <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-12 h-14 object-contain drop-shadow-sm">
                 </div>
                 <p class="text-[11px] font-bold tracking-widest text-slate-300 uppercase">Pemerintah Daerah Provinsi Jawa Barat</p>
@@ -82,11 +82,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
                             <span class="text-[10px] font-semibold uppercase text-slate-400 block">Nama Pemohon (Alumni/Siswa)</span>
-                            <p class="font-bold text-slate-900 text-sm mt-0.5">{{ $pengajuan->nama_pemohon }}</p>
+                            <p class="font-bold text-slate-900 text-sm mt-0.5">{{ $pengajuan->nama_pemohon_masked }}</p>
                         </div>
                         <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
                             <span class="text-[10px] font-semibold uppercase text-slate-400 block">Nomor Induk Siswa Nasional (NISN)</span>
-                            <p class="font-mono font-bold text-slate-900 text-sm mt-0.5">{{ $pengajuan->nisn }}</p>
+                            <p class="font-mono font-bold text-slate-900 text-sm mt-0.5">{{ $pengajuan->nisn_masked }}</p>
                         </div>
                     </div>
 
@@ -134,7 +134,7 @@
                     <a href="{{ route('landing') }}" class="flex-1 py-3 px-4 rounded-xl text-center text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
                         Kembali ke Portal Beranda
                     </a>
-                    <a href="{{ route('legalisir.tracking') }}?nomor={{ $pengajuan->nomor_pengajuan }}" class="flex-1 py-3 px-4 rounded-xl text-center text-xs font-bold bg-teal-800 hover:bg-teal-700 text-white shadow-xs transition-colors">
+                    <a href="{{ route('legalisir.tracking', ['nomor_pengajuan' => $pengajuan->nomor_pengajuan]) }}" class="flex-1 py-3 px-4 rounded-xl text-center text-xs font-bold bg-teal-800 hover:bg-teal-700 text-white shadow-xs transition-colors">
                         Lacak Status & Tracking Berkas
                     </a>
                 </div>

@@ -15,7 +15,7 @@ class LandingAndTrackingTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('SMEA ARCHIVE');
-        $response->assertSee('Lacak Status Permohonan Legalisir');
+        $response->assertSee('Lacak status permohonan');
         $response->assertSee('SMK Negeri 1 Subang');
     }
 
@@ -29,7 +29,7 @@ class LandingAndTrackingTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('LEG-202609-0001');
         $response->assertSee('Ridwan Kurniawan');
-        $response->assertSee('Histori Pelacakan Berkas');
+        $response->assertSee('Riwayat pelacakan berkas');
     }
 
     /**
@@ -52,6 +52,6 @@ class LandingAndTrackingTest extends TestCase
         $response = $this->get('/?nomor_pengajuan=INVALID-RESI-9999');
 
         $response->assertStatus(200);
-        $response->assertSee('Data Permohonan Tidak Ditemukan');
+        $response->assertSee('Data permohonan tidak ditemukan');
     }
 }

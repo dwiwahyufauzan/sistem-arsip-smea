@@ -19,7 +19,7 @@
             <div class="bg-slate-900 text-white p-6 sm:p-8 text-center relative overflow-hidden">
                 <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-blue-600/20 rounded-full blur-2xl pointer-events-none"></div>
                 <div class="flex items-center justify-center gap-3 sm:gap-4 mb-3">
-                    <img src="{{ asset('images/logo-pemda-jabar.png') }}" alt="Logo Pemda Jabar" class="w-12 h-14 object-contain drop-shadow-sm">
+                    <img src="{{ asset('images/logo-jabar.png') }}" alt="Logo Pemda Jawa Barat" class="w-12 h-14 object-contain drop-shadow-sm">
                     <img src="{{ asset('images/logo-smk.png') }}" alt="Logo SMKN 1 Subang" class="w-12 h-14 object-contain drop-shadow-sm">
                 </div>
                 <p class="text-[11px] font-bold tracking-widest text-slate-300 uppercase">Pemerintah Daerah Provinsi Jawa Barat</p>

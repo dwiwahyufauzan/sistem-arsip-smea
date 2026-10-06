@@ -78,7 +78,7 @@ class NotificationService
         }
 
         $msg .= "Anda juga dapat memantau status secara langsung di tautan:\n";
-        $msg .= route('legalisir.tracking', ['nomor' => $pengajuan->nomor_pengajuan]);
+        $msg .= route('legalisir.tracking', ['nomor_pengajuan' => $pengajuan->nomor_pengajuan]);
         $msg .= "\n\nTerima kasih.\n_Subbag Tata Usaha SMKN 1 Subang_";
 
         return $msg;
